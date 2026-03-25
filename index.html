@@ -151,6 +151,82 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
 .gosub{color:var(--text2);margin-bottom:1.75rem;font-size:.88rem}
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg2);border:1px solid var(--accent);border-radius:7px;padding:.45rem .9rem;font-size:.8rem;color:var(--accent);z-index:999;transition:.3s;opacity:0;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* ═══ MODE 3 ═══════════════════════════════════════ */
+#mode3{background:radial-gradient(ellipse at 50% 30%,#0a1f10,var(--bg) 70%);overflow-y:auto}
+.m3{flex:1;display:flex;flex-direction:column;gap:.32rem;padding:.38rem .48rem;max-width:900px;margin:0 auto;width:100%}
+/* Top bar */
+.m3top{display:flex;gap:.4rem;align-items:stretch;flex-shrink:0;flex-wrap:wrap}
+.m3coins{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .55rem;display:flex;align-items:center;gap:.4rem;flex-shrink:0}
+.m3coins-icon{font-size:1.1rem}
+.m3coins-val{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--gold)}
+.m3coins-lbl{font-size:.55rem;color:var(--text2);font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.m3info{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .55rem;flex:1;min-width:0}
+.m3info-turn{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.m3info-sub{font-size:.6rem;color:var(--text2);margin-top:.08rem}
+.m3log{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.3rem .48rem;font-size:.6rem;color:var(--text2);height:54px;overflow-y:auto;line-height:1.65;flex:1;min-width:160px}
+/* Map */
+.m3map{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.35rem;flex-shrink:0}
+.region{border-radius:10px;padding:.42rem .5rem;border:2px solid transparent;transition:.2s;position:relative;cursor:default}
+.region.brasil{background:linear-gradient(135deg,#0d3d1a,#1a5c2a);border-color:#2d8a3e}
+.region.america{background:linear-gradient(135deg,#1a2d0d,#2a4a12);border-color:#4a7a1e}
+.region.europa{background:linear-gradient(135deg,#0d1a3d,#122060);border-color:#2a4aaa}
+.region.mundo{background:linear-gradient(135deg,#3d1a0d,#602010);border-color:#aa4a1e}
+.region.active-region{box-shadow:0 0 0 2px var(--accent),0 0 16px rgba(0,229,255,.2)}
+.region-title{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.22rem;display:flex;align-items:center;gap:.3rem}
+.region-flag{font-size:.9rem}
+.region-actions{display:flex;gap:.28rem;flex-wrap:wrap}
+.raction{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:.22rem .38rem;font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:.2s;white-space:nowrap}
+.raction:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3)}
+.raction.disabled{opacity:.3;cursor:default;pointer-events:none}
+.raction.travel{background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.25);color:var(--accent)}
+.raction.travel:hover{background:rgba(0,229,255,.2)}
+.region-players{display:flex;gap:.22rem;margin-top:.25rem;flex-wrap:wrap}
+.rplayer{font-size:.55rem;padding:.08rem .28rem;border-radius:10px;font-weight:700;letter-spacing:.05em}
+.rplayer.you{background:rgba(0,229,255,.2);color:var(--accent);border:1px solid rgba(0,229,255,.3)}
+.rplayer.ia{background:rgba(255,61,87,.2);color:var(--red);border:1px solid rgba(255,61,87,.3)}
+.region-cost{font-size:.52rem;color:rgba(255,255,255,.5);margin-top:.18rem}
+/* Consecutive warning */
+.consec-warn{font-size:.52rem;color:#ffc107;margin-top:.1rem}
+/* Bottom: team + hand */
+.m3bottom{display:grid;grid-template-columns:1fr 1fr;gap:.35rem;flex-shrink:0}
+.m3team{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .42rem;display:flex;flex-direction:column}
+.m3team-hdr{display:flex;justify-content:space-between;margin-bottom:.22rem;flex-shrink:0}
+.m3team-lbl{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.m3team-pts{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:700;color:var(--gold)}
+.m3pitch{flex:1;position:relative;border-radius:5px;overflow:hidden;min-height:90px;
+  background:linear-gradient(180deg,#1a4a28 0%,#1e5a30 9%,#1a4a28 18%,#1e5a30 27%,#1a4a28 36%,#1e5a30 45%,#1a4a28 54%,#1e5a30 63%,#1a4a28 72%,#1e5a30 81%,#1a4a28 90%,#1e5a30 100%)}
+.m3pitch::before{content:'';position:absolute;inset:3%;border:1px solid rgba(255,255,255,.15);border-radius:3px;pointer-events:none;z-index:1}
+.m3pitch::after{content:'';position:absolute;left:22%;right:22%;top:50%;transform:translateY(-50%);height:22%;border:1px solid rgba(255,255,255,.12);border-radius:50%;pointer-events:none;z-index:1}
+.m3pcl{position:absolute;left:3%;right:3%;top:50%;height:1px;background:rgba(255,255,255,.12);z-index:1;pointer-events:none}
+.m3pcd{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.18);z-index:1;pointer-events:none}
+.m3hand{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .42rem;display:flex;flex-direction:column;gap:.28rem}
+.m3hand-cards{display:flex;gap:.2rem;flex-wrap:wrap}
+.m3hc{width:calc(33% - .14rem);min-width:48px;height:76px;flex-shrink:0}
+.m3hc .card{width:100%;height:100%}
+.m3sell-panel{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:.28rem .4rem}
+.m3sell-title{font-family:'Barlow Condensed',sans-serif;font-size:.54rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:.18rem}
+.m3sell-list{display:flex;flex-direction:column;gap:.18rem;max-height:60px;overflow-y:auto}
+.m3sell-btn{background:rgba(245,197,66,.08);border:1px solid rgba(245,197,66,.2);color:var(--gold);padding:.18rem .38rem;border-radius:4px;font-size:.58rem;font-weight:600;cursor:pointer;transition:.2s;text-align:left}
+.m3sell-btn:hover{background:rgba(245,197,66,.16)}
+/* Modal overlay */
+.m3modal{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+.m3modal.open{display:flex}
+.m3mbox{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;max-width:420px;width:100%}
+.m3mtitle{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem}
+.m3mcards{display:flex;gap:.6rem;justify-content:center;margin-bottom:.9rem}
+.m3mcw{width:110px;height:140px;cursor:pointer;border-radius:9px;transition:.2s}
+.m3mcw:hover{transform:scale(1.05)}
+.m3mcw.sel{outline:3px solid var(--accent);transform:scale(1.05)}
+.m3minfo{font-size:.75rem;color:var(--text2);margin-bottom:.8rem;text-align:center}
+.m3mbtns{display:flex;gap:.5rem}
+.m3mbtns .btn{flex:1;font-size:.8rem;padding:.45rem}
+.m3cancel{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.45rem;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;text-transform:uppercase;cursor:pointer}
+/* Dice result popup */
+.m3dice-pop{text-align:center;padding:.5rem 0}
+.m3dice-ico{font-size:3rem;line-height:1;margin-bottom:.3rem}
+.m3dice-res{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;color:var(--gold)}
+
 </style>
 </head>
 <body>
@@ -172,6 +248,12 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
         <div class="mode-title">Montagem de Time</div>
         <div class="mode-desc">Compre, troque e evolua cartas para montar um time de 11 com 40 pts.</div>
         <div class="mode-tag">⚽ Sem dados · vs IA</div>
+      </div>
+      <div class="mode-card" onclick="startM3()">
+        <div class="mode-num">03</div>
+        <div class="mode-title">Mundo do Futebol</div>
+        <div class="mode-desc">Viaje pelo mundo, use olheiros, patrocínios e vendas para montar o time perfeito.</div>
+        <div class="mode-tag">🌍 Com tabuleiro · vs IA</div>
       </div>
     </div>
   </div>
@@ -279,6 +361,94 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
       </div>
       <button class="btn" id="m2end" onclick="m2EndTurn()" disabled>Encerrar Turno →</button>
     </div>
+  </div>
+</div>
+
+
+<!-- ═══ MODE 3 ══════════════════════════════════════════════ -->
+<div id="mode3" class="screen">
+  <div class="game-header">
+    <button class="back-btn" onclick="goMenu()">← Menu</button>
+    <div class="game-title">Mundo do Futebol</div>
+    <div class="badge" id="m3badge">Turno 1</div>
+  </div>
+  <div class="m3">
+
+    <!-- Top bar: coins + info + log -->
+    <div class="m3top">
+      <div class="m3coins">
+        <span class="m3coins-icon">🪙</span>
+        <div>
+          <div class="m3coins-val" id="m3pcoins">50</div>
+          <div class="m3coins-lbl">Suas moedas</div>
+        </div>
+      </div>
+      <div class="m3coins" style="border-color:rgba(255,61,87,.3)">
+        <span class="m3coins-icon">🤖</span>
+        <div>
+          <div class="m3coins-val" id="m3acoins" style="color:var(--red)">50</div>
+          <div class="m3coins-lbl">Moedas IA</div>
+        </div>
+      </div>
+      <div class="m3info">
+        <div class="m3info-turn" id="m3turntxt">Sua vez — escolha uma ação</div>
+        <div class="m3info-sub" id="m3subtxt">Você está no Brasil</div>
+      </div>
+      <div class="m3log" id="m3log"></div>
+    </div>
+
+    <!-- Map: 4 regions -->
+    <div class="m3map" id="m3map">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- Bottom: player pitch + hand/sell -->
+    <div class="m3bottom">
+      <div class="m3team">
+        <div class="m3team-hdr">
+          <div class="m3team-lbl">🃏 Seu Time</div>
+          <div class="m3team-pts" id="m3ppts">0 / 40 pts</div>
+        </div>
+        <div class="m3pitch" id="m3ppitch">
+          <div class="m3pcl"></div><div class="m3pcd"></div>
+        </div>
+        <div class="pbar" style="margin-top:.25rem"><div class="pfill" id="m3pprog" style="width:0%"></div></div>
+      </div>
+      <div class="m3hand">
+        <div class="zlbl">🃏 Mão (<span id="m3handcount">0</span> cartas)</div>
+        <div class="m3hand-cards" id="m3ph"></div>
+        <div class="m3sell-panel" id="m3sellpanel" style="display:none">
+          <div class="m3sell-title">💰 Vender carta (rola 1 dado)</div>
+          <div class="m3sell-list" id="m3selllist"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Olheiro modal -->
+<div class="m3modal" id="m3modal">
+  <div class="m3mbox">
+    <div class="m3mtitle" id="m3mtitle">👁 Olheiro</div>
+    <div class="m3minfo" id="m3minfo">Selecione uma carta para adicionar à sua mão</div>
+    <div class="m3mcards" id="m3mcards"></div>
+    <div class="m3mbtns">
+      <button class="m3cancel" onclick="m3closeModal()">Cancelar</button>
+      <button class="btn" id="m3mconfirm" onclick="m3confirmModal()" disabled style="flex:1;font-size:.8rem;padding:.45rem">Escolher</button>
+    </div>
+  </div>
+</div>
+
+<!-- Dice/result modal -->
+<div class="m3modal" id="m3dicemodal">
+  <div class="m3mbox" style="max-width:300px;text-align:center">
+    <div class="m3mtitle" id="m3dicetitle">Resultado</div>
+    <div class="m3dice-pop">
+      <div class="m3dice-ico" id="m3diceico">⚄</div>
+      <div class="m3dice-res" id="m3diceres">+8 moedas</div>
+    </div>
+    <button class="btn" onclick="m3closeDice()" style="margin-top:.5rem">Continuar →</button>
   </div>
 </div>
 
@@ -746,6 +916,553 @@ function m2win(w){
   const full=Object.keys(FORM).every(pos=>t[pos].length>=FORM[pos]);
   if(full&&pts>=40)setTimeout(()=>gameOver(w==='p',w==='p'?`Time completo com ${pts} pontos!`:`IA montou o time com ${pts} pontos.`),600);
 }
+
+/* ═══════════════════════════════════════════════════
+   MODE 3 — MUNDO DO FUTEBOL
+   ═══════════════════════════════════════════════════ */
+
+// ── Constants ─────────────────────────────────────
+const REGIONS = {
+  brasil:  { name:'Brasil',        flag:'🇧🇷', actions:['olheiro','superpack','patrocinio'], color:'brasil' },
+  america: { name:'América do Sul',flag:'🌎', actions:['olheiro','patrocinio'],             color:'america' },
+  europa:  { name:'Europa',        flag:'🇪🇺', actions:['olheiro','venda','patrocinio'],    color:'europa' },
+  mundo:   { name:'Resto do Mundo',flag:'🌏', actions:['olheiro','venda','patrocinio'],    color:'mundo' },
+};
+// Travel costs [from][to]
+const TRAVEL = {
+  brasil:  { america:1, mundo:5,  europa:4 },
+  america: { brasil:1,  mundo:4,  europa:3 },
+  europa:  { brasil:4,  america:3, mundo:2 },
+  mundo:   { brasil:5,  america:4, europa:2 },
+};
+// Sponsorship table (2d6 sum → coins, before multiplier)
+const SPONS = {2:12,3:10,4:8,5:8,6:8,7:8,8:8,9:8,10:10,11:12,12:15};
+// Sell multipliers per region
+const SELL_MULT = {
+  europa: { ouro:2, especial:3, icone:5 },
+  mundo:  { prata:2, ouro:3, especial:4, icone:6 },
+};
+// Olheiro costs
+const OLHEIRO_COST = { brasil:4, america:6, europa:10, mundo:8 };
+// Patrocinio multiplier
+const SPONS_MULT = { brasil:1, america:1, europa:3, mundo:3 };
+// Sponsorship dice: roll 2d6
+const DICE_FACE = ['','⚀','⚁','⚂','⚃','⚄','⚅'];
+const PP3 = {
+  ataque:[{l:22,t:9},{l:50,t:9},{l:78,t:9}],
+  meio:[{l:22,t:34},{l:50,t:34},{l:78,t:34}],
+  defesa:[{l:11,t:60},{l:36,t:60},{l:64,t:60},{l:89,t:60}],
+  goleiro:[{l:50,t:84}]
+};
+
+// ── State ──────────────────────────────────────────
+let G3 = {};
+let m3ModalCards = [];
+let m3ModalSel = null;
+let m3DiceCallback = null;
+
+function startM3() {
+  // Distribute cards into region piles
+  const icones  = shuf(CARDS.filter(c=>c.r==='icone'));    // 5 total
+  const esps    = shuf(CARDS.filter(c=>c.r==='especial')); // 10 total
+  const ouros   = shuf(CARDS.filter(c=>c.r==='ouro'));     // 29 total
+  const pratas  = shuf(CARDS.filter(c=>c.r==='prata'));    // 20 total
+  const bronzes = shuf(CARDS.filter(c=>c.r==='bronze'));   // 35 total
+  const bpAll   = shuf([...bronzes,...pratas]);            // 55 total
+
+  // Ícone: Brazil=1, America=1, Europa=2, Mundo=1
+  // Especial: Brazil=2, America=2, Europa=3, Mundo=3
+  // Ouro 15/15/35/35 of 29 → ~4/4/10/11
+  // Bronze+Prata 35/35/15/15 of 55 → ~19/19/8/9
+  const oB=4,oA=4,oE=10,oM=11;
+  const bpB=19,bpA=19,bpE=8,bpM=9;
+
+  G3 = {
+    piles: {
+      brasil:  shuf([icones[0],...esps.slice(0,2),...ouros.slice(0,oB),...bpAll.slice(0,bpB)]),
+      america: shuf([icones[1],...esps.slice(2,4),...ouros.slice(oB,oB+oA),...bpAll.slice(bpB,bpB+bpA)]),
+      europa:  shuf([icones[2],icones[3],...esps.slice(4,7),...ouros.slice(oB+oA,oB+oA+oE),...bpAll.slice(bpB+bpA,bpB+bpA+bpE)]),
+      mundo:   shuf([icones[4],...esps.slice(7,10),...ouros.slice(oB+oA+oE),...bpAll.slice(bpB+bpA+bpE)]),
+    },
+    pCoins: 50, aCoins: 50,
+    pRegion: 'brasil', aRegion: 'brasil',
+    pTeam: {goleiro:[],defesa:[],meio:[],ataque:[]},
+    aTeam: {goleiro:[],defesa:[],meio:[],ataque:[]},
+    pHand: [], aHand: [],
+    pLastAction: null, pConsec: 0,
+    aLastAction: null, aConsec: 0,
+    turn: 'player',
+    turnNum: 1,
+  };
+  scr('mode3');
+  m3log('Jogo iniciado! Você começa no Brasil com 50 moedas.');
+  m3render();
+}
+
+// ── Logging ────────────────────────────────────────
+function m3log(msg) {
+  const el = document.getElementById('m3log');
+  el.innerHTML = '<div>· ' + msg + '</div>' + el.innerHTML;
+}
+
+// ── Render ─────────────────────────────────────────
+function m3render() {
+  // Badge
+  document.getElementById('m3badge').textContent = 'Turno ' + G3.turnNum;
+  // Coins
+  document.getElementById('m3pcoins').textContent = G3.pCoins;
+  document.getElementById('m3acoins').textContent = G3.aCoins;
+  // Turn text
+  const isP = G3.turn === 'player';
+  document.getElementById('m3turntxt').textContent = isP ? 'Sua vez — escolha uma ação' : 'Vez da IA...';
+  document.getElementById('m3subtxt').textContent = isP
+    ? `Você está em: ${REGIONS[G3.pRegion].name} ${REGIONS[G3.pRegion].flag}`
+    : `IA está em: ${REGIONS[G3.aRegion].name} ${REGIONS[G3.aRegion].flag}`;
+  // Map
+  m3renderMap();
+  // Team pitch
+  m3renderPitch('p', 'm3ppitch');
+  const ppts = m3teamPts('p');
+  document.getElementById('m3ppts').textContent = ppts + ' / 40 pts';
+  document.getElementById('m3pprog').style.width = Math.min(100, ppts/40*100) + '%';
+  // Hand
+  m3renderHand();
+  // Sell panel
+  m3renderSell();
+}
+
+function m3renderMap() {
+  const map = document.getElementById('m3map');
+  map.innerHTML = '';
+  ['brasil','america','europa','mundo'].forEach(reg => {
+    const R = REGIONS[reg];
+    const isActive = G3.turn === 'player' && G3.pRegion === reg;
+    const div = document.createElement('div');
+    div.className = 'region ' + R.color + (isActive ? ' active-region' : '');
+
+    // Consecutive warning
+    let consecWarn = '';
+    if (G3.pLastAction && reg === G3.pRegion && G3.pConsec >= 2) {
+      consecWarn = '<div class="consec-warn">⚠ Máx. 2x consecutivos atingido</div>';
+    }
+
+    // Actions
+    let actionsHTML = '';
+    if (G3.turn === 'player') {
+      R.actions.forEach(act => {
+        const disabled = m3isDisabled(act, reg) ? ' disabled' : '';
+        const label = m3actionLabel(act, reg);
+        actionsHTML += `<button class="raction${disabled}" onclick="m3doAction('${act}','${reg}')">${label}</button>`;
+      });
+      // Travel buttons
+      const travelFrom = G3.pRegion;
+      if (reg !== travelFrom) {
+        const cost = TRAVEL[travelFrom][reg];
+        const canAfford = G3.pCoins >= cost ? '' : ' disabled';
+        actionsHTML += `<button class="raction travel${canAfford}" onclick="m3travel('${reg}')">✈ Viajar (${cost}🪙)</button>`;
+      }
+    }
+
+    // Players in this region
+    let players = '';
+    if (G3.pRegion === reg) players += '<span class="rplayer you">Você</span>';
+    if (G3.aRegion === reg) players += '<span class="rplayer ia">IA</span>';
+
+    div.innerHTML = `
+      <div class="region-title"><span class="region-flag">${R.flag}</span>${R.name}</div>
+      <div class="region-actions">${actionsHTML}</div>
+      ${players ? '<div class="region-players">' + players + '</div>' : ''}
+      <div class="region-cost">📦 ${G3.piles[reg].length} cartas</div>
+      ${consecWarn}
+    `;
+    map.appendChild(div);
+  });
+}
+
+function m3actionLabel(act, reg) {
+  if (act === 'olheiro')   return `👁 Olheiro (${OLHEIRO_COST[reg]}🪙)`;
+  if (act === 'superpack') return `🎁 Superpack (5🪙)`;
+  if (act === 'patrocinio')return `🤝 Patrocínio`;
+  if (act === 'venda')     return `💰 Vender`;
+  return act;
+}
+
+function m3isDisabled(act, reg) {
+  if (G3.turn !== 'player') return true;
+  if (reg !== G3.pRegion) return true;
+  // Check consecutive limit
+  if (G3.pLastAction === act + '_' + reg && G3.pConsec >= 2) return true;
+  // Check cost
+  if (act === 'olheiro' && G3.pCoins < OLHEIRO_COST[reg]) return true;
+  if (act === 'superpack' && G3.pCoins < 5) return true;
+  // Check pile
+  if ((act === 'olheiro' || act === 'superpack') && G3.piles[reg].length === 0) return true;
+  // Check venda: only if have sellable cards
+  if (act === 'venda' && m3getSellable('p', reg).length === 0) return true;
+  return false;
+}
+
+function m3renderPitch(who, elId) {
+  const team = who === 'p' ? G3.pTeam : G3.aTeam;
+  const el = document.getElementById(elId);
+  el.querySelectorAll('.pslot').forEach(e => e.remove());
+  ['ataque','meio','defesa','goleiro'].forEach(pos => {
+    PP3[pos].forEach((xy, i) => {
+      const c = team[pos][i] || null;
+      const s = document.createElement('div');
+      s.className = 'pslot';
+      s.style.left = xy.l + '%'; s.style.top = xy.t + '%';
+      s.innerHTML = c
+        ? `<div class="pm ${c.r}"><div class="pmname">${c.name.split(' ')[0]}</div><div class="pmrow"><span class="pmpos">${PL[c.pos]}</span><span class="pmpts">${c.pts}</span></div></div>`
+        : `<div class="pm empty"><span class="pmlbl">${PL[pos]}</span></div>`;
+      el.appendChild(s);
+    });
+  });
+}
+
+function m3renderHand() {
+  const hel = document.getElementById('m3ph');
+  hel.innerHTML = '';
+  G3.pHand.forEach(c => {
+    const d = document.createElement('div');
+    d.className = 'm3hc';
+    d.innerHTML = card(c);
+    hel.appendChild(d);
+  });
+  document.getElementById('m3handcount').textContent = G3.pHand.length;
+}
+
+function m3renderSell() {
+  const reg = G3.pRegion;
+  const panel = document.getElementById('m3sellpanel');
+  const list = document.getElementById('m3selllist');
+  if (!REGIONS[reg].actions.includes('venda') || G3.turn !== 'player') {
+    panel.style.display = 'none'; return;
+  }
+  const sellable = m3getSellable('p', reg);
+  if (!sellable.length) { panel.style.display = 'none'; return; }
+  panel.style.display = 'block';
+  const mults = SELL_MULT[reg];
+  list.innerHTML = sellable.map((c, i) => {
+    const mult = mults[c.r] || 0;
+    return `<button class="m3sell-btn" onclick="m3sell(${i})">
+      ${c.name} (${RL[c.r]}) — ${mult}x dado 🎲</button>`;
+  }).join('');
+}
+
+function m3getSellable(who, reg) {
+  const team = who === 'p' ? G3.pTeam : G3.aTeam;
+  const hand = who === 'p' ? G3.pHand : G3.aHand;
+  const mults = SELL_MULT[reg] || {};
+  const all = [...hand, ...Object.values(team).flat()];
+  return all.filter(c => mults[c.r] !== undefined);
+}
+
+// ── Actions ────────────────────────────────────────
+function m3travel(toReg) {
+  const cost = TRAVEL[G3.pRegion][toReg];
+  if (G3.pCoins < cost) { toast('Moedas insuficientes!'); return; }
+  G3.pCoins -= cost;
+  m3log(`Viagem: ${REGIONS[G3.pRegion].name} → ${REGIONS[toReg].name} (-${cost}🪙)`);
+  G3.pRegion = toReg;
+  // Reset consecutive when traveling
+  G3.pLastAction = null; G3.pConsec = 0;
+  m3render();
+}
+
+function m3doAction(act, reg) {
+  if (m3isDisabled(act, reg)) return;
+  // Track consecutive
+  const key = act + '_' + reg;
+  if (G3.pLastAction === key) G3.pConsec++;
+  else { G3.pConsec = 1; G3.pLastAction = key; }
+
+  if (act === 'olheiro')    m3doOlheiro('p');
+  else if (act === 'superpack')  m3doSuperpack();
+  else if (act === 'patrocinio') m3doPatrocinio('p');
+  else if (act === 'venda')      m3renderSell(); // handled by sell buttons
+}
+
+function m3doOlheiro(who) {
+  const reg = who === 'p' ? G3.pRegion : G3.aRegion;
+  const cost = OLHEIRO_COST[reg];
+  if (who === 'p') {
+    G3.pCoins -= cost;
+    const pile = G3.piles[reg];
+    const picks = pile.splice(0, Math.min(2, pile.length));
+    if (picks.length === 0) { toast('Sem cartas nessa região!'); return; }
+    m3log(`Olheiro em ${REGIONS[reg].name} (-${cost}🪙) — vendo ${picks.length} cartas`);
+    m3showModal('👁 Olheiro — Escolha 1 carta', picks, chosen => {
+      G3.pHand.push(chosen);
+      // Return unchosen to pile
+      picks.filter(c => c.id !== chosen.id).forEach(c => G3.piles[reg].push(c));
+      m3log(`Você escolheu: ${chosen.name} (${RL[chosen.r]})`);
+      m3autoSlot3('p');
+      m3endPlayerTurn();
+    });
+  } else {
+    G3.aCoins -= cost;
+    const pile = G3.piles[reg];
+    const picks = pile.splice(0, Math.min(2, pile.length));
+    if (picks.length === 0) return;
+    // AI picks best by pts
+    const best = picks.sort((a,b) => b.pts-a.pts)[0];
+    picks.filter(c=>c.id!==best.id).forEach(c=>G3.piles[reg].push(c));
+    G3.aHand.push(best);
+    m3log(`IA usou Olheiro em ${REGIONS[reg].name} → ${best.name}`);
+    m3autoSlot3('a');
+  }
+}
+
+function m3doSuperpack() {
+  G3.pCoins -= 5;
+  const roll = d6() + d6();
+  let region;
+  if (roll <= 4) region = 'america';
+  else if (roll <= 8) region = 'brasil';
+  else if (roll <= 10) region = 'mundo';
+  else region = 'europa';
+  const pile = G3.piles[region];
+  if (!pile.length) {
+    toast('Pile vazia para ' + REGIONS[region].name + '!');
+    m3endPlayerTurn(); return;
+  }
+  const c = pile.shift();
+  G3.pHand.push(c);
+  m3log(`Superpack (-5🪙) dado:${roll} → ${REGIONS[region].name} → ${c.name} (${RL[c.r]})`);
+  m3autoSlot3('p');
+  m3showDice([roll], `${DICE_FACE[roll>6?roll-6:roll]} Dado: ${roll} → ${REGIONS[region].name}
+${c.name} (${RL[c.r]})`, () => m3endPlayerTurn());
+}
+
+function m3doPatrocinio(who) {
+  const reg = who === 'p' ? G3.pRegion : G3.aRegion;
+  const mult = SPONS_MULT[reg];
+  const r1 = d6(), r2 = d6();
+  const sum = r1 + r2;
+  const base = SPONS[sum];
+  const earned = base * mult;
+  if (who === 'p') {
+    G3.pCoins += earned;
+    m3log(`Patrocínio em ${REGIONS[reg].name}: ${r1}+${r2}=${sum} → ${base}×${mult} = +${earned}🪙`);
+    m3showDice([r1,r2], `${DICE_FACE[r1]} ${DICE_FACE[r2]}
+Dados: ${r1}+${r2}=${sum}
++${earned}🪙`, () => m3endPlayerTurn());
+  } else {
+    G3.aCoins += earned;
+    m3log(`IA patrocínio em ${REGIONS[reg].name} → +${earned}🪙`);
+  }
+}
+
+function m3sell(idx) {
+  const reg = G3.pRegion;
+  const mults = SELL_MULT[reg];
+  const sellable = m3getSellable('p', reg);
+  const c = sellable[idx];
+  if (!c) return;
+  const mult = mults[c.r];
+  const roll = d6();
+  const earned = roll * mult;
+  G3.pCoins += earned;
+  // Remove from hand or team
+  if (G3.pHand.find(x=>x.id===c.id)) {
+    G3.pHand = G3.pHand.filter(x=>x.id!==c.id);
+  } else {
+    for (const pos of Object.keys(G3.pTeam)) {
+      G3.pTeam[pos] = G3.pTeam[pos].filter(x=>x.id!==c.id);
+    }
+  }
+  G3.piles[reg].push(c);
+  m3log(`Vendeu: ${c.name} (${RL[c.r]}) dado:${roll} × ${mult} = +${earned}🪙`);
+  m3showDice([roll], `${DICE_FACE[roll]}
+${c.name} vendido
++${earned}🪙`, () => m3endPlayerTurn());
+}
+
+// ── Auto slot ─────────────────────────────────────
+function m3autoSlot3(who) {
+  const team = who==='p' ? G3.pTeam : G3.aTeam;
+  const hand = who==='p' ? G3.pHand : G3.aHand;
+  let ch = true;
+  while (ch) {
+    ch = false;
+    for (const pos of Object.keys(FORM)) {
+      const need = FORM[pos] - team[pos].length;
+      const avail = hand.filter(c=>c.pos===pos);
+      if (need > 0 && avail.length) {
+        const best = avail.sort((a,b)=>b.pts-a.pts)[0];
+        team[pos].push(best);
+        if (who==='p') G3.pHand = G3.pHand.filter(c=>c.id!==best.id);
+        else           G3.aHand = G3.aHand.filter(c=>c.id!==best.id);
+        m3log(`${who==='p'?'Você':'IA'}: ${best.name} escalado (${PL[pos]})`);
+        m3checkWin3(who); ch = true; break;
+      }
+    }
+  }
+  // Replace weaker (player only for UX)
+  if (who === 'p') {
+    for (const pos of Object.keys(FORM)) {
+      const tc = G3.pTeam[pos]; if (tc.length<FORM[pos]) continue;
+      const hc = G3.pHand.filter(c=>c.pos===pos); if (!hc.length) continue;
+      const best = hc.sort((a,b)=>b.pts-a.pts)[0];
+      const worst = [...tc].sort((a,b)=>a.pts-b.pts)[0];
+      if (best.pts > worst.pts) {
+        G3.pTeam[pos] = tc.filter(c=>c.id!==worst.id); G3.pTeam[pos].push(best);
+        G3.pHand = G3.pHand.filter(c=>c.id!==best.id); G3.pHand.push(worst);
+        m3log(`↑ ${best.name} substituiu ${worst.name} no time`);
+        m3checkWin3('p');
+      }
+    }
+  }
+}
+
+function m3teamPts(who) {
+  const t = who==='p' ? G3.pTeam : G3.aTeam;
+  return Object.values(t).flat().reduce((s,c)=>s+c.pts,0);
+}
+
+function m3checkWin3(who) {
+  const t = who==='p' ? G3.pTeam : G3.aTeam;
+  const pts = m3teamPts(who);
+  const full = Object.keys(FORM).every(pos=>t[pos].length>=FORM[pos]);
+  if (full && pts>=40)
+    setTimeout(()=>gameOver(who==='p',
+      who==='p'?`Time completo com ${pts} pontos!`:`IA montou o time com ${pts} pontos.`
+    ),600);
+}
+
+// ── Turn management ────────────────────────────────
+function m3endPlayerTurn() {
+  G3.turn = 'ai';
+  m3render();
+  setTimeout(m3aiTurn, 900);
+}
+
+function m3aiTurn() {
+  // AI decision logic
+  const reg = G3.aRegion;
+  const cost = OLHEIRO_COST[reg];
+  const key_oli = 'olheiro_' + reg;
+  const key_sp  = 'superpack_' + reg;
+  const key_pat = 'patrocinio_' + reg;
+
+  // Priority: if team not full, try olheiro/superpack; else patrocinio
+  const teamFull = Object.keys(FORM).every(pos => G3.aTeam[pos].length >= FORM[pos]);
+
+  // Check consecutive limits for AI
+  function aiCanDo(key) { return !(G3.aLastAction===key && G3.aConsec>=2); }
+  function aiTrack(key) {
+    if (G3.aLastAction===key) G3.aConsec++; else { G3.aConsec=1; G3.aLastAction=key; }
+  }
+
+  let acted = false;
+
+  // Try to travel to better region if coins allow
+  if (!teamFull && reg === 'brasil' && G3.aCoins >= 4 && Math.random() < 0.3) {
+    const dest = G3.aCoins >= 4 ? 'europa' : (G3.aCoins >= 1 ? 'america' : null);
+    if (dest && TRAVEL[reg][dest] <= G3.aCoins) {
+      G3.aCoins -= TRAVEL[reg][dest];
+      m3log(`IA viajou: ${REGIONS[reg].name} → ${REGIONS[dest].name}`);
+      G3.aRegion = dest; G3.aLastAction=null; G3.aConsec=0; acted=true;
+    }
+  }
+
+  if (!acted) {
+    // Try olheiro
+    if (!teamFull && G3.aCoins >= cost && G3.piles[reg].length > 0 && aiCanDo(key_oli)) {
+      aiTrack(key_oli);
+      m3doOlheiro('a');
+      acted = true;
+    }
+    // Try superpack in Brasil
+    else if (!teamFull && reg==='brasil' && G3.aCoins>=5 && G3.piles[reg].length>0 && aiCanDo(key_sp)) {
+      aiTrack(key_sp);
+      // Simple AI superpack
+      G3.aCoins -= 5;
+      const roll = d6()+d6();
+      let dest2 = roll<=4?'america':roll<=8?'brasil':roll<=10?'mundo':'europa';
+      const pile2 = G3.piles[dest2];
+      if (pile2.length) {
+        const c = pile2.shift(); G3.aHand.push(c);
+        m3log(`IA Superpack dado:${roll} → ${REGIONS[dest2].name} → ${c.name}`);
+        m3autoSlot3('a');
+      }
+      acted = true;
+    }
+    // Patrocinio
+    else if (aiCanDo(key_pat)) {
+      aiTrack(key_pat);
+      m3doPatrocinio('a');
+      acted = true;
+    }
+    // Fallback: just do patrocinio ignoring consec
+    else {
+      G3.aLastAction = null; G3.aConsec = 0;
+      m3doPatrocinio('a');
+    }
+  }
+
+  m3checkWin3('a');
+  G3.turn = 'player';
+  G3.turnNum++;
+  m3render();
+  m3log('Sua vez!');
+}
+
+// ── Modals ─────────────────────────────────────────
+function m3showModal(title, cards, onConfirm) {
+  m3ModalCards = cards;
+  m3ModalSel = null;
+  window._m3ConfirmCb = onConfirm;
+  document.getElementById('m3mtitle').textContent = title;
+  document.getElementById('m3minfo').textContent = 'Selecione uma carta';
+  const container = document.getElementById('m3mcards');
+  container.innerHTML = '';
+  cards.forEach((c, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'm3mcw';
+    wrap.innerHTML = card(c);
+    wrap.onclick = () => {
+      document.querySelectorAll('.m3mcw').forEach(w=>w.classList.remove('sel'));
+      wrap.classList.add('sel');
+      m3ModalSel = c;
+      document.getElementById('m3mconfirm').disabled = false;
+    };
+    container.appendChild(wrap);
+  });
+  document.getElementById('m3mconfirm').disabled = true;
+  document.getElementById('m3modal').classList.add('open');
+}
+
+function m3confirmModal() {
+  if (!m3ModalSel) return;
+  document.getElementById('m3modal').classList.remove('open');
+  if (window._m3ConfirmCb) window._m3ConfirmCb(m3ModalSel);
+  m3render();
+}
+
+function m3closeModal() {
+  document.getElementById('m3modal').classList.remove('open');
+  // Return coins and cards on cancel
+  m3render();
+}
+
+function m3showDice(rolls, msg, cb) {
+  const icons = rolls.map(r=>DICE_FACE[r]).join(' ');
+  document.getElementById('m3dicetitle').textContent = '🎲 Resultado';
+  document.getElementById('m3diceico').textContent = icons;
+  document.getElementById('m3diceres').textContent = msg;
+  window._m3DiceCb = cb;
+  document.getElementById('m3dicemodal').classList.add('open');
+  m3render();
+}
+
+function m3closeDice() {
+  document.getElementById('m3dicemodal').classList.remove('open');
+  if (window._m3DiceCb) window._m3DiceCb();
+  m3render();
+}
+
 </script>
 </body>
 </html>
