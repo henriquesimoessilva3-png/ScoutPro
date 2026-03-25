@@ -43,19 +43,93 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
 .pbar{background:var(--border);border-radius:3px;height:4px;margin-top:.3rem}
 .pfill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--green));transition:.4s}
 /* CARD */
-.card{border-radius:8px;padding:.45rem .5rem;overflow:hidden;user-select:none;display:flex;flex-direction:column;gap:.12rem;width:100%;height:100%}
-.card.icone{background:linear-gradient(145deg,#dce8f2,#b8cfe0);color:#0a1828;border:2px solid #9ab8cc}
-.card.especial{background:linear-gradient(145deg,#7c3aed,#00e5ff);color:#fff;border:2px solid #00e5ff;box-shadow:0 0 8px rgba(0,229,255,.2)}
-.card.ouro{background:linear-gradient(145deg,#b8860b,#f5c542);color:#1a1200;border:2px solid #d4a017}
-.card.prata{background:linear-gradient(145deg,#607d8b,#cfd8dc);color:#fff;border:2px solid #78909c}
-.card.bronze{background:linear-gradient(145deg,#5d4037,#a1887f);color:#fff;border:2px solid #795548}
-.ctop{display:flex;justify-content:space-between;align-items:flex-start}
-.crar{font-family:'Barlow Condensed',sans-serif;font-size:.5rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.75;line-height:1}
-.cpts{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900;line-height:1}
-.cpos{font-size:.48rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:rgba(0,0,0,.16);padding:.08rem .28rem;border-radius:3px;display:inline-block;margin-top:.12rem}
-.card.icone .cpos{background:rgba(10,24,40,.13)}
-.cname{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:800;line-height:1.1;margin-top:.08rem}
-.cstar{font-size:.52rem;opacity:.7;margin-top:.04rem}
+.card{
+  width:100%;height:100%;
+  border-radius:8px;
+  display:flex;flex-direction:column;
+  overflow:hidden;user-select:none;
+  position:relative;
+}
+/* Rarity colors */
+.card.icone   {background:linear-gradient(160deg,#b8d8ee 0%,#deeefa 50%,#a0c0d8 100%);color:#08182a;border:2px solid #7ab0cc}
+.card.especial{background:linear-gradient(160deg,#3a0070 0%,#7a20c0 40%,#0088dd 100%);color:#fff;border:2px solid #60a8ff;box-shadow:0 0 10px rgba(80,160,255,.3)}
+.card.ouro    {background:linear-gradient(160deg,#6a4400 0%,#b87a00 40%,#f0c030 100%);color:#1a0f00;border:2px solid #d4a020}
+.card.prata   {background:linear-gradient(160deg,#283848 0%,#4a6878 40%,#a0c0cc 100%);color:#fff;border:2px solid #6898aa}
+.card.bronze  {background:linear-gradient(160deg,#281408 0%,#583020 40%,#a07040 100%);color:#fff;border:2px solid #806040}
+/* Shine overlay */
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.16) 0%,transparent 50%,rgba(0,0,0,.1) 100%);pointer-events:none;z-index:3}
+/* Top section: stars left, points right */
+.c-top{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding:.28rem .32rem .1rem;
+  flex-shrink:0;z-index:2;position:relative;
+}
+.c-stars-block{display:flex;flex-direction:column;gap:.04rem}
+.c-stars{font-size:clamp(.42rem,1.5vw,.72rem);line-height:1.1;letter-spacing:.06em;opacity:.9}
+.c-rarity{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.38rem,1.2vw,.58rem);font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.75;line-height:1}
+.c-pts-block{text-align:right}
+.c-pts{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.9rem,3.5vw,1.6rem);font-weight:900;line-height:1;text-shadow:0 1px 4px rgba(0,0,0,.35)}
+.c-pos{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.38rem,1.2vw,.58rem);font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.8;text-align:right;margin-top:.02rem}
+/* Spacer / avatar area */
+.c-avatar{
+  flex:1;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(1.2rem,5vw,2.2rem);
+  opacity:.22;z-index:1;
+}
+/* Bottom name bar */
+.c-bottom{
+  flex-shrink:0;padding:.14rem .28rem .18rem;
+  background:rgba(0,0,0,.38);
+  position:relative;z-index:2;
+}
+.c-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.55rem,2vw,1rem);
+  font-weight:800;line-height:1.1;
+  text-transform:uppercase;letter-spacing:.03em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-shadow:0 1px 3px rgba(0,0,0,.6);
+  color:#fff;
+}
+/* Holographic shimmer for Ícone */
+.card.icone::after{
+  content:'';position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:linear-gradient(105deg,transparent 30%,rgba(180,230,255,.2) 45%,rgba(220,190,255,.15) 55%,transparent 70%);
+  background-size:200% 100%;
+  animation:holo 3.5s linear infinite;
+}
+@keyframes holo{0%{background-position:200% 0}100%{background-position:-200% 0}}
+/* Especial particle dots */
+.card.especial::after{
+  content:'⭐';position:absolute;bottom:.15rem;right:.25rem;font-size:.55rem;z-index:4;opacity:.5;pointer-events:none;
+}
+/* Pitch mini cards (mode 2 and 3) */
+.pm{
+  position:relative;overflow:hidden;
+  border-radius:5px;
+  display:flex;flex-direction:column;
+}
+.pm.empty{
+  background:rgba(255,255,255,.06);
+  border:1.5px dashed rgba(255,255,255,.2);
+  min-height:36px;
+  display:flex;align-items:center;justify-content:center;
+}
+.pm.empty .pmlbl{font-family:'Barlow Condensed',sans-serif;font-size:.55rem;color:rgba(255,255,255,.35);font-weight:700}
+.pm.icone   {background:linear-gradient(160deg,#b8d8ee,#deeefa);color:#08182a;border:1.5px solid #7ab0cc}
+.pm.especial{background:linear-gradient(160deg,#3a0070,#0088dd);color:#fff;border:1.5px solid #60a8ff}
+.pm.ouro    {background:linear-gradient(160deg,#6a4400,#f0c030);color:#1a0f00;border:1.5px solid #d4a020}
+.pm.prata   {background:linear-gradient(160deg,#283848,#a0c0cc);color:#fff;border:1.5px solid #6898aa}
+.pm.bronze  {background:linear-gradient(160deg,#281408,#a07040);color:#fff;border:1.5px solid #806040}
+.pm::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.14) 0%,transparent 55%);pointer-events:none;z-index:2}
+.pm-top{display:flex;justify-content:space-between;align-items:flex-start;padding:.15rem .16rem .05rem;position:relative;z-index:3}
+.pm-stars{font-size:.45rem;line-height:1;letter-spacing:.04em;opacity:.9}
+.pm-pts{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:900;line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.pm-pos{font-family:'Barlow Condensed',sans-serif;font-size:.42rem;font-weight:700;text-transform:uppercase;text-align:right;opacity:.8;line-height:1}
+.pm-bot{flex-shrink:0;padding:.07rem .14rem .1rem;background:rgba(0,0,0,.35);position:relative;z-index:3}
+.pm-name{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.42rem,1.3vw,.62rem);font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5);line-height:1.1}
+.pm-space{flex:1;display:flex;align-items:center;justify-content:center;font-size:.9rem;opacity:.15;z-index:1}
 /* MODE 1 */
 #mode1{background:radial-gradient(ellipse at 50% 0%,#0a1628,var(--bg) 70%)}
 .m1{flex:1;display:flex;flex-direction:column;gap:.32rem;padding:.38rem .48rem;max-width:520px;margin:0 auto;width:100%;overflow:hidden;min-height:0}
@@ -91,7 +165,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
 .hcard{flex:1;min-width:0;height:106px}
 /* MODE 2 */
 #mode2{background:radial-gradient(ellipse at 70% 20%,#0a1628,var(--bg) 70%)}
-.m2{flex:1;display:flex;flex-direction:column;gap:.32rem;padding:.38rem .48rem;max-width:900px;margin:0 auto;width:100%;overflow:hidden;min-height:0}
+.m2{flex:1;display:flex;flex-direction:column;gap:.32rem;padding:.38rem .48rem;max-width:900px;margin:0 auto;width:100%;overflow-y:auto;padding-bottom:.8rem}
 .pilesbar{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .52rem;flex-shrink:0;display:flex;gap:.48rem;align-items:flex-start}
 .pblock{text-align:center;flex-shrink:0}
 .ptitle{font-family:'Barlow Condensed',sans-serif;font-size:.52rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text2);margin-bottom:.22rem;white-space:nowrap}
@@ -104,21 +178,19 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
 .pcnt{position:absolute;bottom:-6px;right:-6px;background:var(--bg);border:1px solid var(--border);border-radius:50%;width:17px;height:17px;display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:700}
 .logblock{flex:1;min-width:0}
 #m2log{font-size:.6rem;color:var(--text2);height:53px;overflow-y:auto;background:var(--bg3);border-radius:5px;padding:.26rem .38rem;line-height:1.65}
-.pitrow{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:.38rem;min-height:0}
+.pitrow{display:grid;grid-template-columns:1fr 1fr;gap:.38rem;flex-shrink:0}
 @media(max-width:520px){.pitrow{grid-template-columns:1fr}}
-.pwrap{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .42rem;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.pwrap{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .42rem;display:flex;flex-direction:column}
 .phdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.22rem;flex-shrink:0}
 .powner{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
 .ppts{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:700;color:var(--gold)}
-.pitch{flex:1;position:relative;border-radius:6px;overflow:hidden;min-height:55px;
-  background:linear-gradient(180deg,#1a4a28 0%,#1e5a30 9%,#1a4a28 18%,#1e5a30 27%,#1a4a28 36%,#1e5a30 45%,#1a4a28 54%,#1e5a30 63%,#1a4a28 72%,#1e5a30 81%,#1a4a28 90%,#1e5a30 100%)}
-.pitch::before{content:'';position:absolute;inset:3%;border:1px solid rgba(255,255,255,.15);border-radius:3px;pointer-events:none;z-index:1}
-.pitch::after{content:'';position:absolute;left:22%;right:22%;top:50%;transform:translateY(-50%);height:22%;border:1px solid rgba(255,255,255,.12);border-radius:50%;pointer-events:none;z-index:1}
-.pcl{position:absolute;left:3%;right:3%;top:50%;height:1px;background:rgba(255,255,255,.12);z-index:1;pointer-events:none}
-.pcd{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.2);z-index:1;pointer-events:none}
-.pslot{position:absolute;transform:translate(-50%,-50%);z-index:2;width:27%}
-.pm{border-radius:4px;padding:.16rem .2rem}
-.pm.empty{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.1);min-height:32px;display:flex;align-items:center;justify-content:center}
+.pitch-outer{position:relative;width:100%;padding-top:115%;border-radius:6px;overflow:hidden}
+.pitch{position:absolute;inset:0;background:linear-gradient(180deg,#1a4a28 0%,#1e5a30 8%,#1a4a28 16%,#1e5a30 24%,#1a4a28 32%,#1e5a30 40%,#1a4a28 48%,#1e5a30 56%,#1a4a28 64%,#1e5a30 72%,#1a4a28 80%,#1e5a30 88%,#1a4a28 100%)}
+.pitch::before{content:'';position:absolute;inset:3%;border:1.5px solid rgba(255,255,255,.18);border-radius:3px;pointer-events:none;z-index:1}
+.pitch::after{content:'';position:absolute;left:20%;right:20%;top:50%;transform:translateY(-50%);height:20%;border:1.5px solid rgba(255,255,255,.15);border-radius:50%;pointer-events:none;z-index:1}
+.pcl{position:absolute;left:3%;right:3%;top:50%;height:1px;background:rgba(255,255,255,.15);z-index:1;pointer-events:none}
+.pcd{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.22);z-index:1;pointer-events:none}
+.pslot{position:absolute;transform:translate(-50%,-50%);z-index:2;width:26%}1);min-height:32px;display:flex;align-items:center;justify-content:center}
 .pm.empty .pmlbl{font-family:'Barlow Condensed',sans-serif;font-size:.5rem;color:rgba(255,255,255,.22);font-weight:700}
 .pm.icone{background:linear-gradient(145deg,#dce8f2,#b8cfe0);color:#0a1828;border:1px solid #9ab8cc}
 .pm.especial{background:linear-gradient(145deg,#7c3aed,#00e5ff);color:#fff;border:1px solid var(--accent)}
@@ -152,80 +224,311 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg2);border:1px solid var(--accent);border-radius:7px;padding:.45rem .9rem;font-size:.8rem;color:var(--accent);z-index:999;transition:.3s;opacity:0;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
-/* ═══ MODE 3 ═══════════════════════════════════════ */
-#mode3{background:radial-gradient(ellipse at 50% 30%,#0a1f10,var(--bg) 70%);overflow-y:auto}
-.m3{flex:1;display:flex;flex-direction:column;gap:.32rem;padding:.38rem .48rem;max-width:900px;margin:0 auto;width:100%}
-/* Top bar */
-.m3top{display:flex;gap:.4rem;align-items:stretch;flex-shrink:0;flex-wrap:wrap}
-.m3coins{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .55rem;display:flex;align-items:center;gap:.4rem;flex-shrink:0}
-.m3coins-icon{font-size:1.1rem}
-.m3coins-val{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--gold)}
-.m3coins-lbl{font-size:.55rem;color:var(--text2);font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
-.m3info{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .55rem;flex:1;min-width:0}
-.m3info-turn{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
-.m3info-sub{font-size:.6rem;color:var(--text2);margin-top:.08rem}
-.m3log{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.3rem .48rem;font-size:.6rem;color:var(--text2);height:54px;overflow-y:auto;line-height:1.65;flex:1;min-width:160px}
-/* Map */
-.m3map{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.35rem;flex-shrink:0}
-.region{border-radius:10px;padding:.42rem .5rem;border:2px solid transparent;transition:.2s;position:relative;cursor:default}
-.region.brasil{background:linear-gradient(135deg,#0d3d1a,#1a5c2a);border-color:#2d8a3e}
-.region.america{background:linear-gradient(135deg,#1a2d0d,#2a4a12);border-color:#4a7a1e}
-.region.europa{background:linear-gradient(135deg,#0d1a3d,#122060);border-color:#2a4aaa}
-.region.mundo{background:linear-gradient(135deg,#3d1a0d,#602010);border-color:#aa4a1e}
-.region.active-region{box-shadow:0 0 0 2px var(--accent),0 0 16px rgba(0,229,255,.2)}
-.region-title{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.22rem;display:flex;align-items:center;gap:.3rem}
-.region-flag{font-size:.9rem}
-.region-actions{display:flex;gap:.28rem;flex-wrap:wrap}
-.raction{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:.22rem .38rem;font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:.2s;white-space:nowrap}
-.raction:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3)}
-.raction.disabled{opacity:.3;cursor:default;pointer-events:none}
-.raction.travel{background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.25);color:var(--accent)}
-.raction.travel:hover{background:rgba(0,229,255,.2)}
-.region-players{display:flex;gap:.22rem;margin-top:.25rem;flex-wrap:wrap}
-.rplayer{font-size:.55rem;padding:.08rem .28rem;border-radius:10px;font-weight:700;letter-spacing:.05em}
-.rplayer.you{background:rgba(0,229,255,.2);color:var(--accent);border:1px solid rgba(0,229,255,.3)}
-.rplayer.ia{background:rgba(255,61,87,.2);color:var(--red);border:1px solid rgba(255,61,87,.3)}
-.region-cost{font-size:.52rem;color:rgba(255,255,255,.5);margin-top:.18rem}
-/* Consecutive warning */
-.consec-warn{font-size:.52rem;color:#ffc107;margin-top:.1rem}
-/* Bottom: team + hand */
-.m3bottom{display:grid;grid-template-columns:1fr 1fr;gap:.35rem;flex-shrink:0}
-.m3team{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .42rem;display:flex;flex-direction:column}
-.m3team-hdr{display:flex;justify-content:space-between;margin-bottom:.22rem;flex-shrink:0}
-.m3team-lbl{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
-.m3team-pts{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:700;color:var(--gold)}
-.m3pitch{flex:1;position:relative;border-radius:5px;overflow:hidden;min-height:90px;
-  background:linear-gradient(180deg,#1a4a28 0%,#1e5a30 9%,#1a4a28 18%,#1e5a30 27%,#1a4a28 36%,#1e5a30 45%,#1a4a28 54%,#1e5a30 63%,#1a4a28 72%,#1e5a30 81%,#1a4a28 90%,#1e5a30 100%)}
-.m3pitch::before{content:'';position:absolute;inset:3%;border:1px solid rgba(255,255,255,.15);border-radius:3px;pointer-events:none;z-index:1}
-.m3pitch::after{content:'';position:absolute;left:22%;right:22%;top:50%;transform:translateY(-50%);height:22%;border:1px solid rgba(255,255,255,.12);border-radius:50%;pointer-events:none;z-index:1}
-.m3pcl{position:absolute;left:3%;right:3%;top:50%;height:1px;background:rgba(255,255,255,.12);z-index:1;pointer-events:none}
-.m3pcd{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.18);z-index:1;pointer-events:none}
-.m3hand{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .42rem;display:flex;flex-direction:column;gap:.28rem}
-.m3hand-cards{display:flex;gap:.2rem;flex-wrap:wrap}
-.m3hc{width:calc(33% - .14rem);min-width:48px;height:76px;flex-shrink:0}
+
+/* ════════════════════════════════════════════════
+   MODE 3 — MUNDO DO FUTEBOL  — Full-page board
+════════════════════════════════════════════════ */
+#mode3{
+  background:#050a0e;
+  height:100vh;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+
+/* ─── TOP STATUS BAR ─── */
+.m3bar{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.3rem .6rem;flex-shrink:0;
+  background:rgba(5,10,14,.95);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  z-index:10;
+}
+.m3coin{
+  display:flex;align-items:center;gap:.3rem;
+  padding:.22rem .5rem;border-radius:8px;flex-shrink:0;
+}
+.m3coin.p{background:rgba(245,197,66,.08);border:1px solid rgba(245,197,66,.25)}
+.m3coin.a{background:rgba(255,61,87,.07);border:1px solid rgba(255,61,87,.22)}
+.m3coin-n{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;line-height:1;color:var(--gold)}
+.m3coin.a .m3coin-n{color:var(--red)}
+.m3coin-l{font-family:'Barlow Condensed',sans-serif;font-size:.48rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);line-height:1.2}
+.m3infobar{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.22rem .5rem}
+.m3ibt{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.m3ibs{font-size:.58rem;color:var(--text2);margin-top:.06rem}
+.m3logbar{width:180px;flex-shrink:0;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.22rem .42rem;font-size:.58rem;color:var(--text2);overflow-y:auto;line-height:1.65;max-height:52px}
+
+/* ─── MAIN BOARD ─── */
+.m3board{
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  grid-template-rows:1fr auto 1fr;
+  gap:0;
+  position:relative;
+  overflow:hidden;
+  min-height:0;
+}
+
+/* Background world map feel */
+.m3board::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 25%,rgba(0,80,20,.35) 0%,transparent 45%),
+    radial-gradient(ellipse at 80% 25%,rgba(5,20,80,.45) 0%,transparent 45%),
+    radial-gradient(ellipse at 20% 75%,rgba(0,100,25,.3) 0%,transparent 40%),
+    radial-gradient(ellipse at 80% 75%,rgba(80,20,5,.35) 0%,transparent 40%),
+    radial-gradient(ellipse at 50% 50%,rgba(255,255,255,.015) 0%,transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+/* Grid positions:
+   [0,0]=América  [0,1]=top-center    [0,2]=Europa
+   [1,0]=L-center [1,1]=CENTER-NODE   [1,2]=R-center
+   [2,0]=Brasil   [2,1]=bot-center    [2,2]=Resto Mundo
+*/
+
+/* ─── REGION PANELS ─── */
+.m3reg{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;
+  padding:.5rem .6rem;
+  border:2px solid transparent;
+  transition:border-color .2s,box-shadow .2s;
+  min-width:0;min-height:0;overflow:hidden;
+}
+/* Color themes */
+.m3reg.america{
+  grid-column:1;grid-row:1;
+  background:linear-gradient(145deg,#0a2c04 0%,#122e06 60%,#0c2804 100%);
+  border-color:#2a6010;border-right:none;border-bottom:none;
+}
+.m3reg.europa{
+  grid-column:3;grid-row:1;
+  background:linear-gradient(145deg,#04063a 0%,#080e52 60%,#060a44 100%);
+  border-color:#1a38b0;border-left:none;border-bottom:none;
+}
+.m3reg.brasil{
+  grid-column:1;grid-row:3;
+  background:linear-gradient(145deg,#062810 0%,#0c3e16 60%,#083012 100%);
+  border-color:#1a7228;border-right:none;border-top:none;
+}
+.m3reg.mundo{
+  grid-column:3;grid-row:3;
+  background:linear-gradient(145deg,#200604 0%,#380c06 60%,#2c0804 100%);
+  border-color:#902c14;border-left:none;border-top:none;
+}
+.m3reg.you-here{border-color:var(--accent) !important;box-shadow:inset 0 0 30px rgba(0,229,255,.08),0 0 0 2px var(--accent)}
+.m3reg.ai-here{border-color:var(--red) !important;box-shadow:inset 0 0 24px rgba(255,61,87,.07)}
+
+/* Region header */
+.m3rh{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:.35rem;padding-bottom:.3rem;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  flex-shrink:0;
+}
+.m3rname{display:flex;align-items:center;gap:.35rem}
+.m3rflag{font-size:1.25rem;line-height:1}
+.m3rtitle{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.85rem,1.8vw,1.15rem);
+  font-weight:900;text-transform:uppercase;letter-spacing:.1em;
+  text-shadow:0 1px 4px rgba(0,0,0,.6);
+}
+.m3rmeta{display:flex;align-items:center;gap:.2rem;flex-wrap:wrap}
+.m3pawn{font-size:.56rem;font-weight:700;padding:.1rem .3rem;border-radius:8px;white-space:nowrap}
+.m3pawn.you{background:rgba(0,229,255,.2);color:var(--accent);border:1px solid rgba(0,229,255,.35)}
+.m3pawn.ia{background:rgba(255,61,87,.18);color:var(--red);border:1px solid rgba(255,61,87,.3)}
+.m3rcnt{font-size:.52rem;color:rgba(255,255,255,.38);font-family:'Barlow Condensed',sans-serif;font-weight:700}
+
+/* Action buttons */
+.m3acts{display:flex;gap:.25rem;flex-wrap:wrap;flex:1;align-content:flex-start}
+.m3act{
+  display:flex;flex-direction:column;align-items:center;
+  gap:.08rem;padding:.35rem .3rem;
+  border-radius:9px;cursor:pointer;
+  border:1.5px solid rgba(255,255,255,.1);
+  background:rgba(0,0,0,.3);
+  transition:all .18s;text-align:center;
+  flex:1;min-width:70px;max-width:120px;
+}
+.m3act:hover:not(.off){
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.1);
+  border-color:rgba(255,255,255,.28);
+  box-shadow:0 4px 12px rgba(0,0,0,.4);
+}
+.m3act.off{opacity:.22;cursor:not-allowed;pointer-events:none}
+.m3act-i{font-size:clamp(.9rem,1.8vw,1.1rem);line-height:1}
+.m3act-n{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.55rem,1.1vw,.72rem);
+  font-weight:800;text-transform:uppercase;letter-spacing:.04em;line-height:1.1;
+}
+.m3act-c{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.44rem,.85vw,.62rem);
+  font-weight:700;color:var(--gold);margin-top:.04rem;
+}
+.m3act.to{border-color:rgba(0,229,255,.2);background:rgba(0,80,120,.2)}
+.m3act.to:hover:not(.off){background:rgba(0,100,150,.35);border-color:var(--accent)}
+.m3act.to .m3act-c{color:#60d8ff}
+.m3act.ts{border-color:rgba(80,220,80,.2);background:rgba(20,90,20,.2)}
+.m3act.ts:hover:not(.off){background:rgba(30,130,40,.35);border-color:#60dd60}
+.m3act.ts .m3act-c{color:#80ee80}
+.m3act.tp{border-color:rgba(245,197,66,.2);background:rgba(90,70,0,.2)}
+.m3act.tp:hover:not(.off){background:rgba(120,90,0,.35);border-color:var(--gold)}
+.m3act.tv{border-color:rgba(200,80,255,.2);background:rgba(70,10,110,.2)}
+.m3act.tv:hover:not(.off){background:rgba(90,15,140,.35);border-color:#c060ff}
+.m3act.tv .m3act-c{color:#d080ff}
+.m3act.tt{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.04)}
+.m3act.tt:hover:not(.off){background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3)}
+.m3act.tt .m3act-c{color:var(--accent)}
+.m3warn{font-size:.5rem;color:#ffc107;font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-top:.2rem;letter-spacing:.04em}
+
+/* ─── CENTER CONNECTOR ZONE ─── */
+/* Top-center: top arrows area */
+.m3conn-top{grid-column:2;grid-row:1;z-index:3;display:flex;align-items:center;justify-content:center;position:relative}
+/* Left-center: left arrows */
+.m3conn-left{grid-column:1;grid-row:2;z-index:3;display:flex;align-items:center;justify-content:center;position:relative}
+/* Right-center */
+.m3conn-right{grid-column:3;grid-row:2;z-index:3;display:flex;align-items:center;justify-content:center;position:relative}
+/* Bottom-center */
+.m3conn-bot{grid-column:2;grid-row:3;z-index:3;display:flex;align-items:center;justify-content:center;position:relative}
+/* Center hub */
+.m3conn-mid{grid-column:2;grid-row:2;z-index:3;display:flex;align-items:center;justify-content:center;position:relative}
+
+/* SVG arrows overlay — fills the entire board */
+.m3arrows{
+  position:absolute;inset:0;
+  pointer-events:none;z-index:1;
+  width:100%;height:100%;
+}
+
+/* Travel cost badges */
+.m3tnode{
+  display:flex;align-items:center;justify-content:center;
+  width:clamp(28px,4vw,42px);height:clamp(28px,4vw,42px);
+  border-radius:6px;
+  background:#b52020;
+  color:#fff;font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.7rem,1.4vw,.95rem);font-weight:900;
+  box-shadow:0 2px 10px rgba(0,0,0,.5);
+  border:2px solid rgba(255,255,255,.3);
+  letter-spacing:-.02em;
+  text-shadow:0 1px 2px rgba(0,0,0,.5);
+  z-index:4;position:relative;
+}
+
+/* ─── BOTTOM STRIP: pitch + hand ─── */
+.m3strip{
+  display:grid;grid-template-columns:1fr 1fr;
+  flex-shrink:0;gap:0;
+  border-top:1px solid rgba(255,255,255,.07);
+  max-height:32vh;
+}
+/* Team pitch */
+.m3pw{
+  background:var(--bg2);border-right:1px solid rgba(255,255,255,.07);
+  padding:.35rem .45rem;display:flex;flex-direction:column;
+}
+.m3ph2{display:flex;align-items:center;justify-content:space-between;margin-bottom:.22rem;flex-shrink:0}
+.m3pl{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+.m3pp{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:700;color:var(--gold)}
+.m3po{flex:1;position:relative;border-radius:5px;overflow:hidden;min-height:0}
+.m3pi{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    #1a4828 0%,#1e5830 8%,#1a4828 16%,#1e5830 24%,#1a4828 32%,
+    #1e5830 40%,#1a4828 48%,#1e5830 56%,#1a4828 64%,
+    #1e5830 72%,#1a4828 80%,#1e5830 88%,#1a4828 100%);
+}
+.m3pi::before{content:'';position:absolute;inset:3%;border:1.5px solid rgba(255,255,255,.2);border-radius:3px;pointer-events:none;z-index:1}
+.m3pi::after{content:'';position:absolute;left:20%;right:20%;top:50%;transform:translateY(-50%);height:22%;border:1.5px solid rgba(255,255,255,.18);border-radius:50%;pointer-events:none;z-index:1}
+.m3cl{position:absolute;left:3%;right:3%;top:50%;height:1px;background:rgba(255,255,255,.18);z-index:1;pointer-events:none}
+.m3cd{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.22);z-index:1;pointer-events:none}
+.m3psl{position:absolute;transform:translate(-50%,-50%);z-index:2;width:27%}
+.m3pm{position:relative;overflow:hidden;border-radius:4px;display:flex;flex-direction:column;min-height:30px}
+.m3pm.empty{background:rgba(255,255,255,.05);border:1.5px dashed rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center}
+.m3pm.empty .m3pml{font-family:'Barlow Condensed',sans-serif;font-size:.48rem;color:rgba(255,255,255,.28);font-weight:700}
+.m3pm.icone  {background:linear-gradient(160deg,#b8d8ee,#deeefa);color:#08182a;border:1.5px solid #7ab0cc}
+.m3pm.especial{background:linear-gradient(160deg,#3a0070,#0088dd);color:#fff;border:1.5px solid #60a8ff}
+.m3pm.ouro   {background:linear-gradient(160deg,#6a4400,#f0c030);color:#1a0f00;border:1.5px solid #d4a020}
+.m3pm.prata  {background:linear-gradient(160deg,#283848,#a0c0cc);color:#fff;border:1.5px solid #6898aa}
+.m3pm.bronze {background:linear-gradient(160deg,#281408,#a07040);color:#fff;border:1.5px solid #806040}
+.m3pm::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.14) 0%,transparent 55%);pointer-events:none;z-index:2}
+.m3pm-r{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.65rem,1.8vw,.9rem);font-weight:900;position:absolute;top:5%;right:7%;z-index:3;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.m3pm-p{font-family:'Barlow Condensed',sans-serif;font-size:.4rem;font-weight:700;text-transform:uppercase;position:absolute;top:5%;left:7%;z-index:3;opacity:.85}
+.m3pm-n{position:absolute;bottom:0;left:0;right:0;z-index:3;background:rgba(0,0,0,.42);font-family:'Barlow Condensed',sans-serif;font-size:clamp(.4rem,1.2vw,.58rem);font-weight:800;text-align:center;padding:.06rem .1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase;color:#fff}
+.m3progbar{margin-top:.2rem;flex-shrink:0}
+/* Hand */
+.m3hw{
+  background:var(--bg2);padding:.35rem .45rem;
+  display:flex;flex-direction:column;gap:.25rem;
+}
+.m3hl{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;flex-shrink:0}
+.m3hcards{display:flex;gap:.18rem;flex-wrap:wrap;flex:1;align-content:flex-start;overflow-y:auto}
+.m3hc{width:calc(16.66% - .15rem);min-width:44px;height:70px;flex-shrink:0}
 .m3hc .card{width:100%;height:100%}
-.m3sell-panel{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:.28rem .4rem}
-.m3sell-title{font-family:'Barlow Condensed',sans-serif;font-size:.54rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:.18rem}
-.m3sell-list{display:flex;flex-direction:column;gap:.18rem;max-height:60px;overflow-y:auto}
-.m3sell-btn{background:rgba(245,197,66,.08);border:1px solid rgba(245,197,66,.2);color:var(--gold);padding:.18rem .38rem;border-radius:4px;font-size:.58rem;font-weight:600;cursor:pointer;transition:.2s;text-align:left}
-.m3sell-btn:hover{background:rgba(245,197,66,.16)}
-/* Modal overlay */
-.m3modal{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+.m3sellblk{background:var(--bg3);border:1px solid rgba(245,197,66,.2);border-radius:7px;padding:.25rem .35rem;flex-shrink:0}
+.m3sellhdr{display:flex;align-items:center;gap:.2rem;margin-bottom:.18rem}
+.m3selltxt{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;font-weight:800;text-transform:uppercase;color:var(--gold)}
+.m3sellitems{display:flex;flex-direction:column;gap:.16rem;max-height:55px;overflow-y:auto}
+.m3sb{display:flex;align-items:center;justify-content:space-between;background:rgba(245,197,66,.06);border:1px solid rgba(245,197,66,.18);color:var(--gold);padding:.2rem .35rem;border-radius:5px;font-size:.6rem;font-weight:600;cursor:pointer;transition:.18s}
+.m3sb:hover{background:rgba(245,197,66,.14)}
+.m3sb-m{font-size:.53rem;color:rgba(245,197,66,.55)}
+
+/* ─── SPONSORSHIP TABLE (inside center hub) ─── */
+.m3hub{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:.25rem;
+  background:rgba(5,10,18,.7);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  padding:.4rem .5rem;
+  min-width:160px;
+}
+.m3hub-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.55rem,.95vw,.72rem);
+  font-weight:800;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--gold);white-space:nowrap;
+}
+.m3stable{display:flex;flex-direction:column;gap:.12rem;width:100%}
+.m3srow{display:flex;gap:.1rem}
+.m3sc{
+  flex:1;text-align:center;border-radius:3px;
+  padding:.16rem .04rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.42rem,.7vw,.58rem);font-weight:700;
+}
+.m3sc.h{background:rgba(255,255,255,.07);color:var(--text2);font-size:clamp(.38rem,.6vw,.5rem)}
+.m3sc.c2{background:#c0392b;color:#fff}
+.m3sc.c3{background:#d35400;color:#fff}
+.m3sc.c4,.m3sc.c5,.m3sc.c6,.m3sc.c7,.m3sc.c8,.m3sc.c9{background:#5d6d7e;color:#fff}
+.m3sc.c10{background:#1e8449;color:#fff}
+.m3sc.c11{background:#1a5276;color:#fff}
+.m3sc.c12{background:#6c3483;color:#fff}
+
+/* ─── MODALS ─── */
+.m3modal{position:fixed;inset:0;background:rgba(0,0,0,.86);z-index:400;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
 .m3modal.open{display:flex}
-.m3mbox{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;max-width:420px;width:100%}
-.m3mtitle{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem}
-.m3mcards{display:flex;gap:.6rem;justify-content:center;margin-bottom:.9rem}
-.m3mcw{width:110px;height:140px;cursor:pointer;border-radius:9px;transition:.2s}
-.m3mcw:hover{transform:scale(1.05)}
-.m3mcw.sel{outline:3px solid var(--accent);transform:scale(1.05)}
-.m3minfo{font-size:.75rem;color:var(--text2);margin-bottom:.8rem;text-align:center}
+.m3mbox{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:16px;padding:1.4rem;max-width:440px;width:100%;box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.m3mt{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:900;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.25rem}
+.m3mi{font-size:.72rem;color:var(--text2);margin-bottom:.85rem}
+.m3mc{display:flex;gap:.65rem;justify-content:center;flex-wrap:wrap;margin-bottom:.9rem}
+.m3mcw{width:108px;height:138px;cursor:pointer;border-radius:9px;overflow:hidden;flex-shrink:0;transition:.2s}
+.m3mcw:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.m3mcw.sel{outline:3px solid var(--accent);transform:translateY(-3px);box-shadow:0 0 16px rgba(0,229,255,.35)}
+.m3mcw .card{width:100%;height:100%}
 .m3mbtns{display:flex;gap:.5rem}
-.m3mbtns .btn{flex:1;font-size:.8rem;padding:.45rem}
-.m3cancel{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.45rem;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;text-transform:uppercase;cursor:pointer}
-/* Dice result popup */
-.m3dice-pop{text-align:center;padding:.5rem 0}
-.m3dice-ico{font-size:3rem;line-height:1;margin-bottom:.3rem}
-.m3dice-res{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;color:var(--gold)}
+.m3can{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.48rem;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:700;text-transform:uppercase;cursor:pointer;transition:.2s}
+.m3con{flex:2}
+.m3dbox{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:16px;padding:1.6rem 1.4rem;max-width:300px;width:100%;text-align:center;box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.m3dtit{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem}
+.m3ddice{font-size:3rem;line-height:1;margin-bottom:.4rem}
+.m3dres{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--gold);margin-bottom:.3rem;white-space:pre-line;line-height:1.35}
+.m3dsub{font-size:.68rem;color:var(--text2);margin-bottom:.85rem;white-space:pre-line;line-height:1.5}
 
 </style>
 </head>
@@ -339,7 +642,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
           <div class="powner">🃏 Seu Time <span id="m2ptag" class="ttag pt">SEU TURNO</span></div>
           <div class="ppts" id="m2ppts">0 / 40 pts</div>
         </div>
-        <div class="pitch" id="m2ppitch"><div class="pcl"></div><div class="pcd"></div></div>
+        <div class="pitch-outer"><div class="pitch" id="m2ppitch"><div class="pcl"></div><div class="pcd"></div></div></div>
         <div class="pbar"><div class="pfill" id="m2pprog" style="width:0%"></div></div>
       </div>
       <div class="pwrap">
@@ -347,7 +650,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
           <div class="powner">🤖 Time IA <span id="m2atag" class="ttag at" style="display:none">IA</span></div>
           <div class="ppts" id="m2apts">0 / 40 pts</div>
         </div>
-        <div class="pitch" id="m2apitch"><div class="pcl"></div><div class="pcd"></div></div>
+        <div class="pitch-outer"><div class="pitch" id="m2apitch"><div class="pcl"></div><div class="pcd"></div></div></div>
         <div class="pbar"><div class="pfill" id="m2aprog" style="width:0%"></div></div>
         <div class="aist" id="m2ais">Aguardando...</div>
       </div>
@@ -365,92 +668,182 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
 </div>
 
 
-<!-- ═══ MODE 3 ══════════════════════════════════════════════ -->
+
+
+
+<!-- ═══ MODE 3 — MUNDO DO FUTEBOL ═══════════════════════════ -->
 <div id="mode3" class="screen">
-  <div class="game-header">
-    <button class="back-btn" onclick="goMenu()">← Menu</button>
-    <div class="game-title">Mundo do Futebol</div>
+
+  <!-- STATUS BAR -->
+  <div class="m3bar">
+    <div class="m3coin p">
+      <span style="font-size:1rem">🪙</span>
+      <div><div class="m3coin-n" id="m3pcoins">50</div><div class="m3coin-l">Suas moedas</div></div>
+    </div>
+    <div class="m3coin a">
+      <span style="font-size:1rem">🤖</span>
+      <div><div class="m3coin-n" id="m3acoins">50</div><div class="m3coin-l">Moedas IA</div></div>
+    </div>
+    <div class="m3infobar">
+      <div class="m3ibt" id="m3turntxt">Sua vez — escolha uma ação</div>
+      <div class="m3ibs" id="m3subtxt">Você está no Brasil 🇧🇷</div>
+    </div>
     <div class="badge" id="m3badge">Turno 1</div>
+    <div class="m3logbar" id="m3log"></div>
   </div>
-  <div class="m3">
 
-    <!-- Top bar: coins + info + log -->
-    <div class="m3top">
-      <div class="m3coins">
-        <span class="m3coins-icon">🪙</span>
-        <div>
-          <div class="m3coins-val" id="m3pcoins">50</div>
-          <div class="m3coins-lbl">Suas moedas</div>
-        </div>
+  <!-- MAIN BOARD (3×3 grid) -->
+  <div class="m3board">
+
+    <!-- SVG ARROWS (drawn over everything) -->
+    <svg class="m3arrows" id="m3arrows" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <defs>
+        <marker id="ah" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="rgba(100,180,255,.7)"/>
+        </marker>
+        <marker id="ah2" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+          <path d="M6,0 L0,3 L6,6 Z" fill="rgba(100,180,255,.7)"/>
+        </marker>
+      </defs>
+      <!-- América ↔ Europa  top horizontal (-3) -->
+      <line x1="33" y1="17" x2="62" y2="17" stroke="rgba(100,180,255,.5)" stroke-width=".5" stroke-dasharray="2,1.2" marker-end="url(#ah)"/>
+      <line x1="62" y1="21" x2="33" y2="21" stroke="rgba(100,180,255,.5)" stroke-width=".5" stroke-dasharray="2,1.2" marker-end="url(#ah)"/>
+      <!-- América ↔ Brasil  left vertical (-1) -->
+      <line x1="17" y1="34" x2="17" y2="62" stroke="rgba(100,180,255,.5)" stroke-width=".5" stroke-dasharray="2,1.2" marker-end="url(#ah)"/>
+      <line x1="21" y1="62" x2="21" y2="34" stroke="rgba(100,180,255,.5)" stroke-width=".5" stroke-dasharray="2,1.2" marker-end="url(#ah)"/>
+      <!-- Europa ↔ Resto  right vertical (-2) -->
+      <line x1="83" y1="34" x2="83" y2="62" stroke="rgba(100,180,255,.5)" stroke-width=".5" stroke-dasharray="2,1.2" marker-end="url(#ah)"/>
+      <line x1="79" y1="62" x2="79" y2="34" stroke="rgba(100,180,255,.5)" stroke-width=".5" stroke-dasharray="2,1.2" marker-end="url(#ah)"/>
+      <!-- Brasil ↔ Resto  bottom horizontal (-5) -->
+      <line x1="33" y1="83" x2="62" y2="83" stroke="rgba(100,180,255,.5)" stroke-width=".5" stroke-dasharray="2,1.2" marker-end="url(#ah)"/>
+      <line x1="62" y1="79" x2="33" y2="79" stroke="rgba(100,180,255,.5)" stroke-width=".5" stroke-dasharray="2,1.2" marker-end="url(#ah)"/>
+      <!-- Diagonals through -4 -->
+      <line x1="33" y1="33" x2="64" y2="64" stroke="rgba(100,180,255,.28)" stroke-width=".35" stroke-dasharray="1.5,1.5"/>
+      <line x1="64" y1="33" x2="33" y2="64" stroke="rgba(100,180,255,.28)" stroke-width=".35" stroke-dasharray="1.5,1.5"/>
+    </svg>
+
+    <!-- AMERICA DO SUL (top-left) -->
+    <div class="m3reg america" id="reg-america">
+      <div class="m3rh">
+        <div class="m3rname"><span class="m3rflag">🌎</span><span class="m3rtitle">América do Sul</span></div>
+        <div class="m3rmeta" id="meta-america"></div>
       </div>
-      <div class="m3coins" style="border-color:rgba(255,61,87,.3)">
-        <span class="m3coins-icon">🤖</span>
-        <div>
-          <div class="m3coins-val" id="m3acoins" style="color:var(--red)">50</div>
-          <div class="m3coins-lbl">Moedas IA</div>
-        </div>
-      </div>
-      <div class="m3info">
-        <div class="m3info-turn" id="m3turntxt">Sua vez — escolha uma ação</div>
-        <div class="m3info-sub" id="m3subtxt">Você está no Brasil</div>
-      </div>
-      <div class="m3log" id="m3log"></div>
+      <div class="m3acts" id="acts-america"></div>
+      <div class="m3warn" id="warn-america"></div>
     </div>
 
-    <!-- Map: 4 regions -->
-    <div class="m3map" id="m3map">
-      <!-- Rendered by JS -->
+    <!-- TOP-CENTER: -3 node -->
+    <div class="m3conn-top">
+      <div class="m3tnode" id="tn-3">-3</div>
     </div>
 
-    <!-- Bottom: player pitch + hand/sell -->
-    <div class="m3bottom">
-      <div class="m3team">
-        <div class="m3team-hdr">
-          <div class="m3team-lbl">🃏 Seu Time</div>
-          <div class="m3team-pts" id="m3ppts">0 / 40 pts</div>
-        </div>
-        <div class="m3pitch" id="m3ppitch">
-          <div class="m3pcl"></div><div class="m3pcd"></div>
-        </div>
-        <div class="pbar" style="margin-top:.25rem"><div class="pfill" id="m3pprog" style="width:0%"></div></div>
+    <!-- EUROPA (top-right) -->
+    <div class="m3reg europa" id="reg-europa">
+      <div class="m3rh">
+        <div class="m3rname"><span class="m3rflag">🇪🇺</span><span class="m3rtitle">Europa</span></div>
+        <div class="m3rmeta" id="meta-europa"></div>
       </div>
-      <div class="m3hand">
-        <div class="zlbl">🃏 Mão (<span id="m3handcount">0</span> cartas)</div>
-        <div class="m3hand-cards" id="m3ph"></div>
-        <div class="m3sell-panel" id="m3sellpanel" style="display:none">
-          <div class="m3sell-title">💰 Vender carta (rola 1 dado)</div>
-          <div class="m3sell-list" id="m3selllist"></div>
-        </div>
+      <div class="m3acts" id="acts-europa"></div>
+      <div class="m3warn" id="warn-europa"></div>
+    </div>
+
+    <!-- LEFT-CENTER: -1 node -->
+    <div class="m3conn-left">
+      <div class="m3tnode" id="tn-1">-1</div>
+    </div>
+
+    <!-- CENTER HUB: -4 + sponsorship table -->
+    <div class="m3conn-mid">
+      <div class="m3hub">
+        <div class="m3hub-title">🤝 Tabela Patrocínio</div>
+        <div class="m3stable" id="m3stable"></div>
+        <div class="m3tnode" id="tn-4" style="margin-top:.3rem">-4</div>
       </div>
     </div>
 
+    <!-- RIGHT-CENTER: -2 node -->
+    <div class="m3conn-right">
+      <div class="m3tnode" id="tn-2">-2</div>
+    </div>
+
+    <!-- BRASIL (bottom-left) -->
+    <div class="m3reg brasil" id="reg-brasil">
+      <div class="m3rh">
+        <div class="m3rname"><span class="m3rflag">🇧🇷</span><span class="m3rtitle">Brasil</span></div>
+        <div class="m3rmeta" id="meta-brasil"></div>
+      </div>
+      <div class="m3acts" id="acts-brasil"></div>
+      <div class="m3warn" id="warn-brasil"></div>
+    </div>
+
+    <!-- BOTTOM-CENTER: -5 node -->
+    <div class="m3conn-bot">
+      <div class="m3tnode" id="tn-5">-5</div>
+    </div>
+
+    <!-- RESTO DO MUNDO (bottom-right) -->
+    <div class="m3reg mundo" id="reg-mundo">
+      <div class="m3rh">
+        <div class="m3rname"><span class="m3rflag">🌏</span><span class="m3rtitle">Resto do Mundo</span></div>
+        <div class="m3rmeta" id="meta-mundo"></div>
+      </div>
+      <div class="m3acts" id="acts-mundo"></div>
+      <div class="m3warn" id="warn-mundo"></div>
+    </div>
+
+  </div><!-- /m3board -->
+
+  <!-- BOTTOM STRIP: pitch + hand -->
+  <div class="m3strip">
+    <div class="m3pw">
+      <div class="m3ph2">
+        <div class="m3pl">⚽ Seu Time</div>
+        <div class="m3pp" id="m3ppts">0 / 40 pts</div>
+      </div>
+      <div class="m3po">
+        <div class="m3pi" id="m3ppitch">
+          <div class="m3cl"></div><div class="m3cd"></div>
+        </div>
+      </div>
+      <div class="m3progbar"><div class="pbar"><div class="pfill" id="m3pprog" style="width:0%"></div></div></div>
+    </div>
+    <div class="m3hw">
+      <div class="m3hl">🃏 Mão — <span id="m3handcount">0</span> cartas</div>
+      <div class="m3hcards" id="m3ph"></div>
+      <div class="m3sellblk" id="m3sellpanel" style="display:none">
+        <div class="m3sellhdr"><span>💰</span><span class="m3selltxt">Vender (rola 1 dado)</span></div>
+        <div class="m3sellitems" id="m3selllist"></div>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- Olheiro modal -->
+</div><!-- /mode3 -->
+
+<!-- OLHEIRO MODAL -->
 <div class="m3modal" id="m3modal">
   <div class="m3mbox">
-    <div class="m3mtitle" id="m3mtitle">👁 Olheiro</div>
-    <div class="m3minfo" id="m3minfo">Selecione uma carta para adicionar à sua mão</div>
-    <div class="m3mcards" id="m3mcards"></div>
+    <div class="m3mt" id="m3mt">👁 Olheiro</div>
+    <div class="m3mi" id="m3mi">Selecione uma carta</div>
+    <div class="m3mc" id="m3mc"></div>
     <div class="m3mbtns">
-      <button class="m3cancel" onclick="m3closeModal()">Cancelar</button>
-      <button class="btn" id="m3mconfirm" onclick="m3confirmModal()" disabled style="flex:1;font-size:.8rem;padding:.45rem">Escolher</button>
+      <button class="m3can" onclick="m3closeModal()">Cancelar</button>
+      <button class="btn m3con" id="m3mconfirm" onclick="m3confirmModal()" disabled>Escolher ✓</button>
     </div>
   </div>
 </div>
 
-<!-- Dice/result modal -->
+<!-- DICE MODAL -->
 <div class="m3modal" id="m3dicemodal">
-  <div class="m3mbox" style="max-width:300px;text-align:center">
-    <div class="m3mtitle" id="m3dicetitle">Resultado</div>
-    <div class="m3dice-pop">
-      <div class="m3dice-ico" id="m3diceico">⚄</div>
-      <div class="m3dice-res" id="m3diceres">+8 moedas</div>
-    </div>
-    <button class="btn" onclick="m3closeDice()" style="margin-top:.5rem">Continuar →</button>
+  <div class="m3dbox">
+    <div class="m3dtit">RESULTADO</div>
+    <div class="m3ddice" id="m3diceico">⚄</div>
+    <div class="m3dres" id="m3dres">+8 moedas</div>
+    <div class="m3dsub" id="m3dsub"></div>
+    <button class="btn" onclick="m3closeDice()">Continuar →</button>
   </div>
 </div>
+
+
 
 <div id="gameover" class="screen">
   <div class="goi">
@@ -581,8 +974,21 @@ const d6=()=>1+(0|Math.random()*6);
 
 function card(c){
   return `<div class="card ${c.r}">
-    <div class="ctop"><div><div class="crar">${RL[c.r]}</div><div class="cpos">${PL[c.pos]}</div></div><div class="cpts">${c.pts}</div></div>
-    <div class="cname">${c.name}</div><div class="cstar">${RS[c.r]}</div></div>`;
+    <div class="c-top">
+      <div class="c-stars-block">
+        <div class="c-stars">${RS[c.r]}</div>
+        <div class="c-rarity">${RL[c.r]}</div>
+      </div>
+      <div class="c-pts-block">
+        <div class="c-pts">${c.pts}</div>
+        <div class="c-pos">${PL[c.pos]}</div>
+      </div>
+    </div>
+    <div class="c-avatar">⚽</div>
+    <div class="c-bottom">
+      <div class="c-name">${c.name}</div>
+    </div>
+  </div>`;
 }
 function scr(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
 function goMenu(){scr('menu')}
@@ -657,11 +1063,14 @@ function m1Pick(aiIdx){
   G1.aiDrew = G1.ph[G1.aiPickIdx];
   G1.phase='roll';
 
-  // Show: left = card player drew (from AI) | right = card AI drew (from player)
-  document.getElementById('m1pdisp').innerHTML=card(G1.playerDrew);
-  document.getElementById('m1aidisp').innerHTML=card(G1.aiDrew);
+  // YOUR score uses the card AI drew FROM your hand (opponent picks your card)
+  // AI score uses the card you drew FROM AI hand (you pick AI's card)
+  // Left (VOCÊ): card from YOUR hand that AI selected → this is YOUR battle card
+  // Right (IA): card from AI hand that YOU selected → this is AI's battle card
+  document.getElementById('m1pdisp').innerHTML=card(G1.aiDrew);    // YOUR card (AI chose it)
+  document.getElementById('m1aidisp').innerHTML=card(G1.playerDrew); // AI's card (you chose it)
   document.getElementById('m1msg').textContent=
-    `Você tirou de IA: ${G1.playerDrew.name} (${G1.playerDrew.pts}pts)  ·  IA tirou de você: ${G1.aiDrew.name} (${G1.aiDrew.pts}pts)  ·  Role os dados!`;
+    `Sua carta (escolhida pela IA): ${G1.aiDrew.name} (${G1.aiDrew.pts}pts)  ·  Carta da IA (você escolheu): ${G1.playerDrew.name} (${G1.playerDrew.pts}pts)  ·  Role os dados!`;
   document.getElementById('m1btn').disabled=false;
   // Dim slots
   const slots=document.getElementById('m1aih').children;
@@ -677,20 +1086,20 @@ function m1Action(){
 
 function m1Roll(){
   G1.pd=d6();G1.ad=d6();
-  // Score = value of card you drew + your die
-  const ps=G1.playerDrew.pts+G1.pd;
-  const as=G1.aiDrew.pts+G1.ad;
+  // YOUR score = card AI drew FROM your hand (aiDrew) + YOUR dice
+  // AI score  = card you drew FROM AI hand (playerDrew) + AI dice
+  const ps=G1.aiDrew.pts+G1.pd;
+  const as=G1.playerDrew.pts+G1.ad;
   document.getElementById('m1pdice').textContent=DF[G1.pd];
   document.getElementById('m1adice').textContent=DF[G1.ad];
   document.getElementById('m1ptot').textContent=ps;
   document.getElementById('m1atot').textContent=as;
-  document.getElementById('m1pbrk').textContent=`${G1.playerDrew.pts} + ${G1.pd}`;
-  document.getElementById('m1abrk').textContent=`${G1.aiDrew.pts} + ${G1.ad}`;
+  document.getElementById('m1pbrk').textContent=`${G1.aiDrew.pts} + ${G1.pd}`;
+  document.getElementById('m1abrk').textContent=`${G1.playerDrew.pts} + ${G1.ad}`;
   const res=document.getElementById('m1res');res.style.display='block';
   G1.round++;
   if(ps>as){
-    // Player wins: gets both cards
-    // Remove playerDrew from AI hand, remove aiDrew from player hand, add both to player
+    // Player wins: gets both cards (playerDrew from AI + aiDrew from player)
     G1.ah=G1.ah.filter(c=>c.id!==G1.playerDrew.id);
     G1.ph=G1.ph.filter(c=>c.id!==G1.aiDrew.id);
     G1.ph.push(G1.playerDrew,G1.aiDrew);
@@ -704,7 +1113,6 @@ function m1Roll(){
     res.className='bres lose';
     res.textContent=`💀 IA VENCE! Perdeu 2 cartas (total: ${G1.ph.length})`;
   }else{
-    // Draw: cards returned (no change needed since we haven't removed yet... wait we need to put back)
     res.className='bres draw';
     res.textContent='🤝 EMPATE! Cartas devolvidas.';
   }
@@ -768,7 +1176,17 @@ function m2pitch(w){
       const s=document.createElement('div');
       s.className='pslot';s.style.left=xy.l+'%';s.style.top=xy.t+'%';
       s.innerHTML=c
-        ?`<div class="pm ${c.r}"><div class="pmname">${c.name.split(' ')[0]}</div><div class="pmrow"><span class="pmpos">${PL[pos]}</span><span class="pmpts">${c.pts}</span></div></div>`
+        ?`<div class="pm ${c.r}">
+            <div class="pm-top">
+              <div class="pm-stars">${RS[c.r]}</div>
+              <div>
+                <div class="pm-pts">${c.pts}</div>
+                <div class="pm-pos">${PL[pos]}</div>
+              </div>
+            </div>
+            <div class="pm-space">⚽</div>
+            <div class="pm-bot"><div class="pm-name">${c.name.split(' ')[0]}</div></div>
+          </div>`
         :`<div class="pm empty"><span class="pmlbl">${PL[pos]}</span></div>`;
       el.appendChild(s);
     });
@@ -921,547 +1339,1367 @@ function m2win(w){
    MODE 3 — MUNDO DO FUTEBOL
    ═══════════════════════════════════════════════════ */
 
-// ── Constants ─────────────────────────────────────
 const REGIONS = {
-  brasil:  { name:'Brasil',        flag:'🇧🇷', actions:['olheiro','superpack','patrocinio'], color:'brasil' },
-  america: { name:'América do Sul',flag:'🌎', actions:['olheiro','patrocinio'],             color:'america' },
-  europa:  { name:'Europa',        flag:'🇪🇺', actions:['olheiro','venda','patrocinio'],    color:'europa' },
-  mundo:   { name:'Resto do Mundo',flag:'🌏', actions:['olheiro','venda','patrocinio'],    color:'mundo' },
+  brasil:  {name:'Brasil',       flag:'🇧🇷', actions:['olheiro','superpack','patrocinio'], color:'brasil'},
+  america: {name:'América do Sul',flag:'🌎', actions:['olheiro','patrocinio'],            color:'america'},
+  europa:  {name:'Europa',       flag:'🇪🇺', actions:['olheiro','venda','patrocinio'],   color:'europa'},
+  mundo:   {name:'Resto do Mundo',flag:'🌏', actions:['olheiro','venda','patrocinio'],   color:'mundo'},
 };
-// Travel costs [from][to]
 const TRAVEL = {
-  brasil:  { america:1, mundo:5,  europa:4 },
-  america: { brasil:1,  mundo:4,  europa:3 },
-  europa:  { brasil:4,  america:3, mundo:2 },
-  mundo:   { brasil:5,  america:4, europa:2 },
+  brasil:  {america:1,europa:4,mundo:5},
+  america: {brasil:1,europa:3,mundo:4},
+  europa:  {brasil:4,america:3,mundo:2},
+  mundo:   {brasil:5,america:4,europa:2},
 };
-// Sponsorship table (2d6 sum → coins, before multiplier)
 const SPONS = {2:12,3:10,4:8,5:8,6:8,7:8,8:8,9:8,10:10,11:12,12:15};
-// Sell multipliers per region
 const SELL_MULT = {
-  europa: { ouro:2, especial:3, icone:5 },
-  mundo:  { prata:2, ouro:3, especial:4, icone:6 },
+  europa: {ouro:2,especial:3,icone:5},
+  mundo:  {prata:2,ouro:3,especial:4,icone:6},
 };
-// Olheiro costs
-const OLHEIRO_COST = { brasil:4, america:6, europa:10, mundo:8 };
-// Patrocinio multiplier
-const SPONS_MULT = { brasil:1, america:1, europa:3, mundo:3 };
-// Sponsorship dice: roll 2d6
-const DICE_FACE = ['','⚀','⚁','⚂','⚃','⚄','⚅'];
+const OLHEIRO_COST = {brasil:4,america:6,europa:10,mundo:8};
+const SPONS_MULT   = {brasil:1,america:1,europa:3,mundo:3};
+const DF_ICONS = ['','⚀','⚁','⚂','⚃','⚄','⚅'];
 const PP3 = {
   ataque:[{l:22,t:9},{l:50,t:9},{l:78,t:9}],
-  meio:[{l:22,t:34},{l:50,t:34},{l:78,t:34}],
+  meio:  [{l:22,t:34},{l:50,t:34},{l:78,t:34}],
   defesa:[{l:11,t:60},{l:36,t:60},{l:64,t:60},{l:89,t:60}],
-  goleiro:[{l:50,t:84}]
+  goleiro:[{l:50,t:84}],
 };
 
-// ── State ──────────────────────────────────────────
-let G3 = {};
-let m3ModalCards = [];
-let m3ModalSel = null;
-let m3DiceCallback = null;
+let G3={};
 
-function startM3() {
-  // Distribute cards into region piles
-  const icones  = shuf(CARDS.filter(c=>c.r==='icone'));    // 5 total
-  const esps    = shuf(CARDS.filter(c=>c.r==='especial')); // 10 total
-  const ouros   = shuf(CARDS.filter(c=>c.r==='ouro'));     // 29 total
-  const pratas  = shuf(CARDS.filter(c=>c.r==='prata'));    // 20 total
-  const bronzes = shuf(CARDS.filter(c=>c.r==='bronze'));   // 35 total
-  const bpAll   = shuf([...bronzes,...pratas]);            // 55 total
-
-  // Ícone: Brazil=1, America=1, Europa=2, Mundo=1
-  // Especial: Brazil=2, America=2, Europa=3, Mundo=3
-  // Ouro 15/15/35/35 of 29 → ~4/4/10/11
-  // Bronze+Prata 35/35/15/15 of 55 → ~19/19/8/9
-  const oB=4,oA=4,oE=10,oM=11;
-  const bpB=19,bpA=19,bpE=8,bpM=9;
-
-  G3 = {
-    piles: {
-      brasil:  shuf([icones[0],...esps.slice(0,2),...ouros.slice(0,oB),...bpAll.slice(0,bpB)]),
-      america: shuf([icones[1],...esps.slice(2,4),...ouros.slice(oB,oB+oA),...bpAll.slice(bpB,bpB+bpA)]),
-      europa:  shuf([icones[2],icones[3],...esps.slice(4,7),...ouros.slice(oB+oA,oB+oA+oE),...bpAll.slice(bpB+bpA,bpB+bpA+bpE)]),
-      mundo:   shuf([icones[4],...esps.slice(7,10),...ouros.slice(oB+oA+oE),...bpAll.slice(bpB+bpA+bpE)]),
+function startM3(){
+  const ic=shuf(CARDS.filter(c=>c.r==='icone'));
+  const es=shuf(CARDS.filter(c=>c.r==='especial'));
+  const ou=shuf(CARDS.filter(c=>c.r==='ouro'));
+  const pr=shuf(CARDS.filter(c=>c.r==='prata'));
+  const br=shuf(CARDS.filter(c=>c.r==='bronze'));
+  const bp=shuf([...br,...pr]);
+  G3={
+    piles:{
+      brasil: shuf([ic[0],...es.slice(0,2),...ou.slice(0,4),...bp.slice(0,19)]),
+      america:shuf([ic[1],...es.slice(2,4),...ou.slice(4,8),...bp.slice(19,38)]),
+      europa: shuf([ic[2],ic[3],...es.slice(4,7),...ou.slice(8,18),...bp.slice(38,46)]),
+      mundo:  shuf([ic[4],...es.slice(7,10),...ou.slice(18),...bp.slice(46)]),
     },
-    pCoins: 50, aCoins: 50,
-    pRegion: 'brasil', aRegion: 'brasil',
-    pTeam: {goleiro:[],defesa:[],meio:[],ataque:[]},
-    aTeam: {goleiro:[],defesa:[],meio:[],ataque:[]},
-    pHand: [], aHand: [],
-    pLastAction: null, pConsec: 0,
-    aLastAction: null, aConsec: 0,
-    turn: 'player',
-    turnNum: 1,
+    pCoins:50,aCoins:50,
+    pRegion:'brasil',aRegion:'brasil',
+    pTeam:{goleiro:[],defesa:[],meio:[],ataque:[]},
+    aTeam:{goleiro:[],defesa:[],meio:[],ataque:[]},
+    pHand:[],aHand:[],
+    pLastAction:null,pConsec:0,
+    aLastAction:null,aConsec:0,
+    turn:'player',turnNum:1,
   };
   scr('mode3');
-  m3log('Jogo iniciado! Você começa no Brasil com 50 moedas.');
-  m3render();
+  m3log('Jogo iniciado! Você está no Brasil com 50🪙');
+  m3renderAll();
+  m3buildStable();
 }
 
-// ── Logging ────────────────────────────────────────
-function m3log(msg) {
-  const el = document.getElementById('m3log');
-  el.innerHTML = '<div>· ' + msg + '</div>' + el.innerHTML;
+function m3log(msg){const e=document.getElementById('m3log');if(e)e.innerHTML='<div>·'+msg+'</div>'+e.innerHTML}
+
+/* ── MAIN RENDER ── */
+function m3renderAll(){
+  document.getElementById('m3badge').textContent='Turno '+G3.turnNum;
+  document.getElementById('m3pcoins').textContent=G3.pCoins;
+  document.getElementById('m3acoins').textContent=G3.aCoins;
+  const isP=G3.turn==='player';
+  document.getElementById('m3turntxt').textContent=isP?'Sua vez — escolha uma ação':'🤖 IA está jogando...';
+  document.getElementById('m3subtxt').textContent=isP
+    ?`Você está em: ${REGIONS[G3.pRegion].name} ${REGIONS[G3.pRegion].flag}`
+    :`IA está em: ${REGIONS[G3.aRegion].name} ${REGIONS[G3.aRegion].flag}`;
+  m3renderRegions();
+  m3renderPitch3();
+  m3renderHand3();
+  m3renderSell3();
+  const pts=m3pts('p');
+  document.getElementById('m3ppts').textContent=pts+' / 40 pts';
+  document.getElementById('m3pprog').style.width=Math.min(100,pts/40*100)+'%';
 }
 
-// ── Render ─────────────────────────────────────────
-function m3render() {
-  // Badge
-  document.getElementById('m3badge').textContent = 'Turno ' + G3.turnNum;
-  // Coins
-  document.getElementById('m3pcoins').textContent = G3.pCoins;
-  document.getElementById('m3acoins').textContent = G3.aCoins;
-  // Turn text
-  const isP = G3.turn === 'player';
-  document.getElementById('m3turntxt').textContent = isP ? 'Sua vez — escolha uma ação' : 'Vez da IA...';
-  document.getElementById('m3subtxt').textContent = isP
-    ? `Você está em: ${REGIONS[G3.pRegion].name} ${REGIONS[G3.pRegion].flag}`
-    : `IA está em: ${REGIONS[G3.aRegion].name} ${REGIONS[G3.aRegion].flag}`;
-  // Map
-  m3renderMap();
-  // Team pitch
-  m3renderPitch('p', 'm3ppitch');
-  const ppts = m3teamPts('p');
-  document.getElementById('m3ppts').textContent = ppts + ' / 40 pts';
-  document.getElementById('m3pprog').style.width = Math.min(100, ppts/40*100) + '%';
-  // Hand
-  m3renderHand();
-  // Sell panel
-  m3renderSell();
-}
+function m3renderRegions(){
+  const isP=G3.turn==='player';
+  ['brasil','america','europa','mundo'].forEach(reg=>{
+    const el=document.getElementById('reg-'+reg);
+    if(!el)return;
+    const yH=G3.pRegion===reg, aH=G3.aRegion===reg;
+    el.className='m3reg '+reg+(yH&&aH?' you-here':yH?' you-here':aH?' ai-here':'');
 
-function m3renderMap() {
-  const map = document.getElementById('m3map');
-  map.innerHTML = '';
-  ['brasil','america','europa','mundo'].forEach(reg => {
-    const R = REGIONS[reg];
-    const isActive = G3.turn === 'player' && G3.pRegion === reg;
-    const div = document.createElement('div');
-    div.className = 'region ' + R.color + (isActive ? ' active-region' : '');
-
-    // Consecutive warning
-    let consecWarn = '';
-    if (G3.pLastAction && reg === G3.pRegion && G3.pConsec >= 2) {
-      consecWarn = '<div class="consec-warn">⚠ Máx. 2x consecutivos atingido</div>';
+    // Meta (pawns + pile count)
+    const meta=document.getElementById('meta-'+reg);
+    if(meta){
+      let h='';
+      if(yH)h+='<span class="m3pawn you">⚡ Você</span>';
+      if(aH)h+='<span class="m3pawn ia">🤖 IA</span>';
+      h+=`<span class="m3rcnt">📦${G3.piles[reg].length}</span>`;
+      meta.innerHTML=h;
     }
 
     // Actions
-    let actionsHTML = '';
-    if (G3.turn === 'player') {
-      R.actions.forEach(act => {
-        const disabled = m3isDisabled(act, reg) ? ' disabled' : '';
-        const label = m3actionLabel(act, reg);
-        actionsHTML += `<button class="raction${disabled}" onclick="m3doAction('${act}','${reg}')">${label}</button>`;
-      });
-      // Travel buttons
-      const travelFrom = G3.pRegion;
-      if (reg !== travelFrom) {
-        const cost = TRAVEL[travelFrom][reg];
-        const canAfford = G3.pCoins >= cost ? '' : ' disabled';
-        actionsHTML += `<button class="raction travel${canAfford}" onclick="m3travel('${reg}')">✈ Viajar (${cost}🪙)</button>`;
+    const actsEl=document.getElementById('acts-'+reg);
+    if(actsEl){
+      let html='';
+      if(isP){
+        REGIONS[reg].actions.forEach(act=>{
+          const off=m3isOff(act,reg)?' off':'';
+          const {ico,nm,cs,tp}=m3actInfo(act,reg);
+          html+=`<div class="m3act t-${tp}${off}" onclick="m3act('${act}','${reg}')">
+            <span class="m3act-ico">${ico}</span>
+            <span class="m3act-n">${nm}</span>
+            <span class="m3act-c">${cs}</span>
+          </div>`;
+        });
+        // Travel buttons for other regions
+        Object.entries(TRAVEL[G3.pRegion]||{}).forEach(([dest,cost])=>{
+          if(dest===reg){
+            const off=G3.pCoins<cost?' off':'';
+            html+=`<div class="m3act t-travel${off}" onclick="m3travel('${reg}')">
+              <span class="m3act-ico">✈</span>
+              <span class="m3act-n">Viajar</span>
+              <span class="m3act-c">${cost}🪙</span>
+            </div>`;
+          }
+        });
       }
+      actsEl.innerHTML=html;
     }
 
-    // Players in this region
-    let players = '';
-    if (G3.pRegion === reg) players += '<span class="rplayer you">Você</span>';
-    if (G3.aRegion === reg) players += '<span class="rplayer ia">IA</span>';
+    // Consecutive warning
+    const warnEl=document.getElementById('warn-'+reg);
+    if(warnEl){
+      warnEl.textContent=(isP&&yH&&G3.pConsec>=2)?'⚠ Máx 2× atingido — troque de ação':'';
+    }
+  });
 
-    div.innerHTML = `
-      <div class="region-title"><span class="region-flag">${R.flag}</span>${R.name}</div>
-      <div class="region-actions">${actionsHTML}</div>
-      ${players ? '<div class="region-players">' + players + '</div>' : ''}
-      <div class="region-cost">📦 ${G3.piles[reg].length} cartas</div>
-      ${consecWarn}
-    `;
-    map.appendChild(div);
+  // Travel nodes — color based on affordability
+  [1,2,3,4,5].forEach(n=>{
+    const node=document.getElementById('tn-'+n);
+    if(!node)return;
+    // Find if player can afford this travel
+    // Just show all nodes, disabled if can't afford
+    node.className='m3tnode';
   });
 }
 
-function m3actionLabel(act, reg) {
-  if (act === 'olheiro')   return `👁 Olheiro (${OLHEIRO_COST[reg]}🪙)`;
-  if (act === 'superpack') return `🎁 Superpack (5🪙)`;
-  if (act === 'patrocinio')return `🤝 Patrocínio`;
-  if (act === 'venda')     return `💰 Vender`;
-  return act;
+function m3actInfo(act,reg){
+  if(act==='olheiro')    return {ico:'👁',nm:'Olheiro',  cs:OLHEIRO_COST[reg]+'🪙',tp:'olheiro'};
+  if(act==='superpack')  return {ico:'🎁',nm:'Superpack',cs:'5🪙+dado', tp:'superpack'};
+  if(act==='patrocinio') return {ico:'🤝',nm:'Patrocínio',cs:SPONS_MULT[reg]+'× tabela',tp:'patrocinio'};
+  if(act==='venda')      return {ico:'💰',nm:'Vender',   cs:'dado 🎲',tp:'venda'};
+  return {ico:'?',nm:act,cs:'',tp:'act'};
 }
 
-function m3isDisabled(act, reg) {
-  if (G3.turn !== 'player') return true;
-  if (reg !== G3.pRegion) return true;
-  // Check consecutive limit
-  if (G3.pLastAction === act + '_' + reg && G3.pConsec >= 2) return true;
-  // Check cost
-  if (act === 'olheiro' && G3.pCoins < OLHEIRO_COST[reg]) return true;
-  if (act === 'superpack' && G3.pCoins < 5) return true;
-  // Check pile
-  if ((act === 'olheiro' || act === 'superpack') && G3.piles[reg].length === 0) return true;
-  // Check venda: only if have sellable cards
-  if (act === 'venda' && m3getSellable('p', reg).length === 0) return true;
+function m3isOff(act,reg){
+  if(G3.turn!=='player')return true;
+  if(reg!==G3.pRegion)return true;
+  const key=act+'_'+reg;
+  if(G3.pLastAction===key&&G3.pConsec>=2)return true;
+  if(act==='olheiro'&&(G3.pCoins<OLHEIRO_COST[reg]||!G3.piles[reg].length))return true;
+  if(act==='superpack'&&(G3.pCoins<5||!G3.piles[reg].length))return true;
+  if(act==='venda'&&!m3sellable('p',reg).length)return true;
   return false;
 }
 
-function m3renderPitch(who, elId) {
-  const team = who === 'p' ? G3.pTeam : G3.aTeam;
-  const el = document.getElementById(elId);
-  el.querySelectorAll('.pslot').forEach(e => e.remove());
-  ['ataque','meio','defesa','goleiro'].forEach(pos => {
-    PP3[pos].forEach((xy, i) => {
-      const c = team[pos][i] || null;
-      const s = document.createElement('div');
-      s.className = 'pslot';
-      s.style.left = xy.l + '%'; s.style.top = xy.t + '%';
-      s.innerHTML = c
-        ? `<div class="pm ${c.r}"><div class="pmname">${c.name.split(' ')[0]}</div><div class="pmrow"><span class="pmpos">${PL[c.pos]}</span><span class="pmpts">${c.pts}</span></div></div>`
-        : `<div class="pm empty"><span class="pmlbl">${PL[pos]}</span></div>`;
+function m3buildStable(){
+  const el=document.getElementById('m3stable');
+  if(!el)return;
+  const dados=[2,3,4,5,6,7,8,9,10,11,12];
+  const cc={2:'c2',3:'c3',4:'c4',5:'c5',6:'c6',7:'c7',8:'c8',9:'c9',10:'c10',11:'c11',12:'c12'};
+  // Row 1: dado numbers
+  const row1=document.createElement('div');row1.className='m3srow';
+  row1.innerHTML='<div class="m3sc h">D</div>'+dados.map(d=>`<div class="m3sc h">${d}</div>`).join('');
+  // Row 2: coin values  
+  const row2=document.createElement('div');row2.className='m3srow';
+  row2.innerHTML='<div class="m3sc h">🪙</div>'+dados.map(d=>`<div class="m3sc ${cc[d]}">${SPONS[d]}</div>`).join('');
+  el.appendChild(row1);el.appendChild(row2);
+}
+
+function m3renderPitch3(){
+  const el=document.getElementById('m3ppitch');
+  if(!el)return;
+  el.querySelectorAll('.m3psl').forEach(e=>e.remove());
+  ['ataque','meio','defesa','goleiro'].forEach(pos=>{
+    PP3[pos].forEach((xy,i)=>{
+      const pc=G3.pTeam[pos][i]||null;
+      const s=document.createElement('div');
+      s.className='m3psl';
+      s.style.left=xy.l+'%';s.style.top=xy.t+'%';
+      s.innerHTML=pc
+        ?`<div class="m3pm ${pc.r}"><div class="m3pm-p">${PL[pc.pos]}</div><div class="m3pm-r">${pc.pts}</div><div class="m3pm-n">${pc.name.split(' ')[0]}</div></div>`
+        :`<div class="m3pm empty"><span class="m3pml">${PL[pos]}</span></div>`;
       el.appendChild(s);
     });
   });
 }
 
-function m3renderHand() {
-  const hel = document.getElementById('m3ph');
-  hel.innerHTML = '';
-  G3.pHand.forEach(c => {
-    const d = document.createElement('div');
-    d.className = 'm3hc';
-    d.innerHTML = card(c);
-    hel.appendChild(d);
+function m3renderHand3(){
+  const el=document.getElementById('m3ph');if(!el)return;
+  el.innerHTML='';
+  G3.pHand.forEach(hc=>{
+    const d=document.createElement('div');d.className='m3hc';d.innerHTML=card(hc);el.appendChild(d);
   });
-  document.getElementById('m3handcount').textContent = G3.pHand.length;
+  const cnt=document.getElementById('m3handcount');if(cnt)cnt.textContent=G3.pHand.length;
 }
 
-function m3renderSell() {
-  const reg = G3.pRegion;
-  const panel = document.getElementById('m3sellpanel');
-  const list = document.getElementById('m3selllist');
-  if (!REGIONS[reg].actions.includes('venda') || G3.turn !== 'player') {
-    panel.style.display = 'none'; return;
-  }
-  const sellable = m3getSellable('p', reg);
-  if (!sellable.length) { panel.style.display = 'none'; return; }
-  panel.style.display = 'block';
-  const mults = SELL_MULT[reg];
-  list.innerHTML = sellable.map((c, i) => {
-    const mult = mults[c.r] || 0;
-    return `<button class="m3sell-btn" onclick="m3sell(${i})">
-      ${c.name} (${RL[c.r]}) — ${mult}x dado 🎲</button>`;
-  }).join('');
+function m3renderSell3(){
+  const reg=G3.pRegion;
+  const panel=document.getElementById('m3sellpanel');
+  const list=document.getElementById('m3selllist');
+  if(!panel||!list)return;
+  if(!REGIONS[reg].actions.includes('venda')||G3.turn!=='player'){panel.style.display='none';return;}
+  const sl=m3sellable('p',reg);
+  if(!sl.length){panel.style.display='none';return;}
+  panel.style.display='block';
+  const mu=SELL_MULT[reg]||{};
+  list.innerHTML=sl.map((c,i)=>`
+    <div class="m3sb" onclick="m3sell(${i})">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700">${c.name} <span style="opacity:.6">(${RL[c.r]})</span></span>
+      <span class="m3sb-m">${mu[c.r]||0}× dado</span>
+    </div>`).join('');
 }
 
-function m3getSellable(who, reg) {
-  const team = who === 'p' ? G3.pTeam : G3.aTeam;
-  const hand = who === 'p' ? G3.pHand : G3.aHand;
-  const mults = SELL_MULT[reg] || {};
-  const all = [...hand, ...Object.values(team).flat()];
-  return all.filter(c => mults[c.r] !== undefined);
+function m3sellable(who,reg){
+  const team=who==='p'?G3.pTeam:G3.aTeam;
+  const hand=who==='p'?G3.pHand:G3.aHand;
+  const mu=SELL_MULT[reg]||{};
+  return [...hand,...Object.values(team).flat()].filter(c=>mu[c.r]!==undefined);
 }
 
-// ── Actions ────────────────────────────────────────
-function m3travel(toReg) {
-  const cost = TRAVEL[G3.pRegion][toReg];
-  if (G3.pCoins < cost) { toast('Moedas insuficientes!'); return; }
-  G3.pCoins -= cost;
-  m3log(`Viagem: ${REGIONS[G3.pRegion].name} → ${REGIONS[toReg].name} (-${cost}🪙)`);
-  G3.pRegion = toReg;
-  // Reset consecutive when traveling
-  G3.pLastAction = null; G3.pConsec = 0;
-  m3render();
+function m3pts(who){
+  const t=who==='p'?G3.pTeam:G3.aTeam;
+  return Object.values(t).flat().reduce((s,c)=>s+c.pts,0);
 }
 
-function m3doAction(act, reg) {
-  if (m3isDisabled(act, reg)) return;
-  // Track consecutive
-  const key = act + '_' + reg;
-  if (G3.pLastAction === key) G3.pConsec++;
-  else { G3.pConsec = 1; G3.pLastAction = key; }
-
-  if (act === 'olheiro')    m3doOlheiro('p');
-  else if (act === 'superpack')  m3doSuperpack();
-  else if (act === 'patrocinio') m3doPatrocinio('p');
-  else if (act === 'venda')      m3renderSell(); // handled by sell buttons
+/* ── ACTIONS ── */
+function m3travel(toReg){
+  const cost=TRAVEL[G3.pRegion][toReg];
+  if(G3.pCoins<cost){toast('Moedas insuficientes!');return;}
+  G3.pCoins-=cost;
+  m3log(`✈ ${REGIONS[G3.pRegion].name} → ${REGIONS[toReg].name} (-${cost}🪙)`);
+  G3.pRegion=toReg;G3.pLastAction=null;G3.pConsec=0;
+  m3renderAll();
 }
 
-function m3doOlheiro(who) {
-  const reg = who === 'p' ? G3.pRegion : G3.aRegion;
-  const cost = OLHEIRO_COST[reg];
-  if (who === 'p') {
-    G3.pCoins -= cost;
-    const pile = G3.piles[reg];
-    const picks = pile.splice(0, Math.min(2, pile.length));
-    if (picks.length === 0) { toast('Sem cartas nessa região!'); return; }
-    m3log(`Olheiro em ${REGIONS[reg].name} (-${cost}🪙) — vendo ${picks.length} cartas`);
-    m3showModal('👁 Olheiro — Escolha 1 carta', picks, chosen => {
-      G3.pHand.push(chosen);
-      // Return unchosen to pile
-      picks.filter(c => c.id !== chosen.id).forEach(c => G3.piles[reg].push(c));
-      m3log(`Você escolheu: ${chosen.name} (${RL[chosen.r]})`);
-      m3autoSlot3('p');
-      m3endPlayerTurn();
-    });
-  } else {
-    G3.aCoins -= cost;
-    const pile = G3.piles[reg];
-    const picks = pile.splice(0, Math.min(2, pile.length));
-    if (picks.length === 0) return;
-    // AI picks best by pts
-    const best = picks.sort((a,b) => b.pts-a.pts)[0];
+function m3act(act,reg){
+  if(m3isOff(act,reg))return;
+  const key=act+'_'+reg;
+  if(G3.pLastAction===key)G3.pConsec++;else{G3.pConsec=1;G3.pLastAction=key;}
+  if(act==='olheiro')   m3doOlheiro('p');
+  else if(act==='superpack')  m3doSuperpack();
+  else if(act==='patrocinio') m3doPatrocinio('p');
+  // venda handled by sell buttons
+}
+
+function m3doOlheiro(who){
+  const reg=who==='p'?G3.pRegion:G3.aRegion;
+  const cost=OLHEIRO_COST[reg];
+  if(who==='p'){
+    G3.pCoins-=cost;
+    const pile=G3.piles[reg];
+    const picks=pile.splice(0,Math.min(2,pile.length));
+    if(!picks.length){toast('Sem cartas!');return;}
+    m3log(`👁 Olheiro em ${REGIONS[reg].name} (-${cost}🪙)`);
+    m3showModal('👁 Olheiro — Escolha 1 Carta',
+      'Selecione a carta que deseja recrutar:',picks,
+      chosen=>{
+        G3.pHand.push(chosen);
+        picks.filter(c=>c.id!==chosen.id).forEach(c=>G3.piles[reg].push(c));
+        m3log(`→ Você recrutou: ${chosen.name} (${RL[chosen.r]})`);
+        m3autoSlot3('p');m3endPlayerTurn();
+      });
+  }else{
+    G3.aCoins-=cost;
+    const pile=G3.piles[reg];
+    const picks=pile.splice(0,Math.min(2,pile.length));
+    if(!picks.length)return;
+    const best=picks.sort((a,b)=>b.pts-a.pts)[0];
     picks.filter(c=>c.id!==best.id).forEach(c=>G3.piles[reg].push(c));
     G3.aHand.push(best);
-    m3log(`IA usou Olheiro em ${REGIONS[reg].name} → ${best.name}`);
+    m3log(`🤖 IA recrutou em ${REGIONS[reg].name}`);
     m3autoSlot3('a');
   }
 }
 
-function m3doSuperpack() {
-  G3.pCoins -= 5;
-  const roll = d6() + d6();
-  let region;
-  if (roll <= 4) region = 'america';
-  else if (roll <= 8) region = 'brasil';
-  else if (roll <= 10) region = 'mundo';
-  else region = 'europa';
-  const pile = G3.piles[region];
-  if (!pile.length) {
-    toast('Pile vazia para ' + REGIONS[region].name + '!');
-    m3endPlayerTurn(); return;
-  }
-  const c = pile.shift();
+function m3doSuperpack(){
+  G3.pCoins-=5;
+  const r1=d6(),r2=d6(),roll=r1+r2;
+  let dest=roll<=4?'america':roll<=8?'brasil':roll<=10?'mundo':'europa';
+  const pile=G3.piles[dest];
+  if(!pile.length){toast('Pile vazia! Moedas devolvidas.');G3.pCoins+=5;m3endPlayerTurn();return;}
+  const c=pile.shift();
   G3.pHand.push(c);
-  m3log(`Superpack (-5🪙) dado:${roll} → ${REGIONS[region].name} → ${c.name} (${RL[c.r]})`);
+  m3log(`🎁 Superpack (-5🪙) dado:${roll} → ${REGIONS[dest].name} → ${c.name}`);
   m3autoSlot3('p');
-  m3showDice([roll], `${DICE_FACE[roll>6?roll-6:roll]} Dado: ${roll} → ${REGIONS[region].name}
-${c.name} (${RL[c.r]})`, () => m3endPlayerTurn());
+  m3showDice([r1,r2],`${r1}+${r2} = ${roll}`,`→ ${REGIONS[dest].name}\n${c.name} (${RL[c.r]})`,()=>m3endPlayerTurn());
 }
 
-function m3doPatrocinio(who) {
-  const reg = who === 'p' ? G3.pRegion : G3.aRegion;
-  const mult = SPONS_MULT[reg];
-  const r1 = d6(), r2 = d6();
-  const sum = r1 + r2;
-  const base = SPONS[sum];
-  const earned = base * mult;
-  if (who === 'p') {
-    G3.pCoins += earned;
-    m3log(`Patrocínio em ${REGIONS[reg].name}: ${r1}+${r2}=${sum} → ${base}×${mult} = +${earned}🪙`);
-    m3showDice([r1,r2], `${DICE_FACE[r1]} ${DICE_FACE[r2]}
-Dados: ${r1}+${r2}=${sum}
-+${earned}🪙`, () => m3endPlayerTurn());
-  } else {
-    G3.aCoins += earned;
-    m3log(`IA patrocínio em ${REGIONS[reg].name} → +${earned}🪙`);
+function m3doPatrocinio(who){
+  const reg=who==='p'?G3.pRegion:G3.aRegion;
+  const mult=SPONS_MULT[reg];
+  const r1=d6(),r2=d6(),sum=r1+r2;
+  const base=SPONS[sum],earned=base*mult;
+  if(who==='p'){
+    G3.pCoins+=earned;
+    m3log(`🤝 Patrocínio ${REGIONS[reg].name}: ${r1}+${r2}=${sum} → ${base}×${mult} = +${earned}🪙`);
+    m3showDice([r1,r2],`${r1}+${r2} = ${sum}`,`${base} × ${mult} = +${earned}🪙`,()=>m3endPlayerTurn());
+  }else{
+    G3.aCoins+=earned;
+    m3log(`🤖 IA patrocínio +${earned}🪙`);
   }
 }
 
-function m3sell(idx) {
-  const reg = G3.pRegion;
-  const mults = SELL_MULT[reg];
-  const sellable = m3getSellable('p', reg);
-  const c = sellable[idx];
-  if (!c) return;
-  const mult = mults[c.r];
-  const roll = d6();
-  const earned = roll * mult;
-  G3.pCoins += earned;
-  // Remove from hand or team
-  if (G3.pHand.find(x=>x.id===c.id)) {
-    G3.pHand = G3.pHand.filter(x=>x.id!==c.id);
-  } else {
-    for (const pos of Object.keys(G3.pTeam)) {
-      G3.pTeam[pos] = G3.pTeam[pos].filter(x=>x.id!==c.id);
+function m3sell(idx){
+  const reg=G3.pRegion;
+  const sl=m3sellable('p',reg);
+  const c=sl[idx];if(!c)return;
+  const mult=(SELL_MULT[reg]||{})[c.r]||0;
+  const roll=d6();const earned=roll*mult;
+  G3.pCoins+=earned;
+  // Remove from team or hand
+  let found=false;
+  for(const pos of Object.keys(G3.pTeam)){
+    if(G3.pTeam[pos].find(x=>x.id===c.id)){
+      G3.pTeam[pos]=G3.pTeam[pos].filter(x=>x.id!==c.id);found=true;break;
     }
   }
+  if(!found)G3.pHand=G3.pHand.filter(x=>x.id!==c.id);
   G3.piles[reg].push(c);
-  m3log(`Vendeu: ${c.name} (${RL[c.r]}) dado:${roll} × ${mult} = +${earned}🪙`);
-  m3showDice([roll], `${DICE_FACE[roll]}
-${c.name} vendido
-+${earned}🪙`, () => m3endPlayerTurn());
+  m3log(`💰 Vendeu ${c.name}: dado ${roll} × ${mult} = +${earned}🪙`);
+  m3showDice([roll],`Dado: ${roll}`,`${c.name}\n+${earned}🪙`,()=>m3endPlayerTurn());
 }
 
-// ── Auto slot ─────────────────────────────────────
-function m3autoSlot3(who) {
-  const team = who==='p' ? G3.pTeam : G3.aTeam;
-  const hand = who==='p' ? G3.pHand : G3.aHand;
-  let ch = true;
-  while (ch) {
-    ch = false;
-    for (const pos of Object.keys(FORM)) {
-      const need = FORM[pos] - team[pos].length;
-      const avail = hand.filter(c=>c.pos===pos);
-      if (need > 0 && avail.length) {
-        const best = avail.sort((a,b)=>b.pts-a.pts)[0];
-        team[pos].push(best);
-        if (who==='p') G3.pHand = G3.pHand.filter(c=>c.id!==best.id);
-        else           G3.aHand = G3.aHand.filter(c=>c.id!==best.id);
-        m3log(`${who==='p'?'Você':'IA'}: ${best.name} escalado (${PL[pos]})`);
-        m3checkWin3(who); ch = true; break;
+/* ── AUTO SLOT ── */
+function m3autoSlot3(who){
+  const team=who==='p'?G3.pTeam:G3.aTeam;
+  const hand=who==='p'?G3.pHand:G3.aHand;
+  const rm=arr=>who==='p'?(G3.pHand=arr):(G3.aHand=arr);
+  let ch=true;
+  while(ch){ch=false;
+    for(const pos of Object.keys(FORM)){
+      const need=FORM[pos]-team[pos].length;
+      const av=hand.filter(c=>c.pos===pos);
+      if(need>0&&av.length){
+        const best=av.sort((a,b)=>b.pts-a.pts)[0];
+        team[pos].push(best);rm(hand.filter(c=>c.id!==best.id));
+        m3log(`${who==='p'?'→':'🤖'} ${best.name} escalado (${PL[pos]})`);
+        m3checkWin3(who);ch=true;break;
       }
     }
   }
-  // Replace weaker (player only for UX)
-  if (who === 'p') {
-    for (const pos of Object.keys(FORM)) {
-      const tc = G3.pTeam[pos]; if (tc.length<FORM[pos]) continue;
-      const hc = G3.pHand.filter(c=>c.pos===pos); if (!hc.length) continue;
-      const best = hc.sort((a,b)=>b.pts-a.pts)[0];
-      const worst = [...tc].sort((a,b)=>a.pts-b.pts)[0];
-      if (best.pts > worst.pts) {
-        G3.pTeam[pos] = tc.filter(c=>c.id!==worst.id); G3.pTeam[pos].push(best);
-        G3.pHand = G3.pHand.filter(c=>c.id!==best.id); G3.pHand.push(worst);
-        m3log(`↑ ${best.name} substituiu ${worst.name} no time`);
+  if(who==='p'){
+    for(const pos of Object.keys(FORM)){
+      const tc=team[pos];if(tc.length<FORM[pos])continue;
+      const hc=G3.pHand.filter(c=>c.pos===pos);if(!hc.length)continue;
+      const best=hc.sort((a,b)=>b.pts-a.pts)[0];
+      const worst=[...tc].sort((a,b)=>a.pts-b.pts)[0];
+      if(best.pts>worst.pts){
+        team[pos]=tc.filter(c=>c.id!==worst.id);team[pos].push(best);
+        G3.pHand=G3.pHand.filter(c=>c.id!==best.id);G3.pHand.push(worst);
+        m3log(`↑ ${best.name} substituiu ${worst.name}`);
         m3checkWin3('p');
       }
     }
   }
 }
 
-function m3teamPts(who) {
-  const t = who==='p' ? G3.pTeam : G3.aTeam;
-  return Object.values(t).flat().reduce((s,c)=>s+c.pts,0);
+function m3checkWin3(who){
+  const t=who==='p'?G3.pTeam:G3.aTeam;
+  const pts=m3pts(who);
+  const full=Object.keys(FORM).every(pos=>t[pos].length>=FORM[pos]);
+  if(full&&pts>=40)setTimeout(()=>gameOver(who==='p',who==='p'?`Time completo! ${pts} pontos!`:`IA montou o time com ${pts} pontos.`),500);
 }
 
-function m3checkWin3(who) {
-  const t = who==='p' ? G3.pTeam : G3.aTeam;
-  const pts = m3teamPts(who);
-  const full = Object.keys(FORM).every(pos=>t[pos].length>=FORM[pos]);
-  if (full && pts>=40)
-    setTimeout(()=>gameOver(who==='p',
-      who==='p'?`Time completo com ${pts} pontos!`:`IA montou o time com ${pts} pontos.`
-    ),600);
+/* ── TURNS ── */
+function m3endPlayerTurn(){
+  G3.turn='ai';m3renderAll();setTimeout(m3aiTurn,800);
 }
 
-// ── Turn management ────────────────────────────────
-function m3endPlayerTurn() {
-  G3.turn = 'ai';
-  m3render();
-  setTimeout(m3aiTurn, 900);
-}
+function m3aiTurn(){
+  const reg=G3.aRegion;
+  const key_oli='olheiro_'+reg;
+  const key_sp ='superpack_'+reg;
+  const key_pat='patrocinio_'+reg;
+  const canDo=key=>(G3.aLastAction!==key||G3.aConsec<2);
+  const track=key=>{if(G3.aLastAction===key)G3.aConsec++;else{G3.aConsec=1;G3.aLastAction=key}};
+  const teamFull=Object.keys(FORM).every(pos=>G3.aTeam[pos].length>=FORM[pos]);
 
-function m3aiTurn() {
-  // AI decision logic
-  const reg = G3.aRegion;
-  const cost = OLHEIRO_COST[reg];
-  const key_oli = 'olheiro_' + reg;
-  const key_sp  = 'superpack_' + reg;
-  const key_pat = 'patrocinio_' + reg;
-
-  // Priority: if team not full, try olheiro/superpack; else patrocinio
-  const teamFull = Object.keys(FORM).every(pos => G3.aTeam[pos].length >= FORM[pos]);
-
-  // Check consecutive limits for AI
-  function aiCanDo(key) { return !(G3.aLastAction===key && G3.aConsec>=2); }
-  function aiTrack(key) {
-    if (G3.aLastAction===key) G3.aConsec++; else { G3.aConsec=1; G3.aLastAction=key; }
-  }
-
-  let acted = false;
-
-  // Try to travel to better region if coins allow
-  if (!teamFull && reg === 'brasil' && G3.aCoins >= 4 && Math.random() < 0.3) {
-    const dest = G3.aCoins >= 4 ? 'europa' : (G3.aCoins >= 1 ? 'america' : null);
-    if (dest && TRAVEL[reg][dest] <= G3.aCoins) {
-      G3.aCoins -= TRAVEL[reg][dest];
-      m3log(`IA viajou: ${REGIONS[reg].name} → ${REGIONS[dest].name}`);
-      G3.aRegion = dest; G3.aLastAction=null; G3.aConsec=0; acted=true;
+  // Try travel to better region
+  if(!teamFull&&G3.aCoins>=4&&Math.random()<0.25){
+    const opts=Object.entries(TRAVEL[reg]).filter(([d,c])=>G3.aCoins>=c&&G3.piles[d].length>0);
+    if(opts.length){
+      const [dest,cost]=opts.sort((a,b)=>b[1]-a[1])[0]; // cheapest
+      G3.aCoins-=cost;G3.aRegion=dest;G3.aLastAction=null;G3.aConsec=0;
+      m3log(`🤖 IA viajou para ${REGIONS[dest].name}`);
     }
   }
 
-  if (!acted) {
-    // Try olheiro
-    if (!teamFull && G3.aCoins >= cost && G3.piles[reg].length > 0 && aiCanDo(key_oli)) {
-      aiTrack(key_oli);
-      m3doOlheiro('a');
-      acted = true;
-    }
-    // Try superpack in Brasil
-    else if (!teamFull && reg==='brasil' && G3.aCoins>=5 && G3.piles[reg].length>0 && aiCanDo(key_sp)) {
-      aiTrack(key_sp);
-      // Simple AI superpack
-      G3.aCoins -= 5;
-      const roll = d6()+d6();
-      let dest2 = roll<=4?'america':roll<=8?'brasil':roll<=10?'mundo':'europa';
-      const pile2 = G3.piles[dest2];
-      if (pile2.length) {
-        const c = pile2.shift(); G3.aHand.push(c);
-        m3log(`IA Superpack dado:${roll} → ${REGIONS[dest2].name} → ${c.name}`);
-        m3autoSlot3('a');
-      }
-      acted = true;
-    }
-    // Patrocinio
-    else if (aiCanDo(key_pat)) {
-      aiTrack(key_pat);
-      m3doPatrocinio('a');
-      acted = true;
-    }
-    // Fallback: just do patrocinio ignoring consec
-    else {
-      G3.aLastAction = null; G3.aConsec = 0;
-      m3doPatrocinio('a');
-    }
+  const r2=G3.aRegion;
+  if(!teamFull&&G3.aCoins>=OLHEIRO_COST[r2]&&G3.piles[r2].length&&canDo('olheiro_'+r2)){
+    track('olheiro_'+r2);m3doOlheiro('a');
+  }else if(r2==='brasil'&&G3.aCoins>=5&&G3.piles[r2].length&&canDo(key_sp)){
+    track(key_sp);
+    G3.aCoins-=5;const roll=d6()+d6();
+    const dest2=roll<=4?'america':roll<=8?'brasil':roll<=10?'mundo':'europa';
+    const pile2=G3.piles[dest2];
+    if(pile2.length){G3.aHand.push(pile2.shift());m3autoSlot3('a');}
+  }else if(canDo('patrocinio_'+r2)){
+    track('patrocinio_'+r2);m3doPatrocinio('a');
+  }else{
+    G3.aLastAction=null;G3.aConsec=0;m3doPatrocinio('a');
   }
 
   m3checkWin3('a');
-  G3.turn = 'player';
-  G3.turnNum++;
-  m3render();
-  m3log('Sua vez!');
+  G3.turn='player';G3.turnNum++;
+  m3renderAll();
+  m3log('💬 Sua vez!');
 }
 
-// ── Modals ─────────────────────────────────────────
-function m3showModal(title, cards, onConfirm) {
-  m3ModalCards = cards;
-  m3ModalSel = null;
-  window._m3ConfirmCb = onConfirm;
-  document.getElementById('m3mtitle').textContent = title;
-  document.getElementById('m3minfo').textContent = 'Selecione uma carta';
-  const container = document.getElementById('m3mcards');
-  container.innerHTML = '';
-  cards.forEach((c, i) => {
-    const wrap = document.createElement('div');
-    wrap.className = 'm3mcw';
-    wrap.innerHTML = card(c);
-    wrap.onclick = () => {
-      document.querySelectorAll('.m3mcw').forEach(w=>w.classList.remove('sel'));
-      wrap.classList.add('sel');
-      m3ModalSel = c;
-      document.getElementById('m3mconfirm').disabled = false;
+/* ── MODALS ── */
+function m3showModal(title,info,cards,cb){
+  window._m3cb=cb;
+  document.getElementById('m3mt').textContent=title;
+  document.getElementById('m3mi').textContent=info;
+  const cont=document.getElementById('m3mc');cont.innerHTML='';
+  cards.forEach(c=>{
+    const w=document.createElement('div');w.className='m3mcw';w.innerHTML=card(c);
+    w.onclick=()=>{
+      cont.querySelectorAll('.m3mcw').forEach(x=>x.classList.remove('sel'));
+      w.classList.add('sel');window._m3sel=c;
+      document.getElementById('m3mconfirm').disabled=false;
     };
-    container.appendChild(wrap);
+    cont.appendChild(w);
   });
-  document.getElementById('m3mconfirm').disabled = true;
+  document.getElementById('m3mconfirm').disabled=true;
   document.getElementById('m3modal').classList.add('open');
 }
-
-function m3confirmModal() {
-  if (!m3ModalSel) return;
+function m3confirmModal(){
   document.getElementById('m3modal').classList.remove('open');
-  if (window._m3ConfirmCb) window._m3ConfirmCb(m3ModalSel);
-  m3render();
+  if(window._m3cb&&window._m3sel)window._m3cb(window._m3sel);
+  m3renderAll();
 }
-
-function m3closeModal() {
+function m3closeModal(){
   document.getElementById('m3modal').classList.remove('open');
-  // Return coins and cards on cancel
-  m3render();
+  m3renderAll();
 }
-
-function m3showDice(rolls, msg, cb) {
-  const icons = rolls.map(r=>DICE_FACE[r]).join(' ');
-  document.getElementById('m3dicetitle').textContent = '🎲 Resultado';
-  document.getElementById('m3diceico').textContent = icons;
-  document.getElementById('m3diceres').textContent = msg;
-  window._m3DiceCb = cb;
+function m3showDice(rolls,res,sub,cb){
+  document.getElementById('m3diceico').textContent=rolls.map(r=>DF_ICONS[r]).join(' ');
+  document.getElementById('m3dres').textContent=res;
+  document.getElementById('m3dsub').textContent=sub||'';
+  window._m3diceCb=cb;
   document.getElementById('m3dicemodal').classList.add('open');
-  m3render();
+  m3renderAll();
+}
+function m3closeDice(){
+  document.getElementById('m3dicemodal').classList.remove('open');
+  if(window._m3diceCb)window._m3diceCb();
+  m3renderAll();
 }
 
-function m3closeDice() {
-  document.getElementById('m3dicemodal').classList.remove('open');
-  if (window._m3DiceCb) window._m3DiceCb();
-  m3render();
+</script>
+</body>
+</html>
+
+
+/* ═══════════════════════════════════════════════════
+   MODE 3 — MUNDO DO FUTEBOL
+═══════════════════════════════════════════════════ */
+#mode3{background:#07090f;overflow-y:auto;height:100vh}
+.m3wrap{display:flex;flex-direction:column;gap:.45rem;padding:.45rem .5rem .7rem;max-width:1140px;margin:0 auto;width:100%}
+
+/* STATUS BAR */
+.m3status{display:flex;gap:.4rem;align-items:stretch;flex-shrink:0;flex-wrap:wrap}
+.m3coinbox{display:flex;align-items:center;gap:.38rem;border-radius:9px;padding:.32rem .55rem;flex-shrink:0}
+.m3coinbox.p{background:rgba(245,197,66,.07);border:1px solid rgba(245,197,66,.22)}
+.m3coinbox.a{background:rgba(255,61,87,.06);border:1px solid rgba(255,61,87,.22)}
+.m3cnum{font-family:'Barlow Condensed',sans-serif;font-size:1.45rem;font-weight:900;line-height:1;color:var(--gold)}
+.m3coinbox.a .m3cnum{color:var(--red)}
+.m3clbl{font-family:'Barlow Condensed',sans-serif;font-size:.5rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);margin-top:.06rem}
+.m3infobox{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:.32rem .55rem;display:flex;flex-direction:column;justify-content:center}
+.m3turn{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;line-height:1.2}
+.m3loc{font-size:.6rem;color:var(--text2);margin-top:.1rem}
+.m3logbox{width:200px;flex-shrink:0;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:.28rem .48rem;font-size:.6rem;color:var(--text2);overflow-y:auto;line-height:1.7;max-height:62px}
+
+/* ╔══════════════════════════════════╗
+   ║       BOARD LAYOUT               ║
+   ╚══════════════════════════════════╝
+   Exact proportions from PPT analysis:
+   - Left panel  (América + Brasil):  0–28%
+   - Center zone (connections):       28–62%
+   - Right panel (Europa + RdM):      62–100%
+   - Table: bottom strip
+*/
+.m3board{
+  position:relative;
+  width:100%;
+  /* 4:2.5 aspect ratio ≈ board proportions */
+  aspect-ratio:4/2.4;
+  flex-shrink:0;
+  border-radius:14px;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 15% 30%, rgba(0,60,15,.5) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 30%, rgba(5,15,60,.6) 0%, transparent 45%),
+    radial-gradient(ellipse at 15% 75%, rgba(0,50,10,.5) 0%, transparent 40%),
+    radial-gradient(ellipse at 85% 70%, rgba(50,10,5,.6) 0%, transparent 40%),
+    #070c0a;
+  border:1px solid rgba(255,255,255,.08);
 }
+
+/* SVG connection lines layer */
+.m3svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+
+/* Region panels — absolutely positioned per PPT */
+.m3reg{
+  position:absolute;
+  border-radius:11px;
+  padding:.4rem .45rem .45rem;
+  border:2px solid transparent;
+  transition:box-shadow .2s,border-color .2s;
+  z-index:2;
+}
+/* América do Sul: left top — x:1% y:2%, w:27% h:40% */
+.m3reg.america{
+  left:1%;top:2%;width:27%;height:40%;
+  background:linear-gradient(145deg,#0c2c04,#163808,#0e2e06);
+  border-color:#3a7010;
+}
+/* Brasil: left bottom — x:1% y:52%, w:37% h:42% */
+.m3reg.brasil{
+  left:1%;top:52%;width:37%;height:44%;
+  background:linear-gradient(145deg,#063010,#0e4818,#083612);
+  border-color:#1e7c30;
+}
+/* Europa: right top — x:61% y:2%, w:38% h:39% */
+.m3reg.europa{
+  left:61%;top:2%;width:38%;height:39%;
+  background:linear-gradient(145deg,#04083c,#081454,#060c44);
+  border-color:#1e42bc;
+}
+/* Resto do Mundo: right bottom — x:61% y:44%, w:38% h:50% */
+.m3reg.mundo{
+  left:61%;top:44%;width:38%;height:52%;
+  background:linear-gradient(145deg,#260804,#3c1008,#2e0c06);
+  border-color:#a03418;
+}
+
+/* Active region highlight */
+.m3reg.you-here{border-color:var(--accent) !important;box-shadow:0 0 0 2px var(--accent),0 0 20px rgba(0,229,255,.22)}
+.m3reg.ai-here{border-color:var(--red) !important;box-shadow:0 0 0 2px var(--red),0 0 14px rgba(255,61,87,.18)}
+
+/* Region header */
+.m3rhdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:.3rem;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  margin-bottom:.3rem;
+}
+.m3rname{display:flex;align-items:center;gap:.3rem}
+.m3rflag{font-size:1.1rem;line-height:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
+.m3rtitle{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.7rem,1.4vw,.95rem);
+  font-weight:900;text-transform:uppercase;letter-spacing:.08em;
+  text-shadow:0 1px 4px rgba(0,0,0,.6);
+}
+.m3rmeta{display:flex;align-items:center;gap:.22rem;flex-wrap:wrap}
+.m3pawn{font-size:.58rem;font-weight:700;padding:.1rem .32rem;border-radius:8px;white-space:nowrap}
+.m3pawn.you{background:rgba(0,229,255,.2);color:var(--accent);border:1px solid rgba(0,229,255,.35)}
+.m3pawn.ia{background:rgba(255,61,87,.18);color:var(--red);border:1px solid rgba(255,61,87,.3)}
+.m3rcnt{font-size:.52rem;color:rgba(255,255,255,.4);font-family:'Barlow Condensed',sans-serif;font-weight:700}
+
+/* Action space buttons */
+.m3acts{display:flex;gap:.28rem;flex-wrap:wrap}
+.m3act{
+  flex:1;min-width:0;
+  border-radius:8px;padding:.3rem .25rem;
+  cursor:pointer;transition:all .18s;
+  text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:.08rem;
+  border:1.5px solid rgba(255,255,255,.1);
+  background:rgba(0,0,0,.3);
+}
+.m3act:hover:not(.off){
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.1);
+  border-color:rgba(255,255,255,.3);
+  box-shadow:0 4px 10px rgba(0,0,0,.4);
+}
+.m3act.off{opacity:.22;cursor:not-allowed;pointer-events:none}
+.m3act-ico{font-size:clamp(.8rem,1.5vw,1.05rem);line-height:1}
+.m3act-n{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.52rem,.9vw,.7rem);font-weight:800;text-transform:uppercase;letter-spacing:.03em;line-height:1.1}
+.m3act-c{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.44rem,.75vw,.62rem);font-weight:700;color:var(--gold);margin-top:.04rem}
+/* Action type colors */
+.m3act.t-olheiro{border-color:rgba(0,229,255,.2);background:rgba(0,80,120,.2)}
+.m3act.t-olheiro:hover:not(.off){background:rgba(0,100,150,.35);border-color:var(--accent)}
+.m3act.t-olheiro .m3act-c{color:#60d8ff}
+.m3act.t-superpack{border-color:rgba(80,220,80,.2);background:rgba(20,90,20,.2)}
+.m3act.t-superpack:hover:not(.off){background:rgba(30,120,30,.35);border-color:#60dd60}
+.m3act.t-superpack .m3act-c{color:#80ee80}
+.m3act.t-patrocinio{border-color:rgba(245,197,66,.2);background:rgba(90,70,0,.2)}
+.m3act.t-patrocinio:hover:not(.off){background:rgba(120,90,0,.35);border-color:var(--gold)}
+.m3act.t-venda{border-color:rgba(200,80,255,.2);background:rgba(70,10,110,.2)}
+.m3act.t-venda:hover:not(.off){background:rgba(90,15,140,.35);border-color:#c060ff}
+.m3act.t-venda .m3act-c{color:#d080ff}
+.m3act.t-travel{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.04)}
+.m3act.t-travel:hover:not(.off){background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3)}
+.m3act.t-travel .m3act-c{color:var(--accent)}
+
+/* Consecutive warning */
+.m3warn{
+  font-size:.52rem;color:#ffc107;
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  margin-top:.18rem;text-align:center;letter-spacing:.04em;
+}
+
+/* Travel nodes — positioned absolutely on board */
+.m3tnode{
+  position:absolute;z-index:3;
+  transform:translate(-50%,-50%);
+  width:clamp(22px,3.5vw,32px);
+  height:clamp(22px,3.5vw,32px);
+  border-radius:50%;
+  background:#0e1520;
+  border:2px solid rgba(255,255,255,.35);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.65rem,1.1vw,.85rem);
+  font-weight:900;
+  color:rgba(255,255,255,.7);
+  cursor:pointer;
+  transition:all .18s;
+  text-shadow:0 1px 2px rgba(0,0,0,.5);
+  box-shadow:0 2px 8px rgba(0,0,0,.5);
+}
+.m3tnode:hover:not(.off){
+  background:#1a2535;
+  border-color:var(--accent);
+  color:var(--accent);
+  box-shadow:0 0 12px rgba(0,229,255,.25);
+  transform:translate(-50%,-50%) scale(1.1);
+}
+.m3tnode.off{opacity:.3;cursor:not-allowed;pointer-events:none}
+
+/* SPONSORSHIP TABLE — bottom strip of board */
+.m3stable{
+  position:absolute;
+  bottom:0;left:30%;right:0;
+  z-index:2;
+  background:rgba(0,0,0,.55);
+  border-top:1px solid rgba(255,255,255,.1);
+  padding:.28rem .5rem .32rem;
+  border-radius:0 0 12px 0;
+}
+.m3stable-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.52rem,.85vw,.68rem);
+  font-weight:800;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--gold);margin-bottom:.2rem;
+}
+.m3stable-grid{display:flex;gap:.15rem}
+.m3sc{
+  flex:1;text-align:center;border-radius:4px;
+  padding:.18rem .06rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.48rem,.75vw,.62rem);font-weight:700;
+  display:flex;flex-direction:column;align-items:center;gap:.04rem;
+}
+.m3sc-d{font-size:clamp(.42rem,.65vw,.55rem);opacity:.7;font-weight:600}
+.m3sc.h{background:rgba(255,255,255,.07);color:var(--text2)}
+.m3sc.c2{background:#c0392b;color:#fff}
+.m3sc.c3{background:#d35400;color:#fff}
+.m3sc.c4,.m3sc.c5,.m3sc.c6,.m3sc.c7,.m3sc.c8,.m3sc.c9{background:#5d6d7e;color:#fff}
+.m3sc.c10{background:#1e8449;color:#fff}
+.m3sc.c11{background:#1a5276;color:#fff}
+.m3sc.c12{background:#6c3483;color:#fff}
+
+/* ═══ BOTTOM: PITCH + HAND ═══ */
+.m3bot{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;flex-shrink:0}
+
+/* Pitch */
+.m3pwrap{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:.42rem .48rem}
+.m3phdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.26rem}
+.m3plbl{font-family:'Barlow Condensed',sans-serif;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+.m3ppts{font-family:'Barlow Condensed',sans-serif;font-size:.66rem;font-weight:700;color:var(--gold)}
+.m3po{position:relative;width:100%;padding-top:108%;border-radius:6px;overflow:hidden}
+.m3pi{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    #1a4828 0%,#1e5830 8%,#1a4828 16%,#1e5830 24%,#1a4828 32%,
+    #1e5830 40%,#1a4828 48%,#1e5830 56%,#1a4828 64%,
+    #1e5830 72%,#1a4828 80%,#1e5830 88%,#1a4828 100%);
+}
+.m3pi::before{content:'';position:absolute;inset:3%;border:2px solid rgba(255,255,255,.2);border-radius:3px;pointer-events:none;z-index:1}
+.m3pi::after{content:'';position:absolute;left:20%;right:20%;top:50%;transform:translateY(-50%);height:22%;border:1.5px solid rgba(255,255,255,.18);border-radius:50%;pointer-events:none;z-index:1}
+.m3cl{position:absolute;left:3%;right:3%;top:50%;height:1.5px;background:rgba(255,255,255,.18);z-index:1;pointer-events:none}
+.m3cd{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);z-index:1;pointer-events:none}
+.m3psl{position:absolute;transform:translate(-50%,-50%);z-index:2;width:27%}
+/* Pitch mini card */
+.m3pm{position:relative;overflow:hidden;border-radius:4px;display:flex;flex-direction:column;min-height:34px}
+.m3pm.empty{background:rgba(255,255,255,.05);border:1.5px dashed rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center}
+.m3pm.empty .m3pml{font-family:'Barlow Condensed',sans-serif;font-size:.5rem;color:rgba(255,255,255,.28);font-weight:700}
+.m3pm.icone{background:linear-gradient(160deg,#b8d8ee,#deeefa);color:#08182a;border:1.5px solid #7ab0cc}
+.m3pm.especial{background:linear-gradient(160deg,#3a0070,#0088dd);color:#fff;border:1.5px solid #60a8ff}
+.m3pm.ouro{background:linear-gradient(160deg,#6a4400,#f0c030);color:#1a0f00;border:1.5px solid #d4a020}
+.m3pm.prata{background:linear-gradient(160deg,#283848,#a0c0cc);color:#fff;border:1.5px solid #6898aa}
+.m3pm.bronze{background:linear-gradient(160deg,#281408,#a07040);color:#fff;border:1.5px solid #806040}
+.m3pm::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.14) 0%,transparent 55%);pointer-events:none;z-index:2}
+.m3pm-r{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.7rem,2vw,1rem);font-weight:900;line-height:1;position:absolute;top:7%;right:8%;z-index:3;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.m3pm-p{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.38rem,1.1vw,.56rem);font-weight:700;text-transform:uppercase;position:absolute;top:7%;left:8%;z-index:3;opacity:.9}
+.m3pm-n{position:absolute;bottom:0;left:0;right:0;z-index:3;background:rgba(0,0,0,.45);font-family:'Barlow Condensed',sans-serif;font-size:clamp(.42rem,1.3vw,.6rem);font-weight:800;text-align:center;padding:.07rem .1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.m3progbar{margin-top:.25rem}
+
+/* Hand */
+.m3hwrap{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:.42rem .48rem;display:flex;flex-direction:column;gap:.28rem}
+.m3hlbl{font-family:'Barlow Condensed',sans-serif;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+.m3hcards{display:flex;gap:.2rem;flex-wrap:wrap}
+.m3hc{width:calc(33.3% - .14rem);min-width:46px;height:78px;flex-shrink:0}
+.m3hc .card{width:100%;height:100%}
+.m3sellblk{background:var(--bg3);border:1px solid rgba(245,197,66,.2);border-radius:7px;padding:.28rem .38rem}
+.m3sellhdr{display:flex;align-items:center;gap:.24rem;margin-bottom:.22rem}
+.m3selltxt{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--gold)}
+.m3sellitems{display:flex;flex-direction:column;gap:.18rem;max-height:68px;overflow-y:auto}
+.m3sb{display:flex;align-items:center;justify-content:space-between;background:rgba(245,197,66,.06);border:1px solid rgba(245,197,66,.18);color:var(--gold);padding:.22rem .38rem;border-radius:5px;font-size:.62rem;font-weight:600;cursor:pointer;transition:.18s}
+.m3sb:hover{background:rgba(245,197,66,.14)}
+.m3sb-m{font-size:.55rem;color:rgba(245,197,66,.6)}
+
+/* ═══ MODALS ═══ */
+.m3modal{position:fixed;inset:0;background:rgba(0,0,0,.86);z-index:300;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(3px)}
+.m3modal.open{display:flex}
+.m3mbox{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:16px;padding:1.4rem;max-width:440px;width:100%;box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.m3mt{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:900;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.25rem}
+.m3mi{font-size:.72rem;color:var(--text2);margin-bottom:.85rem}
+.m3mc{display:flex;gap:.65rem;justify-content:center;flex-wrap:wrap;margin-bottom:.9rem}
+.m3mcw{width:108px;height:138px;cursor:pointer;border-radius:9px;overflow:hidden;flex-shrink:0;transition:.2s}
+.m3mcw:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.m3mcw.sel{outline:3px solid var(--accent);transform:translateY(-3px);box-shadow:0 0 16px rgba(0,229,255,.35)}
+.m3mcw .card{width:100%;height:100%}
+.m3mbtns{display:flex;gap:.5rem}
+.m3can{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.48rem;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:700;text-transform:uppercase;cursor:pointer;transition:.2s}
+.m3con{flex:2}
+.m3dbox{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:16px;padding:1.6rem 1.4rem;max-width:300px;width:100%;text-align:center;box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.m3dtit{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem}
+.m3ddice{font-size:3rem;line-height:1;margin-bottom:.4rem}
+.m3dres{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--gold);margin-bottom:.3rem;white-space:pre-line;line-height:1.35}
+.m3dsub{font-size:.68rem;color:var(--text2);margin-bottom:.85rem;white-space:pre-line;line-height:1.5}
+
+</style>E html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>ScoutPro</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#06080d;--bg2:#0d1120;--bg3:#141929;--border:#1e2840;
+  --text:#e8eaf0;--text2:#8a90a8;
+  --accent:#00e5ff;--accent2:#7c3aed;
+  --gold:#f5c542;--green:#00e676;--red:#ff3d57;
+}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;overflow:hidden;height:100vh}
+.screen{display:none;height:100vh;flex-direction:column}
+.screen.active{display:flex}
+#menu{background:radial-gradient(ellipse at 30% 20%,#0d1b3e,var(--bg) 65%);align-items:center;justify-content:center;position:relative;overflow:hidden}
+#menu::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2300e5ff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6z'/%3E%3C/g%3E%3C/svg%3E")}
+.menu-inner{text-align:center;z-index:1;padding:2rem}
+.logo-tag{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.35em;color:var(--accent);text-transform:uppercase;margin-bottom:.4rem}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:5rem;font-weight:900;line-height:.95;text-transform:uppercase;font-style:italic;background:linear-gradient(135deg,#fff 0%,var(--accent) 55%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.3rem}
+.subtitle{font-size:.85rem;color:var(--text2);letter-spacing:.15em;text-transform:uppercase;margin-bottom:2.5rem}
+.mode-cards{display:flex;gap:1.25rem;flex-wrap:wrap;justify-content:center}
+.mode-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.75rem;width:250px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.mode-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent),var(--accent2));opacity:0;transition:.3s}
+.mode-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,229,255,.15)}
+.mode-card:hover::after{opacity:.05}
+.mode-num{font-family:'Barlow Condensed',sans-serif;font-size:2.75rem;font-weight:900;color:var(--accent);opacity:.25;line-height:1}
+.mode-title{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;text-transform:uppercase;margin-bottom:.4rem}
+.mode-desc{font-size:.78rem;color:var(--text2);line-height:1.5}
+.mode-tag{display:inline-flex;gap:.35rem;margin-top:.9rem;font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:rgba(0,229,255,.08);padding:.25rem .55rem;border-radius:4px}
+.game-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:.5rem .9rem;display:flex;align-items:center;gap:.7rem;flex-shrink:0}
+.back-btn{background:none;border:1px solid var(--border);color:var(--text2);padding:.28rem .6rem;border-radius:5px;cursor:pointer;font-size:.72rem;transition:.2s}
+.back-btn:hover{border-color:var(--accent);color:var(--accent)}
+.game-title{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em}
+.badge{font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:rgba(0,229,255,.1);color:var(--accent);padding:.18rem .5rem;border-radius:4px;margin-left:auto;white-space:nowrap}
+.zlbl{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);margin-bottom:.28rem}
+.btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:.5rem .9rem;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;transition:.2s;width:100%}
+.btn:hover{transform:translateY(-1px);box-shadow:0 3px 16px rgba(0,229,255,.25)}
+.btn:disabled{opacity:.35;cursor:default;transform:none;box-shadow:none}
+.pbar{background:var(--border);border-radius:3px;height:4px;margin-top:.3rem}
+.pfill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--green));transition:.4s}
+/* CARD */
+.card{
+  width:100%;height:100%;
+  border-radius:8px;
+  display:flex;flex-direction:column;
+  overflow:hidden;user-select:none;
+  position:relative;
+}
+/* Rarity colors */
+.card.icone   {background:linear-gradient(160deg,#b8d8ee 0%,#deeefa 50%,#a0c0d8 100%);color:#08182a;border:2px solid #7ab0cc}
+.card.especial{background:linear-gradient(160deg,#3a0070 0%,#7a20c0 40%,#0088dd 100%);color:#fff;border:2px solid #60a8ff;box-shadow:0 0 10px rgba(80,160,255,.3)}
+.card.ouro    {background:linear-gradient(160deg,#6a4400 0%,#b87a00 40%,#f0c030 100%);color:#1a0f00;border:2px solid #d4a020}
+.card.prata   {background:linear-gradient(160deg,#283848 0%,#4a6878 40%,#a0c0cc 100%);color:#fff;border:2px solid #6898aa}
+.card.bronze  {background:linear-gradient(160deg,#281408 0%,#583020 40%,#a07040 100%);color:#fff;border:2px solid #806040}
+/* Shine overlay */
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.16) 0%,transparent 50%,rgba(0,0,0,.1) 100%);pointer-events:none;z-index:3}
+/* Top section: stars left, points right */
+.c-top{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding:.28rem .32rem .1rem;
+  flex-shrink:0;z-index:2;position:relative;
+}
+.c-stars-block{display:flex;flex-direction:column;gap:.04rem}
+.c-stars{font-size:clamp(.42rem,1.5vw,.72rem);line-height:1.1;letter-spacing:.06em;opacity:.9}
+.c-rarity{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.38rem,1.2vw,.58rem);font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.75;line-height:1}
+.c-pts-block{text-align:right}
+.c-pts{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.9rem,3.5vw,1.6rem);font-weight:900;line-height:1;text-shadow:0 1px 4px rgba(0,0,0,.35)}
+.c-pos{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.38rem,1.2vw,.58rem);font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.8;text-align:right;margin-top:.02rem}
+/* Spacer / avatar area */
+.c-avatar{
+  flex:1;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(1.2rem,5vw,2.2rem);
+  opacity:.22;z-index:1;
+}
+/* Bottom name bar */
+.c-bottom{
+  flex-shrink:0;padding:.14rem .28rem .18rem;
+  background:rgba(0,0,0,.38);
+  position:relative;z-index:2;
+}
+.c-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.55rem,2vw,1rem);
+  font-weight:800;line-height:1.1;
+  text-transform:uppercase;letter-spacing:.03em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-shadow:0 1px 3px rgba(0,0,0,.6);
+  color:#fff;
+}
+/* Holographic shimmer for Ícone */
+.card.icone::after{
+  content:'';position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:linear-gradient(105deg,transparent 30%,rgba(180,230,255,.2) 45%,rgba(220,190,255,.15) 55%,transparent 70%);
+  background-size:200% 100%;
+  animation:holo 3.5s linear infinite;
+}
+@keyframes holo{0%{background-position:200% 0}100%{background-position:-200% 0}}
+/* Especial particle dots */
+.card.especial::after{
+  content:'⭐';position:absolute;bottom:.15rem;right:.25rem;font-size:.55rem;z-index:4;opacity:.5;pointer-events:none;
+}
+/* Pitch mini cards (mode 2 and 3) */
+.pm{
+  position:relative;overflow:hidden;
+  border-radius:5px;
+  display:flex;flex-direction:column;
+}
+.pm.empty{
+  background:rgba(255,255,255,.06);
+  border:1.5px dashed rgba(255,255,255,.2);
+  min-height:36px;
+  display:flex;align-items:center;justify-content:center;
+}
+.pm.empty .pmlbl{font-family:'Barlow Condensed',sans-serif;font-size:.55rem;color:rgba(255,255,255,.35);font-weight:700}
+.pm.icone   {background:linear-gradient(160deg,#b8d8ee,#deeefa);color:#08182a;border:1.5px solid #7ab0cc}
+.pm.especial{background:linear-gradient(160deg,#3a0070,#0088dd);color:#fff;border:1.5px solid #60a8ff}
+.pm.ouro    {background:linear-gradient(160deg,#6a4400,#f0c030);color:#1a0f00;border:1.5px solid #d4a020}
+.pm.prata   {background:linear-gradient(160deg,#283848,#a0c0cc);color:#fff;border:1.5px solid #6898aa}
+.pm.bronze  {background:linear-gradient(160deg,#281408,#a07040);color:#fff;border:1.5px solid #806040}
+.pm::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.14) 0%,transparent 55%);pointer-events:none;z-index:2}
+.pm-top{display:flex;justify-content:space-between;align-items:flex-start;padding:.15rem .16rem .05rem;position:relative;z-index:3}
+.pm-stars{font-size:.45rem;line-height:1;letter-spacing:.04em;opacity:.9}
+.pm-pts{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:900;line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.pm-pos{font-family:'Barlow Condensed',sans-serif;font-size:.42rem;font-weight:700;text-transform:uppercase;text-align:right;opacity:.8;line-height:1}
+.pm-bot{flex-shrink:0;padding:.07rem .14rem .1rem;background:rgba(0,0,0,.35);position:relative;z-index:3}
+.pm-name{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.42rem,1.3vw,.62rem);font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5);line-height:1.1}
+.pm-space{flex:1;display:flex;align-items:center;justify-content:center;font-size:.9rem;opacity:.15;z-index:1}
+/* MODE 1 */
+#mode1{background:radial-gradient(ellipse at 50% 0%,#0a1628,var(--bg) 70%)}
+.m1{flex:1;display:flex;flex-direction:column;gap:.32rem;padding:.38rem .48rem;max-width:520px;margin:0 auto;width:100%;overflow:hidden;min-height:0}
+.sbar{display:flex;align-items:center;gap:.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:.28rem .55rem;flex-shrink:0}
+.sbar .ps{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:800;color:var(--accent)}
+.sbar .ai{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:800;color:var(--red)}
+.sbar .mid{flex:1;text-align:center;font-size:.58rem;color:var(--text2);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.aizone{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.38rem .52rem;flex-shrink:0}
+.aislots{display:flex;gap:.25rem}
+.aislot{flex:1;height:50px;border-radius:7px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;flex-direction:column;gap:.1rem}
+.aislot.click{animation:pulse 1.5s infinite}
+.aislot.off{opacity:.3;cursor:default;animation:none}
+@keyframes pulse{0%,100%{border-color:var(--accent)}50%{border-color:var(--accent2)}}
+.aislot-ico{font-size:1.1rem}
+.aislot-lbl{font-size:.5rem;color:var(--text2)}
+.bzone{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.38rem .52rem;flex-shrink:0}
+.brow{display:flex;align-items:center;gap:.38rem}
+.bside{flex:1;display:flex;align-items:center;gap:.32rem;min-width:0}
+.bcw{width:68px;min-width:68px;height:90px;flex-shrink:0}
+.binfo{display:flex;flex-direction:column;gap:.08rem;flex:1;min-width:0}
+.blbl{font-family:'Barlow Condensed',sans-serif;font-size:.56rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text2)}
+.bdice{font-size:1.35rem;line-height:1}
+.bsc{font-family:'Barlow Condensed',sans-serif;font-size:1.65rem;font-weight:900;line-height:1}
+.bbrk{font-size:.6rem;color:var(--text2)}
+.vsd{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:900;color:var(--border);flex-shrink:0}
+.bres{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:800;text-transform:uppercase;padding:.2rem .52rem;border-radius:5px;margin-top:.25rem;display:block;text-align:center}
+.bres.win{background:rgba(0,230,118,.15);color:var(--green)}
+.bres.lose{background:rgba(255,61,87,.15);color:var(--red)}
+.bres.draw{background:rgba(255,193,7,.15);color:#ffc107}
+.msgbox{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:.25rem .55rem;text-align:center;font-size:.68rem;color:var(--text2);flex-shrink:0}
+.hzone{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.38rem .52rem;flex-shrink:0}
+.hrow{display:flex;gap:.26rem}
+.hcard{flex:1;min-width:0;height:106px}
+/* MODE 2 */
+#mode2{background:radial-gradient(ellipse at 70% 20%,#0a1628,var(--bg) 70%)}
+.m2{flex:1;display:flex;flex-direction:column;gap:.32rem;padding:.38rem .48rem;max-width:900px;margin:0 auto;width:100%;overflow-y:auto;padding-bottom:.8rem}
+.pilesbar{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .52rem;flex-shrink:0;display:flex;gap:.48rem;align-items:flex-start}
+.pblock{text-align:center;flex-shrink:0}
+.ptitle{font-family:'Barlow Condensed',sans-serif;font-size:.52rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text2);margin-bottom:.22rem;white-space:nowrap}
+.pstack{width:46px;height:58px;margin:0 auto;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:.62rem;font-weight:900;position:relative;cursor:pointer;transition:.2s;border:2px dashed;text-align:center;line-height:1.2}
+.pstack.bp{background:linear-gradient(145deg,#5d4037,#607d8b);border-color:#a1887f;color:#fff}
+.pstack.ou{background:linear-gradient(145deg,#b8860b,#f5c542);border-color:#d4a017;color:#1a1200}
+.pstack.es{background:linear-gradient(145deg,#7c3aed,#00e5ff);border-color:var(--accent);color:#fff}
+.pstack:hover:not(.off){transform:scale(1.06)}
+.pstack.off{opacity:.4;cursor:default}
+.pcnt{position:absolute;bottom:-6px;right:-6px;background:var(--bg);border:1px solid var(--border);border-radius:50%;width:17px;height:17px;display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:700}
+.logblock{flex:1;min-width:0}
+#m2log{font-size:.6rem;color:var(--text2);height:53px;overflow-y:auto;background:var(--bg3);border-radius:5px;padding:.26rem .38rem;line-height:1.65}
+.pitrow{display:grid;grid-template-columns:1fr 1fr;gap:.38rem;flex-shrink:0}
+@media(max-width:520px){.pitrow{grid-template-columns:1fr}}
+.pwrap{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .42rem;display:flex;flex-direction:column}
+.phdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.22rem;flex-shrink:0}
+.powner{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+.ppts{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:700;color:var(--gold)}
+.pitch-outer{position:relative;width:100%;padding-top:115%;border-radius:6px;overflow:hidden}
+.pitch{position:absolute;inset:0;background:linear-gradient(180deg,#1a4a28 0%,#1e5a30 8%,#1a4a28 16%,#1e5a30 24%,#1a4a28 32%,#1e5a30 40%,#1a4a28 48%,#1e5a30 56%,#1a4a28 64%,#1e5a30 72%,#1a4a28 80%,#1e5a30 88%,#1a4a28 100%)}
+.pitch::before{content:'';position:absolute;inset:3%;border:1.5px solid rgba(255,255,255,.18);border-radius:3px;pointer-events:none;z-index:1}
+.pitch::after{content:'';position:absolute;left:20%;right:20%;top:50%;transform:translateY(-50%);height:20%;border:1.5px solid rgba(255,255,255,.15);border-radius:50%;pointer-events:none;z-index:1}
+.pcl{position:absolute;left:3%;right:3%;top:50%;height:1px;background:rgba(255,255,255,.15);z-index:1;pointer-events:none}
+.pcd{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.22);z-index:1;pointer-events:none}
+.pslot{position:absolute;transform:translate(-50%,-50%);z-index:2;width:26%}1);min-height:32px;display:flex;align-items:center;justify-content:center}
+.pm.empty .pmlbl{font-family:'Barlow Condensed',sans-serif;font-size:.5rem;color:rgba(255,255,255,.22);font-weight:700}
+.pm.icone{background:linear-gradient(145deg,#dce8f2,#b8cfe0);color:#0a1828;border:1px solid #9ab8cc}
+.pm.especial{background:linear-gradient(145deg,#7c3aed,#00e5ff);color:#fff;border:1px solid var(--accent)}
+.pm.ouro{background:linear-gradient(145deg,#b8860b,#f5c542);color:#1a1200;border:1px solid #d4a017}
+.pm.prata{background:linear-gradient(145deg,#607d8b,#cfd8dc);color:#fff;border:1px solid #78909c}
+.pm.bronze{background:linear-gradient(145deg,#5d4037,#a1887f);color:#fff;border:1px solid #795548}
+.pmname{font-family:'Barlow Condensed',sans-serif;font-size:.5rem;font-weight:800;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pmrow{display:flex;justify-content:space-between;align-items:center}
+.pmpos{font-size:.4rem;font-weight:700;text-transform:uppercase;opacity:.8}
+.pmpts{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;font-weight:900}
+.aist{font-size:.58rem;color:var(--text2);font-style:italic;flex-shrink:0;margin-top:.18rem}
+.abar{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.32rem .48rem;flex-shrink:0}
+.hcards{display:flex;gap:.2rem;margin-bottom:.28rem;flex-wrap:wrap}
+.hc{width:calc(20% - .16rem);min-width:42px;height:80px;flex-shrink:0}
+.tpanel{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:.28rem .42rem;margin-bottom:.28rem}
+.ttitle{font-family:'Barlow Condensed',sans-serif;font-size:.54rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:.2rem}
+.tlist{display:flex;flex-direction:column;gap:.2rem;max-height:68px;overflow-y:auto}
+.tbtn{background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.18);color:var(--accent);padding:.2rem .42rem;border-radius:4px;font-size:.6rem;font-weight:600;cursor:pointer;transition:.2s;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbtn:hover{background:rgba(0,229,255,.14)}
+.ttag{font-size:.52rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .36rem;border-radius:3px;margin-left:.28rem}
+.ttag.pt{background:rgba(0,229,255,.1);color:var(--accent)}
+.ttag.at{background:rgba(255,61,87,.1);color:var(--red)}
+/* GAME OVER */
+#gameover{align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,#0d1b3e,var(--bg) 70%)}
+.goi{text-align:center;padding:2rem;max-width:360px}
+.goico{font-size:3.5rem;margin-bottom:.75rem}
+.gotit{font-family:'Barlow Condensed',sans-serif;font-size:3.2rem;font-weight:900;text-transform:uppercase;line-height:1;margin-bottom:.4rem}
+.gotit.won{background:linear-gradient(135deg,var(--gold),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gotit.lost{color:var(--red)}
+.gosub{color:var(--text2);margin-bottom:1.75rem;font-size:.88rem}
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg2);border:1px solid var(--accent);border-radius:7px;padding:.45rem .9rem;font-size:.8rem;color:var(--accent);z-index:999;transition:.3s;opacity:0;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* ═══════════════════════════════════════════════════
+   MODE 3 — MUNDO DO FUTEBOL
+═══════════════════════════════════════════════════ */
+#mode3{background:linear-gradient(135deg,#06080d 0%,#0a1520 50%,#080d06 100%);overflow-y:auto;height:100vh}
+.m3{display:flex;flex-direction:column;gap:.55rem;padding:.5rem .6rem .9rem;max-width:960px;margin:0 auto;width:100%}
+
+/* STATUS BAR */
+.m3status{display:grid;grid-template-columns:auto auto 1fr minmax(180px,220px);gap:.45rem;align-items:stretch;flex-shrink:0}
+.m3coin-block{display:flex;align-items:center;gap:.45rem;background:rgba(245,197,66,.07);border:1px solid rgba(245,197,66,.22);border-radius:10px;padding:.38rem .65rem;flex-shrink:0}
+.m3coin-block.ai-coins{background:rgba(255,61,87,.06);border-color:rgba(255,61,87,.22)}
+.m3coin-emoji{font-size:1.15rem;line-height:1}
+.m3coin-num{font-family:'Barlow Condensed',sans-serif;font-size:1.55rem;font-weight:900;line-height:1;color:var(--gold)}
+.m3coin-block.ai-coins .m3coin-num{color:var(--red)}
+.m3coin-lbl{font-family:'Barlow Condensed',sans-serif;font-size:.52rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);line-height:1.3;margin-top:.1rem}
+.m3turn-block{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.38rem .65rem;display:flex;flex-direction:column;justify-content:center}
+.m3turn-title{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;line-height:1.2}
+.m3turn-sub{font-size:.62rem;color:var(--text2);margin-top:.12rem}
+.m3logbox{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.32rem .55rem;font-size:.6rem;color:var(--text2);overflow-y:auto;line-height:1.7;max-height:68px}
+
+/* WORLD MAP */
+.m3world{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;flex-shrink:0}
+
+/* Region tiles */
+.m3region{
+  border-radius:12px;
+  padding:.6rem .7rem;
+  border:2px solid transparent;
+  transition:box-shadow .2s,border-color .2s;
+  position:relative;
+  min-height:100px;
+}
+.m3region.brasil  {background:linear-gradient(140deg,#0c4018,#196028,#104820);border-color:#26963a}
+.m3region.america {background:linear-gradient(140deg,#183a08,#264a0e,#1c4210);border-color:#4a8c1c}
+.m3region.europa  {background:linear-gradient(140deg,#0a1848,#101e6a,#0e1c5a);border-color:#2a54d0}
+.m3region.mundo   {background:linear-gradient(140deg,#3a1208,#601a0c,#4a1408);border-color:#c04222}
+.m3region.you-here{box-shadow:0 0 0 2px var(--accent),0 0 18px rgba(0,229,255,.22);border-color:var(--accent) !important}
+.m3region.ai-here {box-shadow:0 0 0 2px var(--red),0 0 14px rgba(255,61,87,.18);border-color:var(--red) !important}
+.m3region.both-here{box-shadow:0 0 0 2px var(--accent),0 0 22px rgba(0,229,255,.2);border-color:var(--accent) !important}
+
+/* Region header */
+.m3reg-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.45rem}
+.m3reg-name{display:flex;align-items:center;gap:.38rem}
+.m3reg-flag{font-size:1.3rem;line-height:1}
+.m3reg-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;text-transform:uppercase;letter-spacing:.09em;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.m3reg-badges{display:flex;align-items:center;gap:.25rem;flex-wrap:wrap}
+.m3pawn{display:inline-flex;align-items:center;gap:.15rem;font-size:.58rem;font-weight:700;padding:.13rem .38rem;border-radius:10px;letter-spacing:.04em;white-space:nowrap}
+.m3pawn.you{background:rgba(0,229,255,.2);color:var(--accent);border:1px solid rgba(0,229,255,.35)}
+.m3pawn.ia{background:rgba(255,61,87,.18);color:var(--red);border:1px solid rgba(255,61,87,.3)}
+.m3pile-cnt{font-size:.56rem;color:rgba(255,255,255,.42);font-family:'Barlow Condensed',sans-serif;font-weight:700;white-space:nowrap}
+
+/* Action buttons grid */
+.m3reg-actions{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:.3rem}
+.m3act{
+  border-radius:8px;padding:.4rem .35rem;
+  cursor:pointer;transition:all .18s;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(0,0,0,.28);
+}
+.m3act:hover:not(.m3act-off){
+  background:rgba(255,255,255,.12);
+  border-color:rgba(255,255,255,.32);
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,.35);
+}
+.m3act.m3act-off{opacity:.28;cursor:not-allowed;pointer-events:none}
+.m3act-icon{font-size:1rem;line-height:1;display:block;margin-bottom:.14rem}
+.m3act-name{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;display:block;line-height:1.1}
+.m3act-cost{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:700;color:var(--gold);display:block;margin-top:.08rem}
+.m3act.m3act-travel{background:rgba(0,229,255,.08);border-color:rgba(0,229,255,.25);color:var(--accent)}
+.m3act.m3act-travel .m3act-cost{color:var(--accent)}
+.m3act.m3act-travel:hover:not(.m3act-off){background:rgba(0,229,255,.18)}
+.m3consec{font-size:.54rem;color:#ffc107;margin-top:.22rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.04em}
+
+/* BOTTOM AREA */
+.m3bottom{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;flex-shrink:0}
+
+/* Team pitch */
+.m3team-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.45rem .52rem}
+.m3team-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.3rem}
+.m3team-lbl{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+.m3team-pts{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:700;color:var(--gold)}
+.m3pitch-outer{position:relative;width:100%;padding-top:110%;border-radius:7px;overflow:hidden}
+.m3pitch-inner{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    #1a4828 0%,#1e5830 8%,#1a4828 16%,#1e5830 24%,
+    #1a4828 32%,#1e5830 40%,#1a4828 48%,#1e5830 56%,
+    #1a4828 64%,#1e5830 72%,#1a4828 80%,#1e5830 88%,#1a4828 100%);
+}
+.m3pitch-inner::before{content:'';position:absolute;inset:3%;border:2px solid rgba(255,255,255,.2);border-radius:4px;pointer-events:none;z-index:1}
+.m3pitch-inner::after{content:'';position:absolute;left:20%;right:20%;top:50%;transform:translateY(-50%);height:22%;border:1.5px solid rgba(255,255,255,.18);border-radius:50%;pointer-events:none;z-index:1}
+.m3pcl{position:absolute;left:3%;right:3%;top:50%;height:1.5px;background:rgba(255,255,255,.18);z-index:1;pointer-events:none}
+.m3pcd{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);z-index:1;pointer-events:none}
+.m3pslot{position:absolute;transform:translate(-50%,-50%);z-index:2;width:28%}
+.m3pm{
+  position:relative;overflow:hidden;
+  border-radius:5px;
+  display:flex;flex-direction:column;
+}
+.m3pm.empty{clip-path:none;border-radius:4px;background:rgba(255,255,255,.06);border:1.5px dashed rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center}
+.m3pm.empty .m3pml{font-family:'Barlow Condensed',sans-serif;font-size:.52rem;color:rgba(255,255,255,.3);font-weight:700}
+.m3pm.icone   {background:linear-gradient(160deg,#b8d8ee,#deeefa);color:#08182a;border:1.5px solid #7ab0cc}
+.m3pm.especial{background:linear-gradient(160deg,#3a0070,#0088dd);color:#fff;border:1.5px solid #60a8ff}
+.m3pm.ouro    {background:linear-gradient(160deg,#6a4400,#f0c030);color:#1a0f00;border:1.5px solid #d4a020}
+.m3pm.prata   {background:linear-gradient(160deg,#283848,#a0c0cc);color:#fff;border:1.5px solid #6898aa}
+.m3pm.bronze  {background:linear-gradient(160deg,#281408,#a07040);color:#fff;border:1.5px solid #806040}
+.m3pm::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.14) 0%,transparent 55%);pointer-events:none;z-index:2}
+.m3pbar{margin-top:.28rem}
+
+/* Hand & sell */
+.m3hand-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.45rem .52rem;display:flex;flex-direction:column;gap:.32rem}
+.m3hand-lbl{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+.m3hand-cards{display:flex;gap:.22rem;flex-wrap:wrap}
+.m3hc2{width:calc(33.3% - .15rem);min-width:48px;height:80px;flex-shrink:0}
+.m3hc2 .card{width:100%;height:100%}
+.m3sell-block{background:var(--bg3);border:1px solid rgba(245,197,66,.22);border-radius:8px;padding:.32rem .42rem}
+.m3sell-hdr{display:flex;align-items:center;gap:.28rem;margin-bottom:.26rem}
+.m3sell-hdr-icon{font-size:.9rem;line-height:1}
+.m3sell-hdr-txt{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--gold)}
+.m3sell-items{display:flex;flex-direction:column;gap:.2rem;max-height:72px;overflow-y:auto}
+.m3sbtn{display:flex;align-items:center;justify-content:space-between;background:rgba(245,197,66,.06);border:1px solid rgba(245,197,66,.18);color:var(--gold);padding:.25rem .42rem;border-radius:6px;font-size:.63rem;font-weight:600;cursor:pointer;transition:.18s}
+.m3sbtn:hover{background:rgba(245,197,66,.14)}
+.m3sbtn-name{font-family:'Barlow Condensed',sans-serif;font-weight:700}
+.m3sbtn-mult{font-size:.56rem;color:rgba(245,197,66,.6)}
+
+/* MODALS */
+.m3modal{position:fixed;inset:0;background:rgba(0,0,0,.84);z-index:300;display:none;align-items:center;justify-content:center;padding:1rem}
+.m3modal.open{display:flex}
+.m3mbox{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:16px;padding:1.4rem;max-width:440px;width:100%;box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.m3mtitle{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:900;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.28rem}
+.m3minfo{font-size:.73rem;color:var(--text2);margin-bottom:.85rem}
+.m3mcards{display:flex;gap:.65rem;justify-content:center;flex-wrap:wrap;margin-bottom:.95rem}
+.m3mcw{width:108px;height:138px;cursor:pointer;border-radius:9px;overflow:hidden;flex-shrink:0;transition:.2s}
+.m3mcw:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.m3mcw.sel{outline:3px solid var(--accent);transform:translateY(-3px);box-shadow:0 0 16px rgba(0,229,255,.35)}
+.m3mcw .card{width:100%;height:100%}
+.m3mbtns{display:flex;gap:.5rem}
+.m3cancel{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.5rem;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:700;text-transform:uppercase;cursor:pointer;transition:.2s}
+.m3cancel:hover{border-color:var(--text)}
+.m3confirm{flex:2}
+.m3dbox{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:16px;padding:1.6rem 1.4rem;max-width:310px;width:100%;text-align:center;box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.m3d-title{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text2);margin-bottom:.55rem}
+.m3d-dice{font-size:3rem;line-height:1;margin-bottom:.45rem}
+.m3d-result{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--gold);margin-bottom:.35rem;white-space:pre-line;line-height:1.35}
+.m3d-sub{font-size:.68rem;color:var(--text2);margin-bottom:.9rem;white-space:pre-line;line-height:1.55}
+</style>
+</head>
+<body>
+
+<div id="menu" class="screen active">
+  <div class="menu-inner">
+    <div class="logo-tag">⚽ Football Cards</div>
+    <div class="logo">ScoutPro</div>
+    <div class="subtitle">Escolha seu modo de jogo</div>
+    <div class="mode-cards">
+      <div class="mode-card" onclick="startM1()">
+        <div class="mode-num">01</div>
+        <div class="mode-title">Duelo com Dados</div>
+        <div class="mode-desc">Tire cartas às cegas e role os dados. Mais pontos leva as cartas.</div>
+        <div class="mode-tag">🎲 Com dados · vs IA</div>
+      </div>
+      <div class="mode-card" onclick="startM2()">
+        <div class="mode-num">02</div>
+        <div class="mode-title">Montagem de Time</div>
+        <div class="mode-desc">Compre, troque e evolua cartas para montar um time de 11 com 40 pts.</div>
+        <div class="mode-tag">⚽ Sem dados · vs IA</div>
+      </div>
+      <div class="mode-card" onclick="startM3()">
+        <div class="mode-num">03</div>
+        <div class="mode-title">Mundo do Futebol</div>
+        <div class="mode-desc">Viaje pelo mundo, use olheiros, patrocínios e vendas para montar o time perfeito.</div>
+        <div class="mode-tag">🌍 Com tabuleiro · vs IA</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="mode1" class="screen">
+  <div class="game-header">
+    <button class="back-btn" onclick="goMenu()">← Menu</button>
+    <div class="game-title">Duelo com Dados</div>
+    <div class="badge" id="m1badge">Rodada 1</div>
+  </div>
+  <div class="m1">
+    <div class="sbar">
+      <div class="ps" id="m1pc">Você: 5</div>
+      <div class="mid">CARTAS NA MÃO</div>
+      <div class="ai" id="m1ac">IA: 5</div>
+    </div>
+    <div class="aizone">
+      <div class="zlbl">🤖 Mão da IA — clique para tirar uma carta</div>
+      <div class="aislots" id="m1aih"></div>
+    </div>
+    <div class="bzone">
+      <div class="brow">
+        <div class="bside">
+          <div class="bcw" id="m1pdisp"></div>
+          <div class="binfo">
+            <div class="blbl">VOCÊ</div>
+            <div class="bdice" id="m1pdice">—</div>
+            <div class="bsc" id="m1ptot">—</div>
+            <div class="bbrk" id="m1pbrk"></div>
+          </div>
+        </div>
+        <div class="vsd">VS</div>
+        <div class="bside" style="flex-direction:row-reverse">
+          <div class="bcw" id="m1aidisp"></div>
+          <div class="binfo" style="align-items:flex-end">
+            <div class="blbl">IA</div>
+            <div class="bdice" id="m1adice">—</div>
+            <div class="bsc" id="m1atot">—</div>
+            <div class="bbrk" id="m1abrk"></div>
+          </div>
+        </div>
+      </div>
+      <div id="m1res" class="bres" style="display:none"></div>
+    </div>
+    <div class="msgbox" id="m1msg">Clique em uma das cartas da IA para iniciar a rodada</div>
+    <div class="hzone">
+      <div class="zlbl">🃏 Sua mão</div>
+      <div class="hrow" id="m1ph"></div>
+    </div>
+    <button class="btn" id="m1btn" onclick="m1Action()" disabled>🎲 Rolar Dados</button>
+  </div>
+</div>
+
+<div id="mode2" class="screen">
+  <div class="game-header">
+    <button class="back-btn" onclick="goMenu()">← Menu</button>
+    <div class="game-title">Montagem de Time</div>
+    <div class="badge" id="m2badge">Seu Turno</div>
+  </div>
+  <div class="m2">
+    <div class="pilesbar">
+      <div class="pblock">
+        <div class="ptitle">Grupo 1<br>Bro·Pra</div>
+        <div class="pstack bp" id="pile1" onclick="drawCard()">Comprar<span class="pcnt" id="p1n">0</span></div>
+      </div>
+      <div class="pblock">
+        <div class="ptitle">Grupo 2<br>Ouro</div>
+        <div class="pstack ou off" id="pile2">Ouro<span class="pcnt" id="p2n">0</span></div>
+      </div>
+      <div class="pblock">
+        <div class="ptitle">Grupo 3<br>Esp·Íc</div>
+        <div class="pstack es off" id="pile3">Esp<span class="pcnt" id="p3n">0</span></div>
+      </div>
+      <div class="logblock">
+        <div class="ptitle">Log</div>
+        <div id="m2log"></div>
+      </div>
+    </div>
+    <div class="pitrow">
+      <div class="pwrap">
+        <div class="phdr">
+          <div class="powner">🃏 Seu Time <span id="m2ptag" class="ttag pt">SEU TURNO</span></div>
+          <div class="ppts" id="m2ppts">0 / 40 pts</div>
+        </div>
+        <div class="pitch-outer"><div class="pitch" id="m2ppitch"><div class="pcl"></div><div class="pcd"></div></div></div>
+        <div class="pbar"><div class="pfill" id="m2pprog" style="width:0%"></div></div>
+      </div>
+      <div class="pwrap">
+        <div class="phdr">
+          <div class="powner">🤖 Time IA <span id="m2atag" class="ttag at" style="display:none">IA</span></div>
+          <div class="ppts" id="m2apts">0 / 40 pts</div>
+        </div>
+        <div class="pitch-outer"><div class="pitch" id="m2apitch"><div class="pcl"></div><div class="pcd"></div></div></div>
+        <div class="pbar"><div class="pfill" id="m2aprog" style="width:0%"></div></div>
+        <div class="aist" id="m2ais">Aguardando...</div>
+      </div>
+    </div>
+    <div class="abar">
+      <div class="zlbl">🃏 SUA MÃO</div>
+      <div class="hcards" id="m2ph"></div>
+      <div class="tpanel">
+        <div class="ttitle">⚡ Trocas — mesma posição (mão + time)</div>
+        <div class="tlist" id="m2trades"><div style="font-size:.65rem;color:var(--text2)">Compre cartas para ver trocas</div></div>
+      </div>
+      <button class="btn" id="m2end" onclick="m2EndTurn()" disabled>Encerrar Turno →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ MODE 3 — MUNDO DO FUTEBOL ═══════════════════════════ -->
+<div id="mode3" class="screen">
+  <div class="game-header">
+    <button class="back-btn" onclick="goMenu()">← Menu</button>
+    <div class="game-title">🌍 Mundo do Futebol</div>
+    <div class="badge" id="m3badge">Turno 1</div>
+  </div>
+
+  <div class="m3">
+
+    <!-- STATUS BAR -->
+    <div class="m3status">
+      <div class="m3coin-block">
+        <span class="m3coin-emoji">🪙</span>
+        <div>
+          <div class="m3coin-num" id="m3pcoins">50</div>
+          <div class="m3coin-lbl">Suas moedas</div>
+        </div>
+      </div>
+      <div class="m3coin-block ai-coins">
+        <span class="m3coin-emoji">🤖</span>
+        <div>
+          <div class="m3coin-num" id="m3acoins">50</div>
+          <div class="m3coin-lbl">Moedas IA</div>
+        </div>
+      </div>
+      <div class="m3turn-block">
+        <div class="m3turn-title" id="m3turntxt">Sua vez — escolha uma ação</div>
+        <div class="m3turn-sub" id="m3subtxt">Você está no Brasil 🇧🇷</div>
+      </div>
+      <div class="m3logbox" id="m3log"></div>
+    </div>
+
+    <!-- WORLD MAP — 4 REGIONS -->
+    <div class="m3world" id="m3map"></div>
+
+    <!-- BOTTOM: pitch + hand -->
+    <div class="m3bottom">
+
+      <!-- Player's pitch -->
+      <div class="m3team-wrap">
+        <div class="m3team-hdr">
+          <div class="m3team-lbl">⚽ Seu Time</div>
+          <div class="m3team-pts" id="m3ppts">0 / 40 pts</div>
+        </div>
+        <div class="m3pitch-outer">
+          <div class="m3pitch-inner" id="m3ppitch">
+            <div class="m3pcl"></div>
+            <div class="m3pcd"></div>
+          </div>
+        </div>
+        <div class="m3pbar">
+          <div class="pbar"><div class="pfill" id="m3pprog" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <!-- Hand + sell -->
+      <div class="m3hand-wrap">
+        <div class="m3hand-lbl">🃏 Mão — <span id="m3handcount">0</span> cartas</div>
+        <div class="m3hand-cards" id="m3ph"></div>
+        <div class="m3sell-block" id="m3sellpanel" style="display:none">
+          <div class="m3sell-hdr">
+            <span class="m3sell-hdr-icon">💰</span>
+            <span class="m3sell-hdr-txt">Vender (rola 1 dado)</span>
+          </div>
+          <div class="m3sell-items" id="m3selllist"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- OLHEIRO MODAL -->
+<div class="m3modal" id="m3modal">
+  <div class="m3mbox">
+    <div class="m3mtitle" id="m3mtitle">👁 Olheiro</div>
+    <div class="m3minfo" id="m3minfo">Selecione uma carta para adicionar à sua mão</div>
+    <div class="m3mcards" id="m3mcards"></div>
+    <div class="m3mbtns">
+      <button class="m3cancel" onclick="m3closeModal()">Cancelar</button>
+      <button class="btn m3confirm" id="m3mconfirm" onclick="m3confirmModal()" disabled>Escolher ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- DICE MODAL -->
+<div class="m3modal" id="m3dicemodal">
+  <div class="m3dbox">
+    <div class="m3d-title" id="m3dicetitle">RESULTADO</div>
+    <div class="m3d-dice" id="m3diceico">⚄</div>
+    <div class="m3d-result" id="m3diceres">+8 moedas</div>
+    <div class="m3d-sub" id="m3dicesub"></div>
+    <button class="btn" onclick="m3closeDice()">Continuar →</button>
+  </div>
+</div>
+
+
+<div id="gameover" class="screen">
+  <div class="goi">
+    <div class="goico" id="goico">🏆</div>
+    <div class="gotit" id="gotit">VITÓRIA!</div>
+    <div class="gosub" id="gosub"></div>
+    <button class="btn" onclick="goMenu()">Voltar ao Menu</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
 
 </script>
 </body>
