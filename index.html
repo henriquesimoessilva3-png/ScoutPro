@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Futebol Cards</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#06080d;
+  --bg2:#0d1120;
+  --bg3:#141929;
+  --border:#1e2840;
+  --text:#e8eaf0;
+  --text2:#8a90a8;
+  --accent:#00e5ff;
+  --accent2:#7c3aed;
+  --gold:#f5c542;
+  --silver:#b0bec5;
+  --bronze:#cd7f32;
+  --green:#00e676;
+  --red:#ff3d57;
+  --icone-from:#fffde7;--icone-to:#f5c542;
+  --especial-from:#7c3aed;--especial-to:#00e5ff;
+  --ouro-from:#b8860b;--ouro-to:#f5c542;
+  --prata-from:#607d8b;--prata-to:#cfd8dc;
+  --bronze-from:#5d4037;--bronze-to:#a1887f;
+}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh}
+.screen.active{display:flex;flex-direction:column}
+
+/* ===== MENU ===== */
+#menu{background:radial-gradient(ellipse at 30% 20%,#0d1b3e 0%,var(--bg) 60%);align-items:center;justify-content:center;position:relative;overflow:hidden}
+#menu::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300e5ff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.menu-inner{text-align:center;z-index:1;padding:2rem}
+.logo-tag{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.3em;color:var(--accent);text-transform:uppercase;margin-bottom:.5rem}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:5rem;font-weight:900;line-height:1;text-transform:uppercase;background:linear-gradient(135deg,#fff 0%,var(--accent) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.25rem}
+.logo span{font-style:italic}
+.subtitle{font-size:.9rem;color:var(--text2);letter-spacing:.15em;text-transform:uppercase;margin-bottom:3rem}
+.mode-cards{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center}
+.mode-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:2rem;width:260px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.mode-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent),var(--accent2));opacity:0;transition:.3s}
+.mode-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,229,255,.15)}
+.mode-card:hover::after{opacity:.05}
+.mode-num{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;color:var(--accent);opacity:.3;line-height:1}
+.mode-title{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:800;text-transform:uppercase;margin-bottom:.5rem}
+.mode-desc{font-size:.8rem;color:var(--text2);line-height:1.5}
+.mode-tag{display:inline-flex;align-items:center;gap:.4rem;margin-top:1rem;font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:rgba(0,229,255,.1);padding:.3rem .6rem;border-radius:4px}
+
+/* ===== CARDS ===== */
+.card{border-radius:10px;padding:.75rem;position:relative;overflow:hidden;transition:all .2s;cursor:pointer;user-select:none}
+.card.icone{background:linear-gradient(145deg,var(--icone-from),var(--icone-to));color:#1a1200;border:2px solid #f5c542}
+.card.especial{background:linear-gradient(145deg,var(--especial-from),var(--especial-to));color:#fff;border:2px solid #00e5ff;box-shadow:0 0 12px rgba(0,229,255,.25)}
+.card.ouro{background:linear-gradient(145deg,var(--ouro-from),var(--ouro-to));color:#1a1200;border:2px solid #d4a017}
+.card.prata{background:linear-gradient(145deg,var(--prata-from),var(--prata-to));color:#fff;border:2px solid #90a4ae}
+.card.bronze{background:linear-gradient(145deg,var(--bronze-from),var(--bronze-to));color:#fff;border:2px solid #8d6e63}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.4rem}
+.card-rarity{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+.card-pts{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;line-height:1}
+.card-pos{font-size:.6rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:rgba(0,0,0,.2);padding:.15rem .4rem;border-radius:3px;margin-bottom:.4rem;display:inline-block}
+.card-name{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;line-height:1.1}
+.card-stars{font-size:.65rem;letter-spacing:.05em;opacity:.75;margin-top:.2rem}
+.card-back{background:var(--bg3);border:2px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--border)}
+.card.selected{transform:scale(1.05);box-shadow:0 0 0 3px var(--accent)}
+.card.win-glow{box-shadow:0 0 20px rgba(0,230,118,.5)}
+.card.lose-glow{box-shadow:0 0 20px rgba(255,61,87,.5)}
+
+/* ===== GAME HEADER ===== */
+.game-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;gap:1rem}
+.back-btn{background:none;border:1px solid var(--border);color:var(--text2);padding:.4rem .8rem;border-radius:6px;cursor:pointer;font-size:.8rem;transition:.2s}
+.back-btn:hover{border-color:var(--accent);color:var(--accent)}
+.game-title{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em}
+.game-badge{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:rgba(0,229,255,.1);color:var(--accent);padding:.25rem .6rem;border-radius:4px;margin-left:auto}
+
+/* ===== MODE 1 ===== */
+#mode1{background:radial-gradient(ellipse at 50% 0%,#0a1628 0%,var(--bg) 70%)}
+.m1-arena{flex:1;display:flex;flex-direction:column;padding:1rem;gap:1rem;max-width:600px;margin:0 auto;width:100%}
+.player-zone{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem}
+.zone-label{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text2);margin-bottom:.75rem}
+.hand-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.hand-card{width:calc(20% - .4rem);min-width:60px}
+.ai-hand-row{display:flex;gap:.5rem}
+.ai-card-slot{flex:1;height:90px;border-radius:10px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--text2);cursor:pointer;transition:.2s}
+.ai-card-slot:hover{border-color:var(--accent);color:var(--accent)}
+.ai-card-slot.clickable{cursor:pointer;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{border-color:var(--accent);box-shadow:0 0 8px rgba(0,229,255,.2)}50%{border-color:var(--accent2);box-shadow:0 0 8px rgba(124,58,237,.2)}}
+.ai-card-slot.empty{opacity:.3;cursor:default;animation:none}
+.battle-zone{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center}
+.battle-vs{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom.75rem}
+.battle-side{flex:1;display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.battle-label{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2)}
+.battle-score{font-family:'Barlow Condensed',sans-serif;font-size:2.5rem;font-weight:900;line-height:1}
+.score-breakdown{font-size:.75rem;color:var(--text2);margin-top:.25rem}
+.vs-divider{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900;color:var(--border)}
+.dice-display{font-size:2rem;line-height:1}
+.round-result{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;text-transform:uppercase;padding:.5rem 1rem;border-radius:6px;margin-top:.5rem}
+.round-result.win{background:rgba(0,230,118,.15);color:var(--green)}
+.round-result.lose{background:rgba(255,61,87,.15);color:var(--red)}
+.round-result.draw{background:rgba(255,193,7,.15);color:#ffc107}
+.score-bar{display:flex;align-items:center;gap:.75rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.6rem 1rem}
+.score-bar .player-score,.score-bar .ai-score{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800}
+.score-bar .player-score{color:var(--accent)}
+.score-bar .ai-score{color:var(--red)}
+.score-bar .score-mid{flex:1;text-align:center;font-size:.7rem;color:var(--text2);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.action-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:.75rem 2rem;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;transition:.2s;width:100%}
+.action-btn:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,229,255,.3)}
+.action-btn:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none}
+.msg-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.6rem 1rem;text-align:center;font-size:.85rem;color:var(--text2);min-height:2rem}
+
+/* ===== MODE 2 ===== */
+#mode2{background:radial-gradient(ellipse at 70% 30%,#0a1628 0%,var(--bg) 70%)}
+.m2-layout{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;gap:1rem;padding:1rem;max-width:900px;margin:0 auto;width:100%}
+@media(max-width:640px){.m2-layout{grid-template-columns:1fr;}}
+.m2-piles{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem;grid-column:1/-1}
+.piles-row{display:flex;gap:1rem;flex-wrap:wrap}
+.pile-block{flex:1;min-width:100px;text-align:center}
+.pile-title{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem}
+.pile-stack{width:70px;height:90px;margin:0 auto;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:900;position:relative;cursor:pointer;transition:.2s;border:2px dashed}
+.pile-stack.pile-bronze-prata{background:linear-gradient(145deg,var(--bronze-from),var(--prata-from));border-color:var(--bronze);color:#fff}
+.pile-stack.pile-ouro{background:linear-gradient(145deg,var(--ouro-from),var(--ouro-to));border-color:var(--gold);color:#1a1200}
+.pile-stack.pile-especial{background:linear-gradient(145deg,var(--especial-from),var(--especial-to));border-color:var(--accent);color:#fff}
+.pile-stack:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.pile-stack.disabled{opacity:.4;cursor:default;transform:none;box-shadow:none}
+.pile-count{position:absolute;bottom:-8px;right:-8px;background:var(--bg);border:1px solid var(--border);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700}
+.m2-player,.m2-ai{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem;overflow-y:auto;max-height:420px}
+.m2-hand-cards{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.75rem}
+.m2-hand-cards .card{width:calc(25% - .3rem);min-width:70px;font-size:.8rem}
+.team-formation{margin-top:.5rem}
+.team-slot{display:flex;align-items:center;gap:.5rem;padding:.35rem .5rem;border-radius:6px;margin-bottom:.3rem;font-size:.75rem;background:rgba(255,255,255,.03);border:1px solid var(--border)}
+.team-slot.filled{border-color:rgba(0,230,118,.3);background:rgba(0,230,118,.05)}
+.slot-label{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text2);width:20px;flex-shrink:0}
+.slot-card{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;font-weight:700;flex:1}
+.slot-pts{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:900;color:var(--gold)}
+.progress-bar-wrap{margin-top:.75rem}
+.progress-label{display:flex;justify-content:space-between;font-size:.7rem;color:var(--text2);margin-bottom:.3rem}
+.progress-bar{background:var(--border);border-radius:4px;height:6px}
+.progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--green));transition:.4s}
+.trade-panel{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.75rem;margin-top:.75rem}
+.trade-title{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem}
+.trade-options{display:flex;flex-direction:column;gap:.4rem}
+.trade-btn{background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);color:var(--accent);padding:.4rem .75rem;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;transition:.2s;text-align:left}
+.trade-btn:hover{background:rgba(0,229,255,.15)}
+.trade-btn:disabled{opacity:.3;cursor:default}
+.m2-actions{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap}
+.m2-actions .action-btn{flex:1;min-width:120px;font-size:.85rem;padding:.6rem 1rem}
+.m2-turn-tag{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;margin-left:.5rem}
+.m2-turn-tag.player-turn{background:rgba(0,229,255,.1);color:var(--accent)}
+.m2-turn-tag.ai-turn{background:rgba(255,61,87,.1);color:var(--red)}
+.ai-status{font-size:.75rem;color:var(--text2);margin-top:.5rem;font-style:italic}
+
+/* ===== GAME OVER ===== */
+#gameover{align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,#0d1b3e 0%,var(--bg) 70%)}
+.go-inner{text-align:center;padding:2rem;max-width:400px}
+.go-icon{font-size:4rem;margin-bottom:1rem}
+.go-result{font-family:'Barlow Condensed',sans-serif;font-size:3.5rem;font-weight:900;text-transform:uppercase;line-height:1;margin-bottom:.5rem}
+.go-result.won{background:linear-gradient(135deg,var(--gold),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.go-result.lost{color:var(--red)}
+.go-sub{color:var(--text2);margin-bottom:2rem;font-size:.9rem}
+.go-btns{display:flex;flex-direction:column;gap:.75rem}
+.go-btns .action-btn{background:linear-gradient(135deg,var(--accent),var(--accent2))}
+
+/* ===== SELECTION MODAL ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.5rem;max-width:520px;width:100%;max-height:80vh;overflow-y:auto}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+.modal-cards{display:flex;gap:.5rem;flex-wrap:wrap}
+.modal-cards .card{width:calc(25% - .4rem);min-width:80px;cursor:pointer}
+.modal-cards .card:hover{transform:scale(1.05)}
+.modal-btns{margin-top:1rem;display:flex;gap:.5rem}
+.modal-btns .action-btn{flex:1;font-size:.85rem;padding:.6rem}
+.cancel-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.6rem 1rem;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;flex:1}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg2);border:1px solid var(--accent);border-radius:8px;padding:.6rem 1.2rem;font-size:.85rem;color:var(--accent);z-index:999;transition:.3s;opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<!-- MENU -->
+<div id="menu" class="screen active">
+  <div class="menu-inner">
+    <div class="logo-tag">⚽ Card Game</div>
+    <div class="logo">Futebol<span>Cards</span></div>
+    <div class="subtitle">Escolha seu modo de jogo</div>
+    <div class="mode-cards">
+      <div class="mode-card" onclick="startMode1()">
+        <div class="mode-num">01</div>
+        <div class="mode-title">Duelo com Dados</div>
+        <div class="mode-desc">Tire cartas às cegas do adversário e role os dados. Quem fizer mais pontos leva tudo.</div>
+        <div class="mode-tag">🎲 com dados &nbsp;· vs IA</div>
+      </div>
+      <div class="mode-card" onclick="startMode2()">
+        <div class="mode-num">02</div>
+        <div class="mode-title">Montagem de Time</div>
+        <div class="mode-desc">Compre cartas, evolua via trocas e monte um time completo de 11 jogadores com 40 pontos.</div>
+        <div class="mode-tag">⚽ sem dados &nbsp;· vs IA</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODE 1 -->
+<div id="mode1" class="screen">
+  <div class="game-header">
+    <button class="back-btn" onclick="goMenu()">← Menu</button>
+    <div class="game-title">Duelo com Dados</div>
+    <div class="game-badge" id="m1-round-badge">Rodada 1</div>
+  </div>
+  <div class="m1-arena">
+    <div class="score-bar">
+      <div class="player-score" id="m1-player-count">Você: 5 cartas</div>
+      <div class="score-mid">CARTAS NA MÃO</div>
+      <div class="ai-score" id="m1-ai-count">IA: 5 cartas</div>
+    </div>
+
+    <!-- AI hand (face down) -->
+    <div class="player-zone">
+      <div class="zone-label">🤖 Mão da IA — Clique para tirar uma carta</div>
+      <div class="ai-hand-row" id="m1-ai-hand"></div>
+    </div>
+
+    <!-- Battle zone -->
+    <div class="battle-zone" id="m1-battle">
+      <div class="battle-vs" style="display:flex;align-items:center;justify-content:center;gap:1.5rem">
+        <div class="battle-side" id="m1-player-side">
+          <div class="battle-label">VOCÊ</div>
+          <div style="width:80px;height:110px" id="m1-player-card-display"></div>
+          <div class="dice-display" id="m1-player-dice">—</div>
+          <div class="battle-score" id="m1-player-total">—</div>
+          <div class="score-breakdown" id="m1-player-break"></div>
+        </div>
+        <div class="vs-divider">VS</div>
+        <div class="battle-side" id="m1-ai-side">
+          <div class="battle-label">IA</div>
+          <div style="width:80px;height:110px" id="m1-ai-card-display"></div>
+          <div class="dice-display" id="m1-ai-dice">—</div>
+          <div class="battle-score" id="m1-ai-total">—</div>
+          <div class="score-breakdown" id="m1-ai-break"></div>
+        </div>
+      </div>
+      <div id="m1-result" class="round-result" style="display:none"></div>
+    </div>
+
+    <div class="msg-box" id="m1-msg">Clique em uma das cartas da IA para iniciar a rodada</div>
+
+    <!-- Player hand -->
+    <div class="player-zone">
+      <div class="zone-label">🃏 Sua mão</div>
+      <div class="hand-row" id="m1-player-hand"></div>
+    </div>
+
+    <button class="action-btn" id="m1-btn" onclick="m1Action()" disabled>Rolar Dados</button>
+  </div>
+</div>
+
+<!-- MODE 2 -->
+<div id="mode2" class="screen">
+  <div class="game-header">
+    <button class="back-btn" onclick="goMenu()">← Menu</button>
+    <div class="game-title">Montagem de Time</div>
+    <div id="m2-turn-display" class="game-badge">Seu Turno</div>
+  </div>
+  <div class="m2-layout">
+    <!-- Piles -->
+    <div class="m2-piles">
+      <div class="zone-label">📦 MONTES DE CARTAS</div>
+      <div class="piles-row">
+        <div class="pile-block">
+          <div class="pile-title">Grupo 1<br>Bronze · Prata</div>
+          <div class="pile-stack pile-bronze-prata" id="pile1" onclick="drawFromPile(1)">
+            <span>Comprar</span>
+            <span class="pile-count" id="pile1-count">0</span>
+          </div>
+        </div>
+        <div class="pile-block">
+          <div class="pile-title">Grupo 2<br>Ouro</div>
+          <div class="pile-stack pile-ouro disabled" id="pile2">
+            <span>Ouro</span>
+            <span class="pile-count" id="pile2-count">0</span>
+          </div>
+        </div>
+        <div class="pile-block">
+          <div class="pile-title">Grupo 3<br>Especial · Ícone</div>
+          <div class="pile-stack pile-especial disabled" id="pile3">
+            <span>Especial</span>
+            <span class="pile-count" id="pile3-count">0</span>
+          </div>
+        </div>
+        <div class="pile-block" style="flex:2;min-width:200px">
+          <div class="pile-title">Log do jogo</div>
+          <div id="m2-log" style="font-size:.72rem;color:var(--text2);max-height:100px;overflow-y:auto;background:var(--bg3);border-radius:6px;padding:.5rem;line-height:1.6"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Player area -->
+    <div class="m2-player">
+      <div class="zone-label">🃏 SUA MÃO <span id="m2-player-turn-tag" class="m2-turn-tag player-turn">SEU TURNO</span></div>
+      <div class="m2-hand-cards" id="m2-player-hand"></div>
+      <div class="trade-panel">
+        <div class="trade-title">⚡ Trocas disponíveis</div>
+        <div class="trade-options" id="m2-trade-options">
+          <div style="font-size:.75rem;color:var(--text2)">Compre cartas para ver opções de troca</div>
+        </div>
+      </div>
+      <div class="m2-actions">
+        <button class="action-btn" id="m2-end-turn-btn" onclick="m2EndTurn()" disabled>Encerrar Turno →</button>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Seu time</span><span id="m2-player-pts">0 / 40 pts</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="m2-player-progress" style="width:0%"></div></div>
+      </div>
+      <div class="team-formation" id="m2-player-team"></div>
+    </div>
+
+    <!-- AI area -->
+    <div class="m2-ai">
+      <div class="zone-label">🤖 TIME DA IA <span id="m2-ai-turn-tag" class="m2-turn-tag" style="display:none">VEZ DA IA</span></div>
+      <div class="ai-status" id="m2-ai-status">Aguardando...</div>
+      <div class="progress-bar-wrap" style="margin-top:.5rem">
+        <div class="progress-label"><span>Time da IA</span><span id="m2-ai-pts">0 / 40 pts</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="m2-ai-progress" style="width:0%"></div></div>
+      </div>
+      <div class="team-formation" id="m2-ai-team"></div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME OVER -->
+<div id="gameover" class="screen">
+  <div class="go-inner">
+    <div class="go-icon" id="go-icon">🏆</div>
+    <div class="go-result" id="go-result">VITÓRIA!</div>
+    <div class="go-sub" id="go-sub">Parabéns, você venceu!</div>
+    <div class="go-btns">
+      <button class="action-btn" onclick="goMenu()">Voltar ao Menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRADE MODAL -->
+<div class="modal-overlay" id="trade-modal">
+  <div class="modal">
+    <div class="modal-title" id="trade-modal-title">Selecione cartas para troca</div>
+    <div class="modal-cards" id="trade-modal-cards"></div>
+    <div class="modal-btns">
+      <button class="cancel-btn" onclick="closeTradeModal()">Cancelar</button>
+      <button class="action-btn" id="trade-modal-confirm" onclick="confirmTrade()">Confirmar Troca</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// CARD DATABASE
+// ============================================================
+const CARDS = [
+  // ÍCONE 5★
+  {id:1,name:"João Brasileiro",r:"icone",pts:5,pos:"goleiro"},
+  {id:2,name:"Jay Jay Millá",r:"icone",pts:5,pos:"defesa"},
+  {id:3,name:"Pepê",r:"icone",pts:5,pos:"meio"},
+  {id:4,name:"Elisabeto Simões",r:"icone",pts:5,pos:"ataque"},
+  {id:5,name:"Lucinho",r:"icone",pts:5,pos:"ataque"},
+  // ESPECIAL 4★
+  {id:6,name:"Felipinho",r:"especial",pts:4,pos:"goleiro"},
+  {id:7,name:"Petr Catiuscko",r:"especial",pts:4,pos:"goleiro"},
+  {id:8,name:"Elias Roseiro",r:"especial",pts:4,pos:"goleiro"},
+  {id:9,name:"Julito Júnior",r:"especial",pts:4,pos:"defesa"},
+  {id:10,name:"Nando",r:"especial",pts:4,pos:"defesa"},
+  {id:11,name:"Rafinha Hellmeister",r:"especial",pts:4,pos:"meio"},
+  {id:12,name:"Karippe Răducioiu",r:"especial",pts:4,pos:"meio"},
+  {id:13,name:"Lêdo",r:"especial",pts:4,pos:"meio"},
+  {id:14,name:"Lucas Avellar",r:"especial",pts:4,pos:"ataque"},
+  {id:15,name:"Camilo Alberto",r:"especial",pts:4,pos:"ataque"},
+  // OURO 3★ - Goleiro
+  {id:16,name:"Gianluigi Cassini",r:"ouro",pts:3,pos:"goleiro"},
+  {id:17,name:"Moussa Babacar",r:"ouro",pts:3,pos:"goleiro"},
+  {id:18,name:"Ivan Petrelenko",r:"ouro",pts:3,pos:"goleiro"},
+  {id:19,name:"Karim Berrada",r:"ouro",pts:3,pos:"goleiro"},
+  {id:20,name:"Benjamín Rodríguez",r:"ouro",pts:3,pos:"goleiro"},
+  {id:21,name:"Noah McKenzie",r:"ouro",pts:3,pos:"goleiro"},
+  {id:22,name:"Bence Kovács",r:"ouro",pts:3,pos:"goleiro"},
+  // OURO - Defesa
+  {id:23,name:"Zé Aparecido",r:"ouro",pts:3,pos:"defesa"},
+  {id:24,name:"Lodi Durand",r:"ouro",pts:3,pos:"defesa"},
+  {id:25,name:"Kim Min-jun",r:"ouro",pts:3,pos:"defesa"},
+  {id:26,name:"Lozano García",r:"ouro",pts:3,pos:"defesa"},
+  {id:27,name:"Kacper Nowak",r:"ouro",pts:3,pos:"defesa"},
+  {id:28,name:"Luuk Visser",r:"ouro",pts:3,pos:"defesa"},
+  {id:29,name:"Mathis Mertens",r:"ouro",pts:3,pos:"defesa"},
+  {id:30,name:"Martínez Navarro",r:"ouro",pts:3,pos:"defesa"},
+  // OURO - Meio
+  {id:31,name:"Zé Guimarães",r:"ouro",pts:3,pos:"meio"},
+  {id:32,name:"Dmytro Shevchenko",r:"ouro",pts:3,pos:"meio"},
+  {id:33,name:"Samuel Aboubakar",r:"ouro",pts:3,pos:"meio"},
+  {id:34,name:"Ti-jun Nim",r:"ouro",pts:3,pos:"meio"},
+  {id:35,name:"Michael Johnson",r:"ouro",pts:3,pos:"meio"},
+  {id:36,name:"Harry Collins",r:"ouro",pts:3,pos:"meio"},
+  {id:37,name:"Mamadou Diop",r:"ouro",pts:3,pos:"meio"},
+  // OURO - Ataque
+  {id:38,name:"Mafuso Quizumba",r:"ouro",pts:3,pos:"ataque"},
+  {id:39,name:"Andrés García",r:"ouro",pts:3,pos:"ataque"},
+  {id:40,name:"Matías Pereira",r:"ouro",pts:3,pos:"ataque"},
+  {id:41,name:"Thomas Dubois",r:"ouro",pts:3,pos:"ataque"},
+  {id:42,name:"Lautaro Gómez",r:"ouro",pts:3,pos:"ataque"},
+  {id:43,name:"Marko Božić",r:"ouro",pts:3,pos:"ataque"},
+  {id:44,name:"Giovanni Romano",r:"ouro",pts:3,pos:"ataque"},
+  // PRATA 2★ - Goleiro
+  {id:45,name:"Rachid Benali",r:"prata",pts:2,pos:"goleiro"},
+  {id:46,name:"Eli Levi",r:"prata",pts:2,pos:"goleiro"},
+  {id:47,name:"Yuki Tanaka",r:"prata",pts:2,pos:"goleiro"},
+  {id:48,name:"Gilmar Paçoca",r:"prata",pts:2,pos:"goleiro"},
+  {id:49,name:"Berk Demir",r:"prata",pts:2,pos:"goleiro"},
+  // PRATA - Defesa
+  {id:50,name:"Márcio Tavares",r:"prata",pts:2,pos:"defesa"},
+  {id:51,name:"Majed Al Kaabi",r:"prata",pts:2,pos:"defesa"},
+  {id:52,name:"Diego Pizarro",r:"prata",pts:2,pos:"defesa"},
+  {id:53,name:"João Matola",r:"prata",pts:2,pos:"defesa"},
+  {id:54,name:"Daan Van der Lan",r:"prata",pts:2,pos:"defesa"},
+  // PRATA - Meio
+  {id:55,name:"Vikram Sharma",r:"prata",pts:2,pos:"meio"},
+  {id:56,name:"Karim Konaté",r:"prata",pts:2,pos:"meio"},
+  {id:57,name:"Junior Mbemba",r:"prata",pts:2,pos:"meio"},
+  {id:58,name:"Luis Fígado",r:"prata",pts:2,pos:"meio"},
+  {id:59,name:"Mark Robertson",r:"prata",pts:2,pos:"meio"},
+  // PRATA - Ataque
+  {id:60,name:"Andrei Morozov",r:"prata",pts:2,pos:"ataque"},
+  {id:61,name:"Jean Mbanga",r:"prata",pts:2,pos:"ataque"},
+  {id:62,name:"Carlos Villa",r:"prata",pts:2,pos:"ataque"},
+  {id:63,name:"Zé Beleza",r:"prata",pts:2,pos:"ataque"},
+  {id:64,name:"Jun Liang",r:"prata",pts:2,pos:"ataque"},
+  // BRONZE 1★ - Goleiro
+  {id:65,name:"Ardit Krasniqi",r:"bronze",pts:1,pos:"goleiro"},
+  {id:66,name:"Davit Beridze",r:"bronze",pts:1,pos:"goleiro"},
+  {id:67,name:"Karim Hassan",r:"bronze",pts:1,pos:"goleiro"},
+  {id:68,name:"Stavros Nicolaou",r:"bronze",pts:1,pos:"goleiro"},
+  {id:69,name:"Chinedu Eze",r:"bronze",pts:1,pos:"goleiro"},
+  {id:70,name:"Kevin Córdoba",r:"bronze",pts:1,pos:"goleiro"},
+  {id:71,name:"Renzo Colque",r:"bronze",pts:1,pos:"goleiro"},
+  {id:72,name:"Torrentillo",r:"bronze",pts:1,pos:"goleiro"},
+  {id:73,name:"Aleksandr Morozov",r:"bronze",pts:1,pos:"goleiro"},
+  // BRONZE - Defesa
+  {id:74,name:"Arman Petrosyan",r:"bronze",pts:1,pos:"defesa"},
+  {id:75,name:"Luis Choque",r:"bronze",pts:1,pos:"defesa"},
+  {id:76,name:"Sekou Bangoura",r:"bronze",pts:1,pos:"defesa"},
+  {id:77,name:"Petar Ivanov",r:"bronze",pts:1,pos:"defesa"},
+  {id:78,name:"Vannak Chea",r:"bronze",pts:1,pos:"defesa"},
+  {id:79,name:"Timur Bekov",r:"bronze",pts:1,pos:"defesa"},
+  {id:80,name:"Hakim Idrissi",r:"bronze",pts:1,pos:"defesa"},
+  {id:81,name:"Yorman Figueroa",r:"bronze",pts:1,pos:"defesa"},
+  {id:82,name:"Hakim Yusof",r:"bronze",pts:1,pos:"defesa"},
+  // BRONZE - Meio
+  {id:83,name:"Kabelo Moagi",r:"bronze",pts:1,pos:"meio"},
+  {id:84,name:"Mika Virtanen",r:"bronze",pts:1,pos:"meio"},
+  {id:85,name:"Andrés Caicedo",r:"bronze",pts:1,pos:"meio"},
+  {id:86,name:"Ryan Campbell",r:"bronze",pts:1,pos:"meio"},
+  {id:87,name:"Tomas Kral",r:"bronze",pts:1,pos:"meio"},
+  {id:88,name:"Mantas Petrauskas",r:"bronze",pts:1,pos:"meio"},
+  {id:89,name:"Marko Vukovic",r:"bronze",pts:1,pos:"meio"},
+  {id:90,name:"Liridon Berisha",r:"bronze",pts:1,pos:"meio"},
+  {id:91,name:"Tae Hyun Lee",r:"bronze",pts:1,pos:"meio"},
+  // BRONZE - Ataque
+  {id:92,name:"Ivadinho",r:"bronze",pts:1,pos:"ataque"},
+  {id:93,name:"Jairo Martina",r:"bronze",pts:1,pos:"ataque"},
+  {id:94,name:"Alejandro Torres",r:"bronze",pts:1,pos:"ataque"},
+  {id:95,name:"José Ureña",r:"bronze",pts:1,pos:"ataque"},
+  {id:96,name:"Liam Murphy",r:"bronze",pts:1,pos:"ataque"},
+  {id:97,name:"Tiaguinho Pedalada",r:"bronze",pts:1,pos:"ataque"},
+  {id:98,name:"Rodrigo Ocampos",r:"bronze",pts:1,pos:"ataque"},
+  {id:99,name:"Iker Valero",r:"bronze",pts:1,pos:"ataque"},
+];
+
+const RARITY_LABEL = {icone:"ÍCONE",especial:"ESPECIAL",ouro:"OURO",prata:"PRATA",bronze:"BRONZE"};
+const RARITY_STARS = {icone:"★★★★★",especial:"★★★★",ouro:"★★★",prata:"★★",bronze:"★"};
+const POS_LABEL = {goleiro:"GL",defesa:"DEF",meio:"MEI",ataque:"ATK"};
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function rand(n){return Math.floor(Math.random()*n)}
+function diceRoll(){return Math.floor(Math.random()*6)+1}
+function diceFace(n){return["","⚀","⚁","⚂","⚃","⚄","⚅"][n]}
+
+function buildCard(card, size='normal', extra=''){
+  const w = size==='small'?'width:100%;':size==='tiny'?'width:60px;font-size:.7rem;':'width:100%;';
+  return `<div class="card ${card.r} ${extra}" style="${w}padding:.6rem;" onclick="void(0)">
+    <div class="card-top">
+      <div>
+        <div class="card-rarity">${RARITY_LABEL[card.r]}</div>
+        <div class="card-pos">${POS_LABEL[card.pos]}</div>
+      </div>
+      <div class="card-pts">${card.pts}</div>
+    </div>
+    <div class="card-name">${card.name}</div>
+    <div class="card-stars">${RARITY_STARS[card.r]}</div>
+  </div>`;
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function goMenu(){showScreen('menu');}
+function showToast(msg, dur=2500){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+// ============================================================
+// MODE 1 — DUELO COM DADOS
+// ============================================================
+let m1 = {};
+
+function startMode1(){
+  const byRarity = r => shuffle(CARDS.filter(c=>c.r===r));
+  // Each player gets 1 card of each rarity
+  m1 = {
+    playerHand: ['bronze','prata','ouro','especial','icone'].map(r=>byRarity(r)[0]),
+    aiHand:     ['bronze','prata','ouro','especial','icone'].map(r=>byRarity(r)[0]),
+    round: 0,
+    phase: 'pick', // pick → roll → result
+    pickedPlayer: null,
+    pickedAI: null,
+    playerDice: null,
+    aiDice: null,
+  };
+  // Make sure no overlap
+  const used = new Set(m1.playerHand.map(c=>c.id));
+  m1.aiHand = m1.aiHand.map((c,i)=>{
+    if(used.has(c.id)){
+      const rarity = ['bronze','prata','ouro','especial','icone'][i];
+      const alt = byRarity(rarity).find(x=>!used.has(x.id)&&!m1.aiHand.slice(0,i).some(y=>y.id===x.id));
+      return alt||c;
+    }
+    return c;
+  });
+  showScreen('mode1');
+  m1Render();
+}
+
+function m1Render(){
+  // Count badge
+  document.getElementById('m1-round-badge').textContent = `Rodada ${m1.round+1}`;
+  document.getElementById('m1-player-count').textContent = `Você: ${m1.playerHand.length} cartas`;
+  document.getElementById('m1-ai-count').textContent = `IA: ${m1.aiHand.length} cartas`;
+
+  // AI hand (face down clickable slots)
+  const aiRow = document.getElementById('m1-ai-hand');
+  aiRow.innerHTML = '';
+  m1.aiHand.forEach((c,i)=>{
+    const clickable = m1.phase==='pick';
+    const el = document.createElement('div');
+    el.className = 'ai-card-slot' + (clickable?' clickable':'');
+    el.style.flex='1';el.style.height='90px';
+    el.innerHTML = clickable ? `<div style="text-align:center"><div style="font-size:1.5rem">🂠</div><div style="font-size:.6rem;color:var(--text2);margin-top:.2rem">Tirar</div></div>` : `<div style="font-size:1.2rem;opacity:.3">🂠</div>`;
+    if(clickable) el.onclick=()=>m1PickCard(i);
+    aiRow.appendChild(el);
+  });
+
+  // Player hand
+  const playerRow = document.getElementById('m1-player-hand');
+  playerRow.innerHTML = '';
+  m1.playerHand.forEach(c=>{
+    const el = document.createElement('div');
+    el.className = 'hand-card';
+    el.innerHTML = buildCard(c,'small');
+    playerRow.appendChild(el);
+  });
+
+  // Clear battle display
+  if(m1.phase==='pick'){
+    document.getElementById('m1-player-card-display').innerHTML='';
+    document.getElementById('m1-ai-card-display').innerHTML='';
+    document.getElementById('m1-player-dice').textContent='—';
+    document.getElementById('m1-ai-dice').textContent='—';
+    document.getElementById('m1-player-total').textContent='—';
+    document.getElementById('m1-ai-total').textContent='—';
+    document.getElementById('m1-player-break').textContent='';
+    document.getElementById('m1-ai-break').textContent='';
+    document.getElementById('m1-result').style.display='none';
+    document.getElementById('m1-msg').textContent='Clique em uma das cartas da IA para iniciar a rodada';
+    document.getElementById('m1-btn').disabled=true;
+    document.getElementById('m1-btn').textContent='Rolar Dados';
+  }
+}
+
+function m1PickCard(aiIdx){
+  if(m1.phase!=='pick') return;
+  // Player picks from AI hand
+  m1.pickedPlayer = m1.aiHand[aiIdx]; // card player got from AI
+  // AI picks randomly from player hand
+  const aiPickIdx = rand(m1.playerHand.length);
+  m1.pickedAI = m1.playerHand[aiPickIdx]; // card AI got from player
+  m1.phase = 'roll';
+  m1.aiPickIdx = aiPickIdx;
+  m1.aiCardIdx = aiIdx;
+
+  // Show cards in battle zone
+  document.getElementById('m1-player-card-display').innerHTML = buildCard(m1.pickedPlayer,'small');
+  document.getElementById('m1-ai-card-display').innerHTML = buildCard(m1.pickedAI,'small');
+  document.getElementById('m1-msg').textContent = `Você tirou: ${m1.pickedPlayer.name} (${m1.pickedPlayer.pts}pts) · IA tirou: ${m1.pickedAI.name} (${m1.pickedAI.pts}pts) · Clique para rolar os dados!`;
+  document.getElementById('m1-btn').disabled=false;
+  document.getElementById('m1-btn').textContent='🎲 Rolar Dados';
+
+  // Re-render hands (mark picked cards)
+  m1RenderHandsPicked(aiIdx, aiPickIdx);
+}
+
+function m1RenderHandsPicked(aiIdx, playerIdx){
+  // Update AI slots
+  const slots = document.getElementById('m1-ai-hand').children;
+  for(let i=0;i<slots.length;i++){
+    slots[i].classList.remove('clickable');
+    if(i===aiIdx){
+      slots[i].style.borderColor='var(--accent)';
+      slots[i].style.opacity='.5';
+    }
+  }
+  // Update player hand
+  const playerCards = document.getElementById('m1-player-hand').children;
+  for(let i=0;i<playerCards.length;i++){
+    if(i===playerIdx) playerCards[i].style.opacity='.4';
+  }
+}
+
+function m1Action(){
+  if(m1.phase==='roll'){
+    m1Phase_Roll();
+  } else if(m1.phase==='result'){
+    m1Phase_Next();
+  }
+}
+
+function m1Phase_Roll(){
+  m1.playerDice = diceRoll();
+  m1.aiDice = diceRoll();
+  const playerTotal = m1.pickedPlayer.pts + m1.playerDice;
+  const aiTotal = m1.pickedAI.pts + m1.aiDice;
+
+  document.getElementById('m1-player-dice').textContent = diceFace(m1.playerDice);
+  document.getElementById('m1-ai-dice').textContent = diceFace(m1.aiDice);
+  document.getElementById('m1-player-total').textContent = playerTotal;
+  document.getElementById('m1-ai-total').textContent = aiTotal;
+  document.getElementById('m1-player-break').textContent = `${m1.pickedPlayer.pts} + ${m1.playerDice}`;
+  document.getElementById('m1-ai-break').textContent = `${m1.pickedAI.pts} + ${m1.aiDice}`;
+
+  const resultEl = document.getElementById('m1-result');
+  resultEl.style.display='block';
+  m1.round++;
+
+  if(playerTotal > aiTotal){
+    // Player wins — gets both cards
+    m1.playerHand.push(m1.pickedPlayer); // card from AI
+    m1.playerHand.push(m1.pickedAI);    // AI's picked card (returned to player who gets it)
+    // Remove cards from their original hands
+    m1.aiHand = m1.aiHand.filter((_,i)=>i!==m1.aiCardIdx);
+    m1.playerHand = m1.playerHand.filter(c=>c.id!==m1.pickedAI.id||m1.playerHand.indexOf(c)!==m1.aiPickIdx);
+    // Simpler: rebuild hands
+    m1.aiHand = m1.aiHand.filter(c=>c.id!==m1.pickedPlayer.id);
+    const playerWithout = m1.playerHand.filter(c=>c.id!==m1.pickedAI.id&&c.id!==m1.pickedPlayer.id);
+    m1.playerHand = [...playerWithout, m1.pickedPlayer, m1.pickedAI];
+    resultEl.className='round-result win';
+    resultEl.textContent=`⚡ VOCÊ VENCE! +2 cartas (total: ${m1.playerHand.length})`;
+  } else if(aiTotal > playerTotal){
+    // AI wins
+    m1.aiHand = m1.aiHand.filter(c=>c.id!==m1.pickedPlayer.id);
+    m1.aiHand.push(m1.pickedPlayer);
+    m1.aiHand.push(m1.pickedAI);
+    m1.playerHand = m1.playerHand.filter(c=>c.id!==m1.pickedAI.id);
+    resultEl.className='round-result lose';
+    resultEl.textContent=`💀 IA VENCE! Perdeu 2 cartas (total: ${m1.playerHand.length})`;
+  } else {
+    // Draw — cards returned
+    resultEl.className='round-result draw';
+    resultEl.textContent='🤝 EMPATE! Cartas devolvidas.';
+  }
+
+  m1.phase='result';
+  document.getElementById('m1-btn').textContent='Próxima Rodada →';
+
+  // Check win/lose
+  if(m1.aiHand.length===0){
+    setTimeout(()=>showGameOver(true,'mode1','Você ficou com todas as cartas!'),1200);
+  } else if(m1.playerHand.length===0){
+    setTimeout(()=>showGameOver(false,'mode1','A IA ficou com todas as cartas.'),1200);
+  }
+}
+
+function m1Phase_Next(){
+  m1.phase='pick';
+  m1Render();
+}
+
+// ============================================================
+// MODE 2 — MONTAGEM DE TIME
+// ============================================================
+let m2 = {};
+let m2TradeState = {type:null,selected:[]};
+
+const FORMATION = {goleiro:1,defesa:4,meio:3,ataque:3};
+
+function startMode2(){
+  // Build piles
+  const bronzes = shuffle(CARDS.filter(c=>c.r==='bronze'));
+  const pratas = shuffle(CARDS.filter(c=>c.r==='prata'));
+  const ouros = shuffle(CARDS.filter(c=>c.r==='ouro'));
+  const especiais = shuffle(CARDS.filter(c=>c.r==='especial'||c.r==='icone'));
+
+  m2 = {
+    pile1: shuffle([...bronzes,...pratas]),
+    pile2: [...ouros],
+    pile3: [...especiais],
+    playerHand: [],
+    aiHand: [],
+    playerTeam: {goleiro:[],defesa:[],meio:[],ataque:[]},
+    aiTeam: {goleiro:[],defesa:[],meio:[],ataque:[]},
+    turn: 'player', // 'player' | 'ai'
+    playerDrewThisTurn: false,
+    log: [],
+  };
+
+  showScreen('mode2');
+  m2Log('Jogo iniciado! Compre sua primeira carta do Grupo 1.');
+  m2Render();
+}
+
+function m2Log(msg){
+  m2.log.unshift(msg);
+  if(m2.log.length>30) m2.log.pop();
+  const el=document.getElementById('m2-log');
+  if(el) el.innerHTML=m2.log.slice(0,8).map(l=>`<div>· ${l}</div>`).join('');
+}
+
+function m2Render(){
+  // Piles
+  document.getElementById('pile1-count').textContent=m2.pile1.length;
+  document.getElementById('pile2-count').textContent=m2.pile2.length;
+  document.getElementById('pile3-count').textContent=m2.pile3.length;
+  document.getElementById('pile1').className='pile-stack pile-bronze-prata'+(m2.turn==='player'&&!m2.playerDrewThisTurn?'':' disabled');
+
+  // Turn tag
+  document.getElementById('m2-turn-display').textContent = m2.turn==='player'?'Seu Turno':'Vez da IA';
+  document.getElementById('m2-turn-display').style.background = m2.turn==='player'?'rgba(0,229,255,.1)':'rgba(255,61,87,.1)';
+  document.getElementById('m2-turn-display').style.color = m2.turn==='player'?'var(--accent)':'var(--red)';
+  document.getElementById('m2-player-turn-tag').style.display = m2.turn==='player'?'':'none';
+  document.getElementById('m2-ai-turn-tag').style.display = m2.turn==='ai'?'inline-flex':'none';
+
+  // Player hand
+  const ph = document.getElementById('m2-player-hand');
+  ph.innerHTML = '';
+  m2.playerHand.forEach((c,i)=>{
+    const el=document.createElement('div');
+    el.innerHTML=buildCard(c,'small');
+    ph.appendChild(el);
+  });
+
+  // Trade options
+  m2RenderTrades();
+
+  // End turn btn
+  document.getElementById('m2-end-turn-btn').disabled = m2.turn!=='player' || !m2.playerDrewThisTurn;
+
+  // Progress
+  m2RenderProgress('player');
+  m2RenderProgress('ai');
+  m2RenderTeam('player');
+  m2RenderTeam('ai');
+}
+
+function m2TeamPoints(who){
+  const team = who==='player'?m2.playerTeam:m2.aiTeam;
+  return Object.values(team).flat().reduce((s,c)=>s+c.pts,0);
+}
+
+function m2TeamCount(who){
+  const team = who==='player'?m2.playerTeam:m2.aiTeam;
+  return Object.values(team).flat().length;
+}
+
+function m2RenderProgress(who){
+  const pts = m2TeamPoints(who);
+  const pct = Math.min(100, pts/40*100);
+  document.getElementById(`m2-${who}-pts`).textContent=`${pts} / 40 pts`;
+  document.getElementById(`m2-${who}-progress`).style.width=pct+'%';
+}
+
+function m2RenderTeam(who){
+  const team = who==='player'?m2.playerTeam:m2.aiTeam;
+  const el = document.getElementById(`m2-${who}-team`);
+  const slots = [
+    {pos:'goleiro',label:'GK',count:FORMATION.goleiro},
+    {pos:'defesa',label:'DEF',count:FORMATION.defesa},
+    {pos:'meio',label:'MEI',count:FORMATION.meio},
+    {pos:'ataque',label:'ATK',count:FORMATION.ataque},
+  ];
+  el.innerHTML = slots.map(s=>{
+    const cards = team[s.pos];
+    const rows = Array.from({length:s.count},(_, i)=>{
+      const c = cards[i];
+      const filled = !!c;
+      return `<div class="team-slot ${filled?'filled':''}">
+        <span class="slot-label">${s.label}</span>
+        <span class="slot-card">${c?c.name:'—'}</span>
+        ${c?`<span class="slot-pts">${c.pts}</span>`:''}
+      </div>`;
+    }).join('');
+    return rows;
+  }).join('');
+}
+
+function m2GetBestForTeam(hand, team, pos){
+  // Returns best card for a given position slot in team
+  const available = hand.filter(c=>c.pos===pos);
+  const inTeam = team[pos];
+  if(available.length===0) return null;
+  // Sort by pts desc
+  return available.sort((a,b)=>b.pts-a.pts)[0];
+}
+
+function m2CanAutoSlot(hand, team){
+  // Check if any hand card can fill an empty team slot
+  for(const pos of Object.keys(FORMATION)){
+    const needed = FORMATION[pos] - team[pos].length;
+    const available = hand.filter(c=>c.pos===pos);
+    if(needed>0 && available.length>0) return {pos, card: available.sort((a,b)=>b.pts-a.pts)[0]};
+  }
+  return null;
+}
+
+function drawFromPile(n){
+  if(m2.turn!=='player' || m2.playerDrewThisTurn) return;
+  if(n!==1) return;
+  if(m2.pile1.length===0){showToast('Grupo 1 vazio!');return;}
+  const card = m2.pile1.shift();
+  m2.playerHand.push(card);
+  m2.playerDrewThisTurn = true;
+  m2Log(`Você comprou: ${card.name} (${RARITY_LABEL[card.r]}, ${POS_LABEL[card.pos]})`);
+  // Auto-slot if possible
+  const slot = m2CanAutoSlot(m2.playerHand, m2.playerTeam);
+  if(slot){
+    m2.playerTeam[slot.pos].push(slot.card);
+    m2.playerHand = m2.playerHand.filter(c=>c.id!==slot.card.id);
+    m2Log(`→ ${slot.card.name} adicionado ao time (${POS_LABEL[slot.pos]})`);
+    m2CheckWin('player');
+  }
+  m2Render();
+}
+
+function m2RenderTrades(){
+  const el = document.getElementById('m2-trade-options');
+  if(m2.turn!=='player'){el.innerHTML='<div style="font-size:.75rem;color:var(--text2)">Vez da IA</div>';return;}
+
+  const hand = m2.playerHand;
+  const trades = [];
+
+  // Trade 1: 2x bronze/prata same pos → 1 ouro
+  const bpGroups = {};
+  hand.filter(c=>c.r==='bronze'||c.r==='prata').forEach(c=>{
+    if(!bpGroups[c.pos]) bpGroups[c.pos]=[];
+    bpGroups[c.pos].push(c);
+  });
+  Object.entries(bpGroups).forEach(([pos,cards])=>{
+    if(cards.length>=2 && m2.pile2.length>0){
+      trades.push({
+        label:`2x ${POS_LABEL[pos]} Bronze/Prata → 1 Ouro`,
+        type:'bp2ouro',pos,cards:cards.slice(0,2)
+      });
+    }
+  });
+
+  // Trade 2: 2x ouro same pos OR 1 ouro + 1 prata → especial/ícone
+  if(m2.pile3.length>0){
+    const ouros = hand.filter(c=>c.r==='ouro');
+    const ouroGroups = {};
+    ouros.forEach(c=>{if(!ouroGroups[c.pos])ouroGroups[c.pos]=[];ouroGroups[c.pos].push(c);});
+    Object.entries(ouroGroups).forEach(([pos,cards])=>{
+      if(cards.length>=2){
+        trades.push({label:`2x Ouro ${POS_LABEL[pos]} → Especial/Ícone`,type:'2ouro2esp',pos,cards:cards.slice(0,2)});
+      }
+    });
+    // 1 ouro + 1 prata
+    const pratas = hand.filter(c=>c.r==='prata');
+    if(ouros.length>=1 && pratas.length>=1){
+      trades.push({label:`1 Ouro + 1 Prata → Especial/Ícone`,type:'ouro_prata_esp',cards:[ouros[0],pratas[0]]});
+    }
+    // Especial/ícone combos
+    const esp = hand.filter(c=>c.r==='especial'||c.r==='icone');
+    const ouroAny = ouros[0];
+    if(esp.length>=1 && ouroAny){
+      trades.push({label:`Especial/Ícone + Ouro → Nova Especial/Ícone`,type:'esp_ouro_esp',cards:[esp[0],ouroAny]});
+    }
+    if(esp.length>=2){
+      trades.push({label:`2x Especial/Ícone → Nova Especial/Ícone`,type:'2esp_esp',cards:[esp[0],esp[1]]});
+    }
+  }
+
+  if(trades.length===0){
+    el.innerHTML='<div style="font-size:.75rem;color:var(--text2)">Sem trocas disponíveis</div>';
+    return;
+  }
+  el.innerHTML = trades.map((t,i)=>`
+    <button class="trade-btn" onclick='m2OpenTrade(${JSON.stringify(t)})'>${t.label}</button>
+  `).join('');
+}
+
+function m2OpenTrade(trade){
+  if(m2.turn!=='player') return;
+  // Just execute directly with suggested cards, no complex modal
+  m2ExecuteTrade(trade);
+}
+
+function m2ExecuteTrade(trade){
+  const hand = m2.playerHand;
+  const consumed = trade.cards;
+  
+  // Remove consumed cards from hand and put back in respective piles
+  consumed.forEach(c=>{
+    m2.playerHand = m2.playerHand.filter(x=>x.id!==c.id);
+    if(c.r==='bronze'||c.r==='prata') m2.pile1.push(c);
+    else if(c.r==='ouro') m2.pile2.push(c);
+    else m2.pile3.push(c);
+  });
+
+  let received = null;
+  if(trade.type==='bp2ouro'){
+    if(m2.pile2.length>0){received=m2.pile2.shift();}
+    else{consumed.forEach(c=>m2.playerHand.push(c));showToast('Grupo 2 vazio!');return;}
+  } else {
+    if(m2.pile3.length>0){received=m2.pile3.shift();}
+    else{consumed.forEach(c=>m2.playerHand.push(c));showToast('Grupo 3 vazio!');return;}
+  }
+
+  m2.playerHand.push(received);
+  m2Log(`Troca: ${consumed.map(c=>c.name).join(' + ')} → ${received.name} (${RARITY_LABEL[received.r]})`);
+  showToast(`✨ Você recebeu: ${received.name}`);
+  
+  // Auto-slot
+  const slot = m2CanAutoSlot(m2.playerHand, m2.playerTeam);
+  if(slot){
+    m2.playerTeam[slot.pos].push(slot.card);
+    m2.playerHand = m2.playerHand.filter(c=>c.id!==slot.card.id);
+    m2Log(`→ ${slot.card.name} adicionado ao time (${POS_LABEL[slot.pos]})`);
+    m2CheckWin('player');
+  }
+  m2Render();
+}
+
+function m2EndTurn(){
+  if(m2.turn!=='player' || !m2.playerDrewThisTurn) return;
+  m2.turn = 'ai';
+  m2.playerDrewThisTurn = false;
+  m2Render();
+  setTimeout(m2AITurn, 800);
+}
+
+function m2AITurn(){
+  document.getElementById('m2-ai-status').textContent = 'IA está jogando...';
+  // AI draws from pile1
+  if(m2.pile1.length>0){
+    const card = m2.pile1.shift();
+    m2.aiHand.push(card);
+    m2Log(`IA comprou uma carta (${RARITY_LABEL[card.r]}, ${POS_LABEL[card.pos]})`);
+  }
+
+  // AI tries to make trades
+  let tradeMade = true;
+  let tradeCount = 0;
+  while(tradeMade && tradeCount<5){
+    tradeMade = false;
+    const aiHand = m2.aiHand;
+    const aiTeam = m2.aiTeam;
+
+    // Trade: 2 same-pos bronze/prata → ouro
+    if(m2.pile2.length>0){
+      const bpGroups={};
+      aiHand.filter(c=>c.r==='bronze'||c.r==='prata').forEach(c=>{if(!bpGroups[c.pos])bpGroups[c.pos]=[];bpGroups[c.pos].push(c);});
+      for(const [pos,cards] of Object.entries(bpGroups)){
+        if(cards.length>=2){
+          const use=cards.slice(0,2);
+          use.forEach(c=>{m2.aiHand=m2.aiHand.filter(x=>x.id!==c.id);m2.pile1.push(c);});
+          const got=m2.pile2.shift();
+          m2.aiHand.push(got);
+          m2Log(`IA trocou 2x ${POS_LABEL[pos]} por Ouro`);
+          tradeMade=true;tradeCount++;break;
+        }
+      }
+    }
+    if(tradeMade) continue;
+
+    // Trade: 2 ouros same pos → especial
+    if(m2.pile3.length>0){
+      const ouros=aiHand.filter(c=>c.r==='ouro');
+      const oGroups={};ouros.forEach(c=>{if(!oGroups[c.pos])oGroups[c.pos]=[];oGroups[c.pos].push(c);});
+      for(const [pos,cards] of Object.entries(oGroups)){
+        if(cards.length>=2){
+          const use=cards.slice(0,2);
+          use.forEach(c=>{m2.aiHand=m2.aiHand.filter(x=>x.id!==c.id);m2.pile2.push(c);});
+          const got=m2.pile3.shift();
+          m2.aiHand.push(got);
+          m2Log(`IA trocou 2x Ouro por ${RARITY_LABEL[got.r]}`);
+          tradeMade=true;tradeCount++;break;
+        }
+      }
+    }
+  }
+
+  // AI auto-slot
+  let slotted=true;
+  while(slotted){
+    const slot=m2CanAutoSlot(m2.aiHand,m2.aiTeam);
+    if(slot){
+      m2.aiTeam[slot.pos].push(slot.card);
+      m2.aiHand=m2.aiHand.filter(c=>c.id!==slot.card.id);
+      slotted=true;
+    } else slotted=false;
+  }
+
+  document.getElementById('m2-ai-status').textContent=`Mão da IA: ${m2.aiHand.length} cartas`;
+  m2CheckWin('ai');
+  m2.turn='player';
+  m2Render();
+  m2Log('Sua vez! Compre uma carta do Grupo 1.');
+}
+
+function m2CheckWin(who){
+  const team = who==='player'?m2.playerTeam:m2.aiTeam;
+  const pts = m2TeamPoints(who);
+  const complete = Object.keys(FORMATION).every(pos=>team[pos].length>=FORMATION[pos]);
+  if(complete && pts>=40){
+    setTimeout(()=>showGameOver(who==='player','mode2',
+      who==='player'?`Time completo com ${pts} pontos! Você venceu!`:`IA montou o time com ${pts} pontos.`
+    ),600);
+  }
+}
+
+// ============================================================
+// GAME OVER
+// ============================================================
+function showGameOver(won, fromMode, subtitle){
+  document.getElementById('go-icon').textContent = won?'🏆':'😞';
+  document.getElementById('go-result').textContent = won?'VITÓRIA!':'DERROTA';
+  document.getElementById('go-result').className = 'go-result '+(won?'won':'lost');
+  document.getElementById('go-sub').textContent = subtitle;
+  showScreen('gameover');
+}
+
+// Trade modal helpers (kept simple)
+function closeTradeModal(){document.getElementById('trade-modal').classList.remove('open');}
+function confirmTrade(){closeTradeModal();}
+</script>
+</body>
+</html>
