@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>ScoutPro</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -607,6 +607,497 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
 .m3dres{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--gold);margin-bottom:.3rem;white-space:pre-line;line-height:1.35}
 .m3dsub{font-size:.68rem;color:var(--text2);margin-bottom:.85rem;white-space:pre-line;line-height:1.5}
 
+
+/* ═══════════════════════════════════════════════════
+   MODE 4 — SCOUT CATAN  (colonist.io style)
+═══════════════════════════════════════════════════ */
+#mode4{
+  background:#1a2535;
+  height:100vh;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.m4wrap{flex:1;display:flex;min-height:0;overflow:hidden}
+
+/* ── LEFT PANEL ── */
+.m4left{
+  width:280px;flex-shrink:0;
+  display:flex;flex-direction:column;
+  background:#0e1828;
+  border-right:2px solid rgba(255,255,255,.07);
+  overflow:hidden;
+}
+.m4lhdr{
+  padding:.35rem .5rem;flex-shrink:0;
+  background:#0a1220;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.m4lhdr-t{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+.m4turnbadge{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;font-weight:700;padding:.1rem .28rem;border-radius:5px}
+.m4turnbadge.you{background:rgba(0,229,255,.15);color:var(--accent);border:1px solid rgba(0,229,255,.3)}
+.m4turnbadge.ia{background:rgba(255,61,87,.15);color:var(--red);border:1px solid rgba(255,61,87,.3)}
+
+/* Resources */
+.m4res-wrap{padding:.32rem .5rem;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.06)}
+.m4section-title{font-family:'Barlow Condensed',sans-serif;font-size:.52rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--text2);margin-bottom:.2rem}
+.m4res-row{display:flex;gap:.15rem}
+.m4res-chip{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  padding:.2rem .1rem;border-radius:7px;background:rgba(255,255,255,.05);
+  border:1.5px solid rgba(255,255,255,.1);
+}
+.m4res-chip.has{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.08)}
+.m4res-ico{font-size:.82rem;line-height:1;margin-bottom:.06rem}
+.m4res-n{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:900;line-height:1;color:var(--gold)}
+.m4res-l{font-family:'Barlow Condensed',sans-serif;font-size:.38rem;font-weight:700;text-transform:uppercase;color:var(--text2);margin-top:.04rem;letter-spacing:.05em}
+
+/* Sign players */
+.m4sign-wrap{padding:.3rem .5rem;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.06)}
+.m4sign-list{display:flex;flex-direction:column;gap:.12rem;max-height:120px;overflow-y:auto}
+.m4sign-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);
+  border-radius:6px;padding:.16rem .3rem;cursor:pointer;transition:.15s;
+}
+.m4sign-row:hover:not(.m4off){background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
+.m4sign-row.m4off{opacity:.28;cursor:default;pointer-events:none}
+.m4sign-lbl{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;font-weight:700;display:flex;align-items:center;gap:.2rem}
+.m4sign-cost{font-size:.55rem;color:var(--text2)}
+
+/* Trade */
+.m4trade-wrap{padding:.28rem .5rem;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.06)}
+.m4trade-chips{display:flex;gap:.12rem;flex-wrap:wrap}
+.m4trade-chip{
+  flex:1;min-width:44px;text-align:center;
+  padding:.18rem .1rem;border-radius:5px;
+  background:rgba(245,197,66,.07);border:1px solid rgba(245,197,66,.18);
+  color:var(--gold);cursor:pointer;transition:.15s;
+  font-family:'Barlow Condensed',sans-serif;font-size:.58rem;font-weight:700;
+}
+.m4trade-chip:hover:not(.m4off){background:rgba(245,197,66,.16)}
+.m4trade-chip.m4off{opacity:.25;cursor:default;pointer-events:none}
+
+/* Team mini */
+.m4team-wrap{flex:1;min-height:0;padding:.28rem .5rem;overflow-y:auto}
+.m4team-grid{display:flex;flex-direction:column;gap:.1rem;margin-top:.15rem}
+.m4ts{
+  display:flex;align-items:center;gap:.22rem;
+  padding:.12rem .28rem;border-radius:5px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:700;
+}
+.m4ts.filled{border-color:rgba(0,229,255,.2);background:rgba(0,229,255,.06);color:var(--accent)}
+.m4ts-pts{margin-left:auto;color:var(--gold);font-size:.65rem}
+.m4pts-bar{padding:.12rem .5rem;flex-shrink:0;border-top:1px solid rgba(255,255,255,.06)}
+
+/* Log */
+.m4log{height:50px;padding:.18rem .5rem;background:rgba(0,0,0,.25);border-top:1px solid rgba(255,255,255,.05);font-size:.58rem;color:var(--text2);overflow-y:auto;line-height:1.65;flex-shrink:0}
+
+/* ── RIGHT: BOARD ── */
+.m4right{
+  flex:1;min-width:0;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.m4board-area{
+  flex:1;min-height:0;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+#m4svg{
+  max-width:96%;max-height:96%;
+}
+
+/* Action bar */
+.m4actbar{
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;gap:.55rem;
+  padding:.32rem .6rem;
+  background:rgba(10,18,32,.95);
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.m4msg{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:700;color:var(--text2);letter-spacing:.04em;flex:1}
+.m4dice-show{
+  display:flex;align-items:center;gap:.3rem;min-width:80px;
+}
+.m4die{
+  width:32px;height:32px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;background:#f0e8d0;
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,.35),0 1px 4px rgba(0,0,0,.4);
+  transition:.2s;
+}
+.m4die.hot{background:#8b0000;color:#ffb0b0}
+.m4die-sum{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900;color:var(--gold);min-width:28px}
+.m4btn-roll{
+  background:linear-gradient(135deg,#243050,#334568);
+  border:1px solid rgba(120,160,255,.35);color:#d0e0ff;
+  padding:.3rem .85rem;border-radius:8px;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:.05em;transition:.18s;
+  box-shadow:0 2px 8px rgba(0,0,0,.4);
+}
+.m4btn-roll:hover:not(:disabled){background:linear-gradient(135deg,#2e3e64,#3e527a);border-color:rgba(120,160,255,.6)}
+.m4btn-roll:disabled{opacity:.3;cursor:default}
+.m4btn-end{
+  background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.28);
+  color:var(--accent);padding:.3rem .75rem;border-radius:8px;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:.05em;transition:.18s;
+}
+.m4btn-end:hover:not(:disabled){background:rgba(0,229,255,.18)}
+.m4btn-end:disabled{opacity:.3;cursor:default}
+
+/* Setup hint */
+.m4hint{
+  position:absolute;top:.55rem;left:50%;transform:translateX(-50%);
+  background:rgba(10,20,40,.92);border:1.5px solid rgba(0,229,255,.4);
+  border-radius:9px;padding:.35rem .8rem;z-index:10;pointer-events:none;
+  font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:700;
+  color:var(--accent);letter-spacing:.04em;white-space:nowrap;
+}
+
+/* Scout modal */
+.m4scout-modal{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:rgba(30,10,60,.97);border:2px solid #9030e0;
+  border-radius:14px;padding:.9rem 1.2rem;text-align:center;z-index:20;
+  box-shadow:0 8px 32px rgba(0,0,0,.7);
+}
+.m4scout-title{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:900;color:#c080f0;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem}
+.m4scout-sub{font-size:.65rem;color:rgba(255,255,255,.65);margin-bottom:.6rem;line-height:1.5}
+
+/* SVG element classes */
+.m4hex-hover{cursor:pointer;transition:opacity .15s}
+.m4hex-hover:hover{opacity:.85}
+.m4vertex-dot{cursor:pointer;transition:all .15s}
+.m4vertex-dot:hover{r:10;opacity:1}
+
+
+/* ═══════════════════════════════════════════════════
+   MOBILE — Responsive overrides
+   Portrait: Modes 1 & 2
+   Landscape: Modes 3 & 4 (rotation prompt for portrait)
+═══════════════════════════════════════════════════ */
+
+/* ── Global mobile base ── */
+@media (max-width: 768px) {
+  html { -webkit-text-size-adjust: 100%; }
+  body { overflow: auto; }
+
+  /* Bigger tap targets */
+  button, .mode-card, .pile, .pstack,
+  .sp-btn, .aislot, .m3act, .m4arow, .m4urow, .m4tc {
+    min-height: 44px;
+    cursor: pointer;
+  }
+
+  /* ── MENU ── */
+  .menu-inner { padding: 1.5rem 1rem; }
+  .sp-logo { font-size: 3.5rem !important; }
+  .mode-cards { flex-direction: column; align-items: center; gap: 1rem; }
+  .mode-card { width: 90vw !important; max-width: 360px; padding: 1.2rem; }
+  .mode-num { font-size: 2rem !important; }
+  .mode-title { font-size: 1.2rem !important; }
+
+  /* ── GAME HEADER ── */
+  .game-header { padding: .4rem .6rem; }
+  .game-title { font-size: .85rem; }
+  .back-btn { padding: .3rem .55rem; font-size: .72rem; }
+
+  /* ── MODE 1 (portrait-friendly) ── */
+  #mode1 { overflow-y: auto; }
+  .m1 { padding: .4rem; gap: .4rem; }
+  .aislots { gap: .35rem; }
+  .aislot { min-width: 52px; height: 70px; border-radius: 8px; }
+  .aislot-ico { font-size: 1.4rem; }
+  .bzone { padding: .4rem; }
+  .brow { gap: .5rem; }
+  .bcw { width: 90px; height: 120px; }
+  .bside { gap: .4rem; }
+  .binfo { gap: .2rem; }
+  .bdice { font-size: 1.6rem; }
+  .bsc { font-size: 1.3rem; }
+  .hzone { padding: .35rem .4rem; }
+  .hrow { gap: .25rem; }
+  .hcard { width: 80px; height: 108px; }
+  .m1 .btn { padding: .5rem 1.2rem; font-size: .88rem; margin: .2rem .4rem; }
+  .vsd { font-size: 1.1rem; }
+  .bbrk { font-size: .6rem; }
+
+  /* ── MODE 2 (portrait-friendly) ── */
+  #mode2 { overflow-y: auto; height: auto; min-height: 100vh; }
+  .m2 { padding: .35rem; gap: .35rem; }
+  .pilesbar { gap: .35rem; flex-wrap: wrap; }
+  .pblock { min-width: 70px; }
+  .pstack { height: 80px; font-size: .75rem; }
+  .pcnt { font-size: .65rem; }
+  .pitrow { grid-template-columns: 1fr; gap: .35rem; }
+  .pitch-outer { padding-top: 95%; }
+  .abar { padding: .3rem .38rem; }
+  .hcards { gap: .18rem; }
+  .hc { min-width: 52px; height: 78px; }
+  .tlist { max-height: 80px; }
+  .tbtn { font-size: .62rem; padding: .18rem .3rem; }
+  .m2 .btn { padding: .45rem 1rem; font-size: .82rem; }
+
+  /* ── MODE 3 ── landscape only (see below) ── */
+  /* ── MODE 4 ── landscape only (see below) ── */
+}
+
+/* ── Portrait rotation prompt for Modes 3 & 4 ── */
+.rotate-prompt {
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  background: #06080d;
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 1.2rem; text-align: center; padding: 2rem;
+}
+.rotate-prompt-icon {
+  font-size: 3.5rem;
+  animation: rotatePulse 1.5s ease-in-out infinite;
+}
+@keyframes rotatePulse {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+}
+.rotate-prompt-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.4rem; font-weight: 900; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--accent);
+}
+.rotate-prompt-sub {
+  font-size: .85rem; color: var(--text2); line-height: 1.5; max-width: 260px;
+}
+.rotate-prompt-skip {
+  background: transparent; border: 1px solid rgba(255,255,255,.2);
+  color: var(--text2); padding: .4rem .9rem; border-radius: 7px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .78rem;
+  font-weight: 700; text-transform: uppercase; cursor: pointer; margin-top: .5rem;
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+  /* Show rotate prompt when in Mode 3 or 4 in portrait */
+  #mode3.active ~ .rotate-prompt,
+  #mode4.active ~ .rotate-prompt {
+    display: flex;
+  }
+  /* Simpler: JS will handle this */
+}
+
+/* ── Landscape mobile: Modes 3 & 4 ── */
+@media (max-width: 1024px) and (orientation: landscape) {
+  /* Force no overflow anywhere */
+  #mode3, #mode4 { overflow: hidden; height: 100dvh; }
+
+  /* ── MODE 3 HEADER: very compact ── */
+  #mode3 .game-header { padding: .1rem .35rem; flex-shrink: 0; }
+  #mode3 .game-title  { font-size: .6rem; }
+  #mode3 .back-btn    { padding: .15rem .3rem; font-size: .58rem; }
+  #mode3 .badge       { font-size: .52rem; padding: .06rem .2rem; }
+
+  /* ── STATUS BAR: single line, very tight ── */
+  .m3bar      { padding: .08rem .28rem; gap: .18rem; flex-shrink: 0; flex-wrap: nowrap; }
+  .m3coin-n   { font-size: .75rem; }
+  .m3coinbox  { padding: .08rem .2rem; gap: .12rem; }
+  .m3turntxt  { font-size: .55rem; }
+  .m3subtxt   { font-size: .44rem; }
+  .m3logbar   { width: 120px; max-height: 28px; font-size: .4rem; line-height: 1.3; }
+  .m3badge-wrap{ gap: .15rem; }
+
+  /* ── SPLIT: fill exactly remaining height ── */
+  .m3split    { flex: 1; min-height: 0; overflow: hidden; display: flex; }
+
+  /* ── LEFT PANEL: 22% width ── */
+  .m3left     { width: 22%; flex-shrink: 0; display: flex; flex-direction: column; overflow: hidden; }
+  .m3teambox-hdr { padding: .08rem .22rem; flex-shrink: 0; }
+  .m3teamlbl  { font-size: .46rem; }
+  .m3teampts  { font-size: .46rem; }
+  .m3pitchwrap{ flex: 0 0 56%; min-height: 0; }
+  .m3formation{ inset: .3% .8%; gap: 0; }
+  .m3row      { padding: 0; }
+  .m3slot     { width: 19% !important; gap: .02rem; }
+  .m3pm       { aspect-ratio: 3/4; }
+  .m3pm-r     { font-size: .44rem; }
+  .m3pm-n     { font-size: .28rem; padding: .02rem .03rem; }
+  .m3slot-lbl { font-size: .24rem; }
+  .m3form-label{ font-size: .4rem; bottom: 1%; left: 2%; }
+  .m3bench    { flex: 1; min-height: 0; padding: .08rem .18rem; }
+  .m3bench-lbl{ font-size: .32rem; margin-bottom: .06rem; }
+  .m3benchcard{ width: 3.8vw; }
+  .m3sellblk  { padding: .1rem .22rem; flex-shrink: 0; }
+  .m3selltxt  { font-size: .44rem; }
+  .m3sellitems{ max-height: 38px; }
+  .m3sb       { padding: .08rem .15rem; font-size: .44rem; }
+
+  /* ── RIGHT PANEL: strict height ── */
+  .m3right    { flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column; }
+  
+  /* ── BOARD GRID: 2x2 regions + small travel nodes ── */
+  .m3board {
+    flex: 1;
+    min-height: 0;
+    display: grid !important;
+    grid-template-columns: 1fr 32px 1fr !important;
+    grid-template-rows:    1fr 32px 1fr !important;
+    overflow: hidden;
+  }
+
+  /* ── REGIONS: overflow hidden, compact padding ── */
+  .m3reg      { padding: .15rem .2rem; overflow: hidden; min-height: 0; min-width: 0; }
+  .m3rtitle   { font-size: .6rem; margin-bottom: .08rem; font-weight: 900; }
+  .m3acts     { gap: .1rem; flex-wrap: nowrap; }
+  .m3act      { padding: .12rem .1rem; border-radius: 4px; gap: .08rem; flex: 1; min-width: 0; }
+  .m3act-ico  { font-size: .7rem; }
+  .m3act-n    { font-size: .42rem; }
+  .m3act-c    { font-size: .34rem; }
+  .m3pile-n   { font-size: .44rem; }
+  .m3reginfo  { font-size: .34rem; }
+  .m3pawn     { font-size: .44rem; padding: .04rem .12rem; }
+
+  /* ── TRAVEL OVERLAY: fill region ── */
+  .m3travel-overlay { border-radius: 4px; }
+  .m3travel-ico  { font-size: 1.2rem; }
+  .m3travel-nm   { font-size: .7rem; letter-spacing: .06em; }
+  .m3travel-cost { font-size: .6rem; }
+
+  /* ── TRAVEL NODES (center cross) ── */
+  .m3tnode     { width: 16px; height: 16px; font-size: .42rem; border-radius: 2px; }
+  .m3tnode-cost{ font-size: .3rem; }
+
+  /* Patrocinio popup */
+  .m3spons     { font-size: .46rem; }
+
+  /* ── MODE 4 LANDSCAPE ── */
+  #mode4 .game-header { padding: .1rem .35rem; }
+  #mode4 .game-title  { font-size: .6rem; }
+  #mode4 .back-btn    { padding: .15rem .3rem; font-size: .58rem; }
+  .m4left      { width: 195px; flex-shrink: 0; }
+  .m4lhdr      { padding: .12rem .25rem; }
+  .m4lhdr-t    { font-size: .55rem; }
+  .m4sec       { padding: .1rem .25rem; }
+  .m4sec-t     { font-size: .36rem; }
+  .m4res-row   { gap: .06rem; }
+  .m4rc        { padding: .08rem .03rem; }
+  .m4rc-i      { font-size: .58rem; }
+  .m4rc-n      { font-size: .65rem; }
+  .m4rc-l      { font-size: .28rem; }
+  .m4action-list{ max-height: 60px; }
+  .m4arow      { padding: .06rem .13rem; }
+  .m4arow-l    { font-size: .45rem; }
+  .m4arow-c    { font-size: .38rem; }
+  .m4team-wrap { padding: .1rem .25rem; }
+  .m4ts        { font-size: .44rem; padding: .06rem .15rem; margin-bottom: .03rem; }
+  .m4log       { height: 26px; font-size: .4rem; padding: .06rem .25rem; }
+  .m4actbar    { padding: .12rem .3rem; gap: .25rem; }
+  .m4msg       { font-size: .46rem; }
+  .m4btn-roll, .m4btn-end { padding: .16rem .4rem; font-size: .55rem; }
+  .m4die       { width: 19px; height: 19px; font-size: .7rem; }
+  .m4dsum      { font-size: .8rem; }
+}
+
+/* ── Small phones (≤ 390px wide) ── */
+@media (max-width: 390px) {
+  .sp-logo { font-size: 3rem !important; }
+  .mode-card { padding: 1rem; }
+  .bcw { width: 75px; height: 100px; }
+  .hcard { width: 68px; height: 92px; }
+  .hc { min-width: 46px; height: 68px; }
+  .pstack { height: 68px; }
+}
+
+/* Team status inside olheiro modal */
+.m3modal-team{
+  display:flex;gap:.3rem;flex-wrap:wrap;
+  background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;padding:.4rem .5rem;margin-bottom:.7rem;
+}
+.m3mt-slot{
+  display:flex;align-items:center;gap:.25rem;
+  padding:.15rem .35rem;border-radius:5px;
+  font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:700;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+}
+.m3mt-slot.filled{
+  background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.25);color:var(--accent);
+}
+.m3mt-slot.need{
+  background:rgba(255,197,0,.1);border-color:rgba(255,197,0,.3);color:#ffc800;
+}
+.m3mt-slot-pts{margin-left:.2rem;color:var(--gold);font-size:.65rem}
+
+
+.m4team-wrap,.m4action-list,.m4upgrade-list,.tlist,.m3logbar,.m4log{-webkit-overflow-scrolling:touch}
+/* Travel overlay — covers inactive region actions on mobile */
+.m3reg { position: relative; }  /* ensure positioning context */
+
+.m3travel-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+  background: rgba(0, 0, 0, .55);
+  backdrop-filter: blur(2px);
+  cursor: pointer;
+  transition: background .18s;
+  border-radius: inherit;
+}
+.m3travel-overlay:hover {
+  background: rgba(0, 150, 255, .25);
+}
+.m3travel-overlay.off {
+  opacity: .4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.m3travel-ico  { font-size: 1.6rem; line-height: 1; }
+.m3travel-nm   {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .85rem; font-weight: 900;
+  text-transform: uppercase; letter-spacing: .1em;
+  color: #fff;
+}
+.m3travel-cost {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .72rem; font-weight: 700;
+  color: var(--gold);
+}
+
+/* Sell modal grid */
+.m3sell-grid{
+  display:flex;flex-wrap:wrap;gap:.6rem;
+  justify-content:center;max-height:55vh;overflow-y:auto;
+  padding:.2rem;
+}
+.m3sell-card{
+  display:flex;flex-direction:column;align-items:center;gap:.3rem;
+  cursor:pointer;transition:.18s;
+  width:80px;
+}
+.m3sell-card:hover .m3sell-card-inner{transform:translateY(-3px);box-shadow:0 6px 20px rgba(245,197,66,.4);}
+.m3sell-card-inner{width:80px;height:107px;border-radius:7px;overflow:hidden;flex-shrink:0}
+.m3sell-card-inner .m3pm{width:100%;height:100%;aspect-ratio:unset}
+.m3sell-name{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:800;text-align:center;color:#fff;line-height:1.2}
+.m3sell-rar{font-size:.52rem;color:var(--text2);text-align:center}
+.m3sell-mult{font-size:.58rem;color:var(--gold);font-weight:700;text-align:center}
+
+/* Patrocínio inline widget — sits in status bar next to turno */
+.m3pat-inline{
+  display:flex;align-items:center;gap:.3rem;
+  background:rgba(10,14,20,.7);
+  border:1px solid rgba(245,197,66,.3);
+  border-radius:6px;padding:.12rem .3rem;
+  flex-shrink:0;
+}
+.m3pat-inline-title{
+  font-size:.72rem;flex-shrink:0;
+}
+
 </style>
 </head>
 <body>
@@ -635,9 +1126,16 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
         <div class="mode-desc">Viaje pelo mundo, use olheiros, patrocínios e vendas para montar o time perfeito.</div>
         <div class="mode-tag">🌍 Com tabuleiro · vs IA</div>
       </div>
+      <div class="mode-card" onclick="startMode4()">
+        <div class="mode-num">04</div>
+        <div class="mode-title">Scout Catan</div>
+        <div class="mode-desc">Tabuleiro hexagonal! Colete tokens por posição, faça upgrades e contrate jogadores.</div>
+        <div class="mode-tag">⬡ Catan · vs IA</div>
+      </div>
     </div>
   </div>
 </div>
+
 
 <div id="mode1" class="screen">
   <div class="game-header">
@@ -753,6 +1251,22 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
 <!-- ═══ MODE 3 — MUNDO DO FUTEBOL ═══════════════════════════ -->
 <div id="mode3" class="screen">
 
+  <!-- WIN OVERLAY — appears on top of everything when game ends -->
+  <div id="m3winoverlay" style="display:none;position:fixed;inset:0;z-index:9000;
+    background:rgba(0,0,0,.88);display:none;flex-direction:column;align-items:center;
+    justify-content:center;gap:1.2rem;text-align:center;padding:2rem;">
+    <div id="m3winico" style="font-size:4rem;line-height:1">🏆</div>
+    <div id="m3wintitle" style="font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;
+      font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#f5c542"></div>
+    <div id="m3winsub" style="font-size:1rem;color:rgba(255,255,255,.7);max-width:300px;line-height:1.5"></div>
+    <button onclick="goMenu()" style="margin-top:.5rem;padding:.6rem 2rem;border-radius:10px;
+      background:linear-gradient(135deg,#00b4d8,#0077b6);border:none;color:#fff;
+      font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;
+      text-transform:uppercase;letter-spacing:.08em;cursor:pointer">
+      ← Voltar ao Menu
+    </button>
+  </div>
+
   <!-- STATUS BAR -->
   <div class="m3bar">
     <div class="m3coin p">
@@ -768,6 +1282,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
       <div class="m3ibs" id="m3subtxt">Você está no Brasil 🇧🇷</div>
     </div>
     <div class="badge" id="m3badge">Turno 1</div>
+      <div class="m3pat-inline" id="m3pat-inline">
+        <span class="m3pat-inline-title">🤝</span>
+        <div class="m3stable" id="m3stable"></div>
+      </div>
     <div class="m3logbar" id="m3log"></div>
   </div>
 
@@ -857,13 +1375,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
         <!-- LEFT CENTER: -1 -->
         <div class="m3conn-left"><div class="m3tnode">-1</div></div>
 
-        <!-- CENTER HUB: table + -4 -->
+        <!-- CENTER HUB: just the -4 travel node -->
         <div class="m3conn-mid">
-          <div class="m3hub">
-            <div class="m3hub-title">🤝 Patrocínio</div>
-            <div class="m3stable" id="m3stable"></div>
-            <div class="m3tnode" style="margin-top:.22rem;width:100%;border-radius:5px">-4</div>
-          </div>
+          <div class="m3tnode" style="width:100%;border-radius:5px">-4</div>
         </div>
 
         <!-- RIGHT CENTER: -2 -->
@@ -904,6 +1418,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
   <div class="m3mbox">
     <div class="m3mt" id="m3mt">👁 Olheiro</div>
     <div class="m3mi" id="m3mi">Selecione uma carta</div>
+    <!-- Team status mini panel -->
+    <div class="m3modal-team" id="m3modal-team"></div>
     <div class="m3mc" id="m3mc"></div>
     <div class="m3mbtns">
       <button class="m3can" onclick="m3closeModal()">Cancelar</button>
@@ -1073,6 +1589,18 @@ function scr(id){document.querySelectorAll('.screen').forEach(s=>s.classList.rem
 function goMenu(){scr('menu')}
 function toast(m,d=2300){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d)}
 function gameOver(won,sub){
+  // Show the dedicated m3 win overlay if we're in mode3
+  const overlay=document.getElementById('m3winoverlay');
+  if(overlay && document.getElementById('mode3').classList.contains('active')){
+    overlay.style.display='flex';
+    document.getElementById('m3winico').textContent=won?'🏆':'😞';
+    document.getElementById('m3wintitle').textContent=won?'VITÓRIA!':'DERROTA';
+    document.getElementById('m3winsub').textContent=sub;
+    // Block all interactions behind
+    overlay.onclick=null; // clicks on overlay don't dismiss accidentally
+    return;
+  }
+  // Fallback for other modes
   document.getElementById('goico').textContent=won?'🏆':'😞';
   const t=document.getElementById('gotit');t.textContent=won?'VITÓRIA!':'DERROTA';t.className='gotit '+(won?'won':'lost');
   document.getElementById('gosub').textContent=sub;scr('gameover');
@@ -1449,6 +1977,9 @@ const PP3 = {
 let G3={};
 
 function startM3(){
+  // Reset win overlay
+  const ov=document.getElementById('m3winoverlay');
+  if(ov) ov.style.display='none';
   const ic=shuf(CARDS.filter(c=>c.r==='icone'));
   const es=shuf(CARDS.filter(c=>c.r==='especial'));
   const ou=shuf(CARDS.filter(c=>c.r==='ouro'));
@@ -1462,13 +1993,16 @@ function startM3(){
       europa: shuf([ic[2],ic[3],...es.slice(4,7),...ou.slice(8,18),...bp.slice(38,46)]),
       mundo:  shuf([ic[4],...es.slice(7,10),...ou.slice(18),...bp.slice(46)]),
     },
+    _gameOver:false,
     pCoins:50,aCoins:50,
     pRegion:'brasil',aRegion:'brasil',
     pTeam:{goleiro:[],defesa:[],meio:[],ataque:[]},
     aTeam:{goleiro:[],defesa:[],meio:[],ataque:[]},
     pHand:[],aHand:[],
     pLastAction:null,pConsec:0,
+    pRegionRounds:0,pMustTravel:false,
     aLastAction:null,aConsec:0,
+    aRegionRounds:0,
     turn:'player',turnNum:1,
   };
   scr('mode3');
@@ -1481,13 +2015,21 @@ function m3log(msg){const e=document.getElementById('m3log');if(e)e.innerHTML='<
 
 /* ── MAIN RENDER ── */
 function m3renderAll(){
+  // ── Win check on every render ──
+  if(typeof G3 !== 'undefined' && G3.pTeam && !G3._gameOver){
+    const pp = m3pts('p');
+    if(pp >= 40){ G3._gameOver = true; gameOver(true,  '🏆 Você fez '+pp+' pontos! VITÓRIA!'); return; }
+    const ap = m3pts('a');
+    if(ap >= 40){ G3._gameOver = true; gameOver(false, '🤖 IA fez '+ap+' pontos. Derrota.');   return; }
+  }
+
   document.getElementById('m3badge').textContent='Turno '+G3.turnNum;
   document.getElementById('m3pcoins').textContent=G3.pCoins;
   document.getElementById('m3acoins').textContent=G3.aCoins;
   const isP=G3.turn==='player';
   document.getElementById('m3turntxt').textContent=isP?'Sua vez — escolha uma ação':'🤖 IA está jogando...';
   document.getElementById('m3subtxt').textContent=isP
-    ?`Você está em: ${REGIONS[G3.pRegion].name} ${REGIONS[G3.pRegion].flag}`
+    ?(G3.pMustTravel?`⚠️ Máximo de rodadas atingido — Viaje!`:`Você está em: ${REGIONS[G3.pRegion].name} ${REGIONS[G3.pRegion].flag}`)
     :`IA está em: ${REGIONS[G3.aRegion].name} ${REGIONS[G3.aRegion].flag}`;
   m3renderRegions();
   m3renderPitch3();  // renders field cards + bench
@@ -1527,14 +2069,14 @@ function m3renderRegions(){
             <span class="m3act-c">${cs}</span>
           </div>`;
         });
-        // Travel buttons for other regions
+        // Travel overlay for other regions (covers inactive buttons)
         Object.entries(TRAVEL[G3.pRegion]||{}).forEach(([dest,cost])=>{
           if(dest===reg){
             const off=G3.pCoins<cost?' off':'';
-            html+=`<div class="m3act t-travel${off}" onclick="m3travel('${reg}')">
-              <span class="m3act-ico">✈</span>
-              <span class="m3act-n">Viajar</span>
-              <span class="m3act-c">${cost}🪙</span>
+            html+=`<div class="m3travel-overlay${off}" onclick="m3travel('${reg}')">
+              <span class="m3travel-ico">✈️</span>
+              <span class="m3travel-nm">VIAJAR</span>
+              <span class="m3travel-cost">${cost}🪙</span>
             </div>`;
           }
         });
@@ -1569,6 +2111,7 @@ function m3actInfo(act,reg){
 
 function m3isOff(act,reg){
   if(G3.turn!=='player')return true;
+  if(G3.pMustTravel&&act!=='viajar')return true; // must travel first
   if(reg!==G3.pRegion)return true;
   const key=act+'_'+reg;
   if(G3.pLastAction===key&&G3.pConsec>=2)return true;
@@ -1788,6 +2331,7 @@ function m3travel(toReg){
   const cost=TRAVEL[G3.pRegion][toReg];
   if(G3.pCoins<cost){toast('Moedas insuficientes!');return;}
   G3.pCoins-=cost;
+  G3.pRegionRounds=0; G3.pMustTravel=false; // reset on travel
   m3log(`✈ ${REGIONS[G3.pRegion].name} → ${REGIONS[toReg].name} (-${cost}🪙)`);
   G3.pRegion=toReg;G3.pLastAction=null;G3.pConsec=0;
   m3renderAll();
@@ -1797,10 +2341,10 @@ function m3act(act,reg){
   if(m3isOff(act,reg))return;
   const key=act+'_'+reg;
   if(G3.pLastAction===key)G3.pConsec++;else{G3.pConsec=1;G3.pLastAction=key;}
-  if(act==='olheiro')   m3doOlheiro('p');
-  else if(act==='superpack')  m3doSuperpack();
-  else if(act==='patrocinio') m3doPatrocinio('p');
-  // venda handled by sell buttons
+  if(act==='olheiro')        m3doOlheiro('p');
+  else if(act==='superpack') m3doSuperpack();
+  else if(act==='patrocinio')m3doPatrocinio('p');
+  else if(act==='venda')     m3openSellModal();
 }
 
 function m3doOlheiro(who){
@@ -1818,7 +2362,7 @@ function m3doOlheiro(who){
         G3.pHand.push(chosen);
         picks.filter(c=>c.id!==chosen.id).forEach(c=>G3.piles[reg].push(c));
         m3log(`→ Você recrutou: ${chosen.name} (${RL[chosen.r]})`);
-        m3autoSlot3('p');m3endPlayerTurn();
+        m3autoSlot3('p'); m3checkWin3('p'); if(!G3._gameOver) m3endPlayerTurn();
       });
   }else{
     G3.aCoins-=cost;
@@ -1861,6 +2405,39 @@ function m3doPatrocinio(who){
   }
 }
 
+function m3openSellModal(){
+  const reg=G3.pRegion;
+  const sl=m3sellable('p',reg);
+  const mu=SELL_MULT[reg]||{};
+  if(!sl.length){toast('Sem cartas para vender aqui!');return;}
+
+  // Build card list HTML — show card with name, rarity, multiplier
+  const cardsHtml=sl.map(sc=>`
+    <div class="m3sell-card" onclick="m3sell('${sc.id}')">
+      <div class="m3sell-card-inner">
+        ${card(sc)}
+      </div>
+      <div class="m3sell-card-info">
+        <div class="m3sell-name">${sc.name}</div>
+        <div class="m3sell-rar">${RL[sc.r]}</div>
+        <div class="m3sell-mult">${mu[sc.r]||0}× dado 🎲</div>
+      </div>
+    </div>`).join('');
+
+  const content=document.getElementById('m3mc');
+  const title=document.getElementById('m3mt');
+  const info=document.getElementById('m3mi');
+  const confirm=document.getElementById('m3mconfirm');
+  const modal=document.getElementById('m3modal');
+  if(!modal)return;
+
+  title.textContent='💰 Vender Jogador';
+  info.textContent='Clique em uma carta para vender por 1 dado × multiplicador:';
+  content.innerHTML=`<div class="m3sell-grid">${cardsHtml}</div>`;
+  confirm.style.display='none'; // sell uses direct card click
+  modal.classList.add('open');
+}
+
 function m3sell(cardId){
   const reg=G3.pRegion;
   const sl=m3sellable('p',reg);
@@ -1878,6 +2455,12 @@ function m3sell(cardId){
   if(!found)G3.pHand=G3.pHand.filter(x=>x.id!==c.id);
   G3.piles[reg].push(c);
   m3log(`💰 Vendeu ${c.name}: dado ${roll} × ${mult} = +${earned}🪙`);
+  // Close the sell modal and restore confirm button
+  const modal=document.getElementById('m3modal');
+  if(modal) modal.classList.remove('open');
+  const confirm=document.getElementById('m3mconfirm');
+  if(confirm){ confirm.style.display=''; confirm.disabled=true; }
+  window._m3cb=null;
   m3showDice([roll],`Dado: ${roll}`,`${c.name}\n+${earned}🪙`,()=>m3endPlayerTurn());
 }
 
@@ -1925,62 +2508,127 @@ function m3autoSlot3(who){
   }}
 
 function m3checkWin3(who){
-  const t=who==='p'?G3.pTeam:G3.aTeam;
-  const pts=m3pts(who);
-  const full=Object.keys(FORM).every(pos=>t[pos].length>=FORM[pos]);
-  if(full&&pts>=40)setTimeout(()=>gameOver(who==='p',who==='p'?`Time completo! ${pts} pontos!`:`IA montou o time com ${pts} pontos.`),500);
+  if(G3._gameOver) return;
+  const pts = m3pts(who);
+  if(pts >= 40){
+    G3._gameOver = true;
+    const msg = who==='p'
+      ? '🏆 Você fez '+pts+' pontos! VITÓRIA!'
+      : '🤖 IA fez '+pts+' pontos. Derrota.';
+    m3log(msg);
+    gameOver(who==='p', msg); // direct call — stop game immediately
+  }
 }
 
 /* ── TURNS ── */
 function m3endPlayerTurn(){
+  if(G3._gameOver) return;
+  m3checkWin3('p');
+  if(G3._gameOver) return;
+  G3.pRegionRounds++;
+  // Force travel if stuck 3+ rounds in same region
+  if(G3.pRegionRounds>=3){
+    const canTravel=Object.entries(TRAVEL[G3.pRegion]).some(([d,cost])=>G3.pCoins>=cost);
+    if(canTravel){
+      toast('⚠️ Máximo 3 rodadas no mesmo continente! Você deve viajar.');
+      G3.pMustTravel=true;
+    }
+  }
   G3.turn='ai';m3renderAll();setTimeout(m3aiTurn,800);
 }
 
+
+
+
+/* ── TURNS ── */
+
+
+
+
+
+/* ── TURNS ── */
+
+
 function m3aiTurn(){
-  const reg=G3.aRegion;
-  const key_oli='olheiro_'+reg;
-  const key_sp ='superpack_'+reg;
-  const key_pat='patrocinio_'+reg;
-  const canDo=key=>(G3.aLastAction!==key||G3.aConsec<2);
-  const track=key=>{if(G3.aLastAction===key)G3.aConsec++;else{G3.aConsec=1;G3.aLastAction=key}};
+  if(G3._gameOver) return; // stop if game already ended
+  const r=G3.aRegion;
   const teamFull=Object.keys(FORM).every(pos=>G3.aTeam[pos].length>=FORM[pos]);
+  const aPts=m3pts('a');
 
-  // Try travel to better region
-  if(!teamFull&&G3.aCoins>=4&&Math.random()<0.25){
-    const opts=Object.entries(TRAVEL[reg]).filter(([d,c])=>G3.aCoins>=c&&G3.piles[d].length>0);
-    if(opts.length){
-      const [dest,cost]=opts.sort((a,b)=>b[1]-a[1])[0]; // cheapest
-      G3.aCoins-=cost;G3.aRegion=dest;G3.aLastAction=null;G3.aConsec=0;
-      m3log(`🤖 IA viajou para ${REGIONS[dest].name}`);
+  // ── Already won? ──
+  if(aPts>=40){ m3checkWin3('a'); return; }
+
+  // ── Decide action ──
+  let acted=false;
+
+  // 1. Olheiro if affordable and pile available here
+  if(!teamFull && G3.aCoins>=OLHEIRO_COST[r] && G3.piles[r].length){
+    m3doOlheiro('a');
+    acted=true;
+
+  // 2. Travel to find cards if pile empty or too many coins unused
+  } else if(!teamFull){
+    // Find region with cards AND affordable travel
+    const bestDest=Object.entries(TRAVEL[r])
+      .filter(([d,cost])=>G3.aCoins>=cost && G3.piles[d].length>0)
+      .sort((a,b)=>{ // prefer Europa/Mundo for better cards if rich
+        const score={brasil:1,america:2,mundo:3,europa:3};
+        return (score[b[0]]||1)-(score[a[0]]||1);
+      })[0];
+    if(bestDest){
+      const [dest,cost]=bestDest;
+      G3.aCoins-=cost; G3.aRegion=dest; G3.aLastAction=null; G3.aConsec=0;
+      m3log(`✈️ IA viajou para ${REGIONS[dest].name} (-${cost}🪙)`);
+      acted=true;
+      // Try olheiro immediately in new region
+      if(G3.aCoins>=OLHEIRO_COST[dest] && G3.piles[dest].length){
+        m3doOlheiro('a');
+      }
+    } else {
+      // No affordable travel AND no local cards — do patrocínio to save up
+      m3doPatrocinio('a');
+      acted=true;
     }
-  }
 
-  const r2=G3.aRegion;
-  if(!teamFull&&G3.aCoins>=OLHEIRO_COST[r2]&&G3.piles[r2].length&&canDo('olheiro_'+r2)){
-    track('olheiro_'+r2);m3doOlheiro('a');
-  }else if(r2==='brasil'&&G3.aCoins>=5&&G3.piles[r2].length&&canDo(key_sp)){
-    track(key_sp);
-    G3.aCoins-=5;const roll=d6()+d6();
-    const dest2=roll<=4?'america':roll<=8?'brasil':roll<=10?'mundo':'europa';
-    const pile2=G3.piles[dest2];
-    if(pile2.length){G3.aHand.push(pile2.shift());m3autoSlot3('a');}
-  }else if(canDo('patrocinio_'+r2)){
-    track('patrocinio_'+r2);m3doPatrocinio('a');
-  }else{
-    G3.aLastAction=null;G3.aConsec=0;m3doPatrocinio('a');
+  // 3. Team full — still do patrocínio for fun (won't win by coins but pts trigger win)
+  } else {
+    m3doPatrocinio('a');
+    acted=true;
   }
 
   m3checkWin3('a');
-  G3.turn='player';G3.turnNum++;
+  G3.turn='player'; G3.turnNum++;
   m3renderAll();
   m3log('💬 Sua vez!');
 }
+
 
 /* ── MODALS ── */
 function m3showModal(title,info,cards,cb){
   window._m3cb=cb;
   document.getElementById('m3mt').textContent=title;
   document.getElementById('m3mi').textContent=info;
+  // Populate team status panel
+  const teamPanel=document.getElementById('m3modal-team');
+  if(teamPanel){
+    const posOrder=[['goleiro','GL'],['defesa','DEF'],['meio','MEI'],['ataque','ATK']];
+    let html='';
+    posOrder.forEach(([pos,lbl])=>{
+      const need=FORM[pos]||0;
+      const have=G3.pTeam[pos].length;
+      for(let i=0;i<need;i++){
+        const c=G3.pTeam[pos][i];
+        if(c){
+          html+=`<div class="m3mt-slot filled">${lbl} ${c.name.split(' ')[0]}<span class="m3mt-slot-pts">${c.pts}</span></div>`;
+        }else{
+          html+=`<div class="m3mt-slot need">${lbl} <span style="opacity:.6">vazio</span></div>`;
+        }
+      }
+    });
+    const pts=m3pts('p');
+    html=`<div style="width:100%;font-family:'Barlow Condensed',sans-serif;font-size:.55rem;color:var(--text2);margin-bottom:.2rem;letter-spacing:.08em">SEU TIME ATUAL — ${pts}/40 pts</div>`+html;
+    teamPanel.innerHTML=html;
+  }
   const cont=document.getElementById('m3mc');cont.innerHTML='';
   cards.forEach(c=>{
     const w=document.createElement('div');w.className='m3mcw';w.innerHTML=card(c);
@@ -2001,6 +2649,11 @@ function m3confirmModal(){
 }
 function m3closeModal(){
   document.getElementById('m3modal').classList.remove('open');
+  // Always restore confirm button when modal closes
+  const confirm=document.getElementById('m3mconfirm');
+  if(confirm){ confirm.style.display=''; confirm.disabled=true; }
+  // Reset modal selected state
+  window._m3cb=null;
   m3renderAll();
 }
 function m3showDice(rolls,res,sub,cb){
@@ -2017,6 +2670,787 @@ function m3closeDice(){
   m3renderAll();
 }
 
+
+/* ═══════════════════════════════════════════════════
+   MODE 4 — SCOUT CATAN
+   Sistema de trocas por raridade + upgrades
+═══════════════════════════════════════════════════ */
+
+const M4T = {
+  gl:   {name:'Goleiro',    short:'GL',  ico:'🧤', fill:'#8a6020', stroke:'#ffd060', res:'gl'},
+  def:  {name:'Defesa',     short:'DEF', ico:'🛡',  fill:'#1e6e30', stroke:'#60e878', res:'def'},
+  mei:  {name:'Meio Campo', short:'MEI', ico:'🎵', fill:'#1c3a8a', stroke:'#70b0ff', res:'mei'},
+  atk:  {name:'Ataque',     short:'ATK', ico:'⚽', fill:'#8a2020', stroke:'#ff7070', res:'atk'},
+  pat:  {name:'Patrocínio', short:'PAT', ico:'💰', fill:'#6e5010', stroke:'#f0c830', res:'pat'},
+  scout:{name:'Scout',      short:'SCT', ico:'🔍', fill:'#4a2080', stroke:'#c080ff', res:null},
+};
+
+// Catan standard: 3-4-5-4-3 = 19 hexes
+// GL=3, DEF=4, MEI=4, ATK=4, PAT=3, SCOUT=1
+const M4_DIST_RAW = ['gl','gl','gl','def','def','def','def','mei','mei','mei','mei','atk','atk','atk','atk','pat','pat','pat','scout'];
+const M4_NUMS  = [5,2,6,3,8,10,9,12,11,4,8,10,9,4,5,6,3,11]; // 18 numeros p/ 18 non-scout
+
+// Hex grid axial coords (flat-top, rows 3-4-5-4-3)
+const M4_AX = [
+  {q:0,r:-2},{q:1,r:-2},{q:2,r:-2},
+  {q:-1,r:-1},{q:0,r:-1},{q:1,r:-1},{q:2,r:-1},
+  {q:-2,r:0},{q:-1,r:0},{q:0,r:0},{q:1,r:0},{q:2,r:0},
+  {q:-2,r:1},{q:-1,r:1},{q:0,r:1},{q:1,r:1},
+  {q:-2,r:2},{q:-1,r:2},{q:0,r:2}
+];
+
+// CUSTO para contratar do Monte 1 por posição
+const M4_COST1 = {gl:2, def:3, mei:2, atk:2}; // DEF mais caro pois precisa de 4
+
+// CUSTO para contratar do Monte 2 (Especial/Ícone)
+const M4_COST2_TOKENS = 5; // tokens da posição desejada
+const M4_COST2_PAT    = 2; // + patrocínios
+
+const M4_RES = ['gl','def','mei','atk','pat'];
+const M4_POS = {gl:'goleiro', def:'defesa', mei:'meio', atk:'ataque'};
+const M4_SIZE = 52; // raio do hexágono em px
+
+let G4 = {};
+
+/* ── Utilitários geométricos ── */
+function m4Px(q,r){ const s=M4_SIZE; return {x:s*Math.sqrt(3)*(q+r/2), y:s*1.5*r}; }
+function m4Corners(cx,cy,s){ s=s||M4_SIZE; const pts=[]; for(let i=0;i<6;i++){const a=Math.PI/6+Math.PI/3*i; pts.push({x:cx+s*Math.cos(a),y:cy+s*Math.sin(a)});} return pts; }
+function m4VKey(x,y){ return `${Math.round(x*4)/4}:${Math.round(y*4)/4}`; }
+
+/* ── START ── */
+function startMode4(){
+  const types = shuf([...M4_DIST_RAW]);
+  let ni = 0;
+  const hexes = M4_AX.map((ax,i)=>{
+    const tp = types[i];
+    const {x,y} = m4Px(ax.q, ax.r);
+    const corners = m4Corners(x,y);
+    return {idx:i, q:ax.q, r:ax.r, type:tp,
+            number: tp!=='scout' ? M4_NUMS[ni++] : null,
+            cx:x, cy:y, corners, vKeys:[]};
+  });
+
+  // Build vertex + edge maps
+  const vMap = new Map(), eMap = new Map();
+  hexes.forEach(h=>{
+    const vks = h.corners.map(c=>m4VKey(c.x,c.y));
+    h.vKeys = vks;
+    vks.forEach((k,i)=>{
+      if(!vMap.has(k)) vMap.set(k,{key:k,x:h.corners[i].x,y:h.corners[i].y,hexes:[],own:null,type:null});
+      const v=vMap.get(k); if(!v.hexes.includes(h.idx)) v.hexes.push(h.idx);
+    });
+    for(let i=0;i<6;i++){
+      const ek=[vks[i],vks[(i+1)%6]].sort().join('||');
+      if(!eMap.has(ek)) eMap.set(ek,{key:ek,v:[vks[i],vks[(i+1)%6]],own:null});
+      eMap.get(ek).hexes = eMap.get(ek).hexes||[];
+      eMap.get(ek).hexes.push(h.idx);
+    }
+  });
+
+  // Monte 1 = Bronze/Prata/Ouro separado por posição
+  // Monte 2 = Especial/Ícone misturado
+  const monte1 = {};
+  ['goleiro','defesa','meio','ataque'].forEach(pos=>{
+    monte1[pos] = shuf(CARDS.filter(c=>c.pos===pos && ['bronze','prata','ouro'].includes(c.r)));
+  });
+  const monte2 = shuf(CARDS.filter(c=>['especial','icone'].includes(c.r)));
+
+  G4 = {
+    hexes, vMap, eMap,
+    scoutIdx: types.indexOf('scout'),
+    phase: 'setup', setupStep: 0,
+    turn: 'player', turnNum: 1,
+    rolled: false, lastDice: [null,null],
+    scoutMode: false,
+    pRes: {gl:0,def:0,mei:0,atk:0,pat:0},
+    aRes: {gl:0,def:0,mei:0,atk:0,pat:0},
+    pTeam: {goleiro:[],defesa:[],meio:[],ataque:[]},
+    aTeam: {goleiro:[],defesa:[],meio:[],ataque:[]},
+    settlements: [],
+    monte1, monte2,
+  };
+
+  scr('mode4');
+  m4Log('🏟 Coloque sua 1ª Academia clicando em um vértice verde.');
+  m4Render();
+  m4RenderBoard();
+}
+
+/* ── Log ── */
+function m4Log(msg){const e=document.getElementById('m4log');if(e)e.innerHTML='<div>·'+msg+'</div>'+e.innerHTML;}
+
+/* ── Render UI ── */
+function m4Render(){
+  const isP=G4.turn==='player', isMain=G4.phase==='main';
+  const b=document.getElementById('m4badge'); if(b) b.textContent=G4.phase==='setup'?'Configuração':'Turno '+G4.turnNum;
+  const tb=document.getElementById('m4tbadge'); if(tb){tb.textContent=isP?'Seu Turno':'IA';tb.className='m4tbadge '+(isP?'you':'ia');}
+
+  // Resources
+  const rr=document.getElementById('m4resrow');
+  if(rr) rr.innerHTML=M4_RES.map(k=>`
+    <div class="m4rc${G4.pRes[k]>0?' has':''}">
+      <span class="m4rc-i">${M4T[k].ico}</span>
+      <div class="m4rc-n">${G4.pRes[k]}</div>
+      <div class="m4rc-l">${M4T[k].short}</div>
+    </div>`).join('');
+
+  // Monte 1 actions
+  m4RenderM1();
+  // Monte 2 actions
+  m4RenderM2();
+  // Upgrades
+  m4RenderUpgrades();
+  // 4:1 trade
+  m4RenderTrade();
+  // Team
+  m4RenderTeam();
+
+  // Buttons
+  const rollBtn=document.getElementById('m4rollbtn'), endBtn=document.getElementById('m4endbtn');
+  if(rollBtn) rollBtn.disabled=!(isMain&&isP&&!G4.rolled&&!G4.scoutMode);
+  if(endBtn)  endBtn.disabled=!(isMain&&isP&&G4.rolled&&!G4.scoutMode);
+
+  // Dice display
+  const da=document.getElementById('m4dicearea');
+  if(da && G4.lastDice[0]){
+    const [d1,d2]=G4.lastDice; const hot1=d1===6||d1===8, hot2=d2===6||d2===8;
+    const ico=['','⚀','⚁','⚂','⚃','⚄','⚅'];
+    da.innerHTML=`<div class="m4die${hot1?' hot':''}">${ico[d1]}</div><div class="m4die${hot2?' hot':''}">${ico[d2]}</div><div class="m4dsum">${d1+d2}</div>`;
+  } else if(da) da.innerHTML='';
+
+  // Message
+  const msg=document.getElementById('m4msg');
+  if(msg){
+    if(G4.phase==='setup') msg.textContent=['Coloque sua 1ª Academia','IA colocando...','IA colocando 2ª...','Coloque sua 2ª Academia'][G4.setupStep]||'';
+    else if(G4.scoutMode) msg.textContent='🔍 Clique em um hexágono para o Scout';
+    else if(!isP) msg.textContent='🤖 IA está jogando...';
+    else if(!G4.rolled) msg.textContent='Role os dados para iniciar o turno';
+    else msg.textContent='Contrate, faça upgrades ou encerre';
+  }
+}
+
+function m4RenderM1(){
+  const el=document.getElementById('m4m1list'); if(!el) return;
+  const canAct=G4.phase==='main'&&G4.turn==='player'&&G4.rolled;
+  if(!canAct){el.innerHTML='<div style="font-size:.56rem;color:var(--text2)">Role os dados primeiro</div>';return;}
+  let html='';
+  Object.entries(M4_POS).forEach(([pk,pos])=>{
+    const cost=M4_COST1[pk];
+    const canAfford=G4.pRes[pk]>=cost;
+    const hasPile=G4.monte1[pos]&&G4.monte1[pos].length>0;
+    const slotFull=G4.pTeam[pos].length>=(FORM[pos]||0);
+    if(slotFull) return;
+    const off=(!canAfford||!hasPile)?' m4off':'';
+    const topCard=hasPile?G4.monte1[pos][G4.monte1[pos].length-1]:null;
+    const rarLabel=topCard?` (${RL[topCard.r]})`:'(vazio)';
+    html+=`<div class="m4arow${off}" onclick="m4BuyM1('${pk}')">
+      <span class="m4arow-l">${M4T[pk].ico} ${M4T[pk].name}${rarLabel}</span>
+      <span class="m4arow-c">${cost}${M4T[pk].ico}</span>
+    </div>`;
+  });
+  el.innerHTML=html||'<div style="font-size:.56rem;color:var(--text2)">Time completo!</div>';
+}
+
+function m4RenderM2(){
+  const el=document.getElementById('m4m2list'); if(!el) return;
+  const canAct=G4.phase==='main'&&G4.turn==='player'&&G4.rolled;
+  if(!canAct){el.innerHTML='';return;}
+  let html='';
+  Object.entries(M4_POS).forEach(([pk,pos])=>{
+    const slotFull=G4.pTeam[pos].length>=(FORM[pos]||0);
+    if(slotFull) return;
+    const canAfford=G4.pRes[pk]>=M4_COST2_TOKENS&&G4.pRes.pat>=M4_COST2_PAT;
+    const hasPile=G4.monte2.length>0;
+    const off=(!canAfford||!hasPile)?' m4off':'';
+    const topCard=hasPile?G4.monte2[G4.monte2.length-1]:null;
+    const rarLabel=topCard?` (${RL[topCard.r]})`:'(vazio)';
+    html+=`<div class="m4arow${off}" onclick="m4BuyM2('${pk}')">
+      <span class="m4arow-l">${M4T[pk].ico} ${M4T[pk].name}${rarLabel}</span>
+      <span class="m4arow-c">${M4_COST2_TOKENS}${M4T[pk].ico}+${M4_COST2_PAT}💰</span>
+    </div>`;
+  });
+  el.innerHTML=html;
+}
+
+function m4RenderUpgrades(){
+  const el=document.getElementById('m4upglist'); if(!el) return;
+  const canAct=G4.phase==='main'&&G4.turn==='player'&&G4.rolled;
+  if(!canAct){el.innerHTML='';return;}
+  let html='';
+  Object.entries(M4_POS).forEach(([pk,pos])=>{
+    const cards=G4.pTeam[pos]; if(cards.length<2) return;
+    // Check for upgrade pairs: 2x Bronze/Prata → Monte 1
+    const bp=cards.filter(c=>c.r==='bronze'||c.r==='prata');
+    if(bp.length>=2){
+      const off=G4.monte1[pos]&&G4.monte1[pos].length>0?'':' m4off';
+      html+=`<div class="m4urow${off}" onclick="m4UpgradeToM1('${pk}')">
+        <span class="m4urow-l">↑ ${M4T[pk].ico} 2×Bronze/Prata → Monte1</span>
+        <span class="m4urow-c">${M4T[pk].short}</span>
+      </div>`;
+    }
+    // 2x Ouro → Monte 2
+    const ouros=cards.filter(c=>c.r==='ouro');
+    if(ouros.length>=2){
+      const off=G4.monte2.length>0?'':' m4off';
+      html+=`<div class="m4urow${off}" onclick="m4UpgradeToM2('${pk}')">
+        <span class="m4urow-l">↑ ${M4T[pk].ico} 2×Ouro → Monte2</span>
+        <span class="m4urow-c">${M4T[pk].short}</span>
+      </div>`;
+    }
+  });
+  el.innerHTML=html||'<div style="font-size:.54rem;color:var(--text2)">Sem upgrades disponíveis</div>';
+}
+
+function m4RenderTrade(){
+  const el=document.getElementById('m4traderow'); if(!el) return;
+  const canAct=G4.phase==='main'&&G4.turn==='player'&&G4.rolled;
+  if(!canAct){el.innerHTML='';return;}
+  el.innerHTML=M4_RES.map(k=>`
+    <div class="m4tc${G4.pRes[k]>=4?'':' m4off'}" onclick="m4BankTrade('${k}')">
+      ${M4T[k].ico} 4:1
+    </div>`).join('');
+}
+
+function m4RenderTeam(){
+  const el=document.getElementById('m4teamgrid'); if(!el) return;
+  const pts=Object.values(G4.pTeam).flat().reduce((s,c)=>s+c.pts,0);
+  const ptsEl=document.getElementById('m4teampts'); if(ptsEl) ptsEl.textContent=pts+'/40';
+  const prog=document.getElementById('m4tprog'); if(prog) prog.style.width=Math.min(100,pts/40*100)+'%';
+  let html='';
+  [{pos:'goleiro',k:'gl'},{pos:'defesa',k:'def'},{pos:'meio',k:'mei'},{pos:'ataque',k:'atk'}].forEach(({pos,k})=>{
+    const need=FORM[pos]||0;
+    for(let i=0;i<need;i++){
+      const c=G4.pTeam[pos][i];
+      html+=c
+        ?`<div class="m4ts filled">${M4T[k].ico} ${c.name.split(' ')[0]}<span class="m4ts-pts">${c.pts}</span></div>`
+        :`<div class="m4ts">${M4T[k].ico} ${PL[pos]}</div>`;
+    }
+  });
+  el.innerHTML=html;
+}
+
+/* ── Board render (colonist.io style) ── */
+function m4RenderBoard(){
+  const svg=document.getElementById('m4svg'); if(!svg) return;
+  let mx=1e9,Mx=-1e9,my=1e9,My=-1e9;
+  G4.hexes.forEach(h=>h.corners.forEach(c=>{mx=Math.min(mx,c.x);Mx=Math.max(Mx,c.x);my=Math.min(my,c.y);My=Math.max(My,c.y);}));
+  const pad=M4_SIZE*1.1, ox=-mx+pad, oy=-my+pad;
+  const W=Mx-mx+pad*2, H=My-my+pad*2;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.innerHTML='';
+
+  // Ocean BG
+  const bg=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  bg.setAttribute('width',W);bg.setAttribute('height',H);bg.setAttribute('fill','#1e3d6a');
+  svg.appendChild(bg);
+  // Wave lines
+  for(let y=0;y<H;y+=16){
+    const wl=document.createElementNS('http://www.w3.org/2000/svg','path');
+    let d=''; for(let x=0;x<W;x+=36) d+=`M${x},${y} Q${x+9},${y-3} ${x+18},${y} Q${x+27},${y+3} ${x+36},${y}`;
+    wl.setAttribute('d',d);wl.setAttribute('stroke','rgba(255,255,255,.1)');wl.setAttribute('stroke-width','1');wl.setAttribute('fill','none');
+    svg.appendChild(wl);
+  }
+
+  // Defs
+  const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+  const filt=document.createElementNS('http://www.w3.org/2000/svg','filter');
+  filt.setAttribute('id','m4drop');filt.setAttribute('x','-20%');filt.setAttribute('y','-20%');filt.setAttribute('width','140%');filt.setAttribute('height','140%');
+  const fe=document.createElementNS('http://www.w3.org/2000/svg','feDropShadow');
+  fe.setAttribute('dx','0');fe.setAttribute('dy','2');fe.setAttribute('stdDeviation','3');fe.setAttribute('flood-opacity','0.6');
+  filt.appendChild(fe);defs.appendChild(filt);
+  // Gradients per type
+  Object.entries(M4T).forEach(([k,t])=>{
+    const g=document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+    g.setAttribute('id','m4g_'+k);g.setAttribute('x1','0%');g.setAttribute('y1','0%');g.setAttribute('x2','70%');g.setAttribute('y2','100%');
+    const lighten=c=>{ try{let r=parseInt(c.slice(1,3),16),g=parseInt(c.slice(3,5),16),b=parseInt(c.slice(5,7),16); return `rgb(${Math.min(255,r+80)},${Math.min(255,g+80)},${Math.min(255,b+80)})`;}catch(e){return c;}};
+    [[0,lighten(t.fill)],[100,t.fill]].forEach(([off,col])=>{
+      const s=document.createElementNS('http://www.w3.org/2000/svg','stop');
+      s.setAttribute('offset',off+'%');s.setAttribute('stop-color',col);g.appendChild(s);
+    });
+    defs.appendChild(g);
+  });
+  svg.appendChild(defs);
+
+  // Draw hexes
+  G4.hexes.forEach(h=>{
+    const T=M4T[h.type];
+    const cx=h.cx+ox, cy=h.cy+oy;
+    const pts=h.corners.map(c=>`${c.x+ox},${c.y+oy}`).join(' ');
+    const isScout=h.idx===G4.scoutIdx;
+
+    const poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    poly.setAttribute('points',pts);
+    poly.setAttribute('fill',`url(#m4g_${h.type})`);
+    poly.setAttribute('stroke',isScout&&G4.scoutMode?'#b040f0':T.stroke);
+    poly.setAttribute('stroke-width',isScout&&G4.scoutMode?'3.5':'2.5');
+    poly.setAttribute('filter','url(#m4drop)');
+    if(G4.scoutMode){poly.style.cursor='pointer';poly.onclick=(()=>{const i=h.idx;return()=>m4PlaceScout(i);})();}
+    svg.appendChild(poly);
+
+    // Inner ring
+    const ics=m4Corners(cx,cy,M4_SIZE*0.8).map(c=>`${c.x},${c.y}`).join(' ');
+    const inner=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    inner.setAttribute('points',ics);inner.setAttribute('fill','none');
+    inner.setAttribute('stroke','rgba(255,255,255,.15)');inner.setAttribute('stroke-width','1');
+    svg.appendChild(inner);
+
+    // Label
+    const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
+    lbl.setAttribute('x',cx);lbl.setAttribute('y',cy-M4_SIZE*.44);
+    lbl.setAttribute('text-anchor','middle');lbl.setAttribute('dominant-baseline','middle');
+    lbl.setAttribute('font-family','Barlow Condensed,sans-serif');
+    lbl.setAttribute('font-size',M4_SIZE*.21);lbl.setAttribute('font-weight','900');
+    lbl.setAttribute('fill',T.stroke);lbl.setAttribute('letter-spacing','1');
+    lbl.textContent=T.name.toUpperCase();svg.appendChild(lbl);
+
+    // Separator
+    const sep=document.createElementNS('http://www.w3.org/2000/svg','line');
+    const sw=M4_SIZE*.4;
+    sep.setAttribute('x1',cx-sw);sep.setAttribute('y1',cy-M4_SIZE*.29);
+    sep.setAttribute('x2',cx+sw);sep.setAttribute('y2',cy-M4_SIZE*.29);
+    sep.setAttribute('stroke',T.stroke);sep.setAttribute('stroke-width','1');sep.setAttribute('opacity','.45');
+    svg.appendChild(sep);
+
+    // Icon
+    const ico=document.createElementNS('http://www.w3.org/2000/svg','text');
+    ico.setAttribute('x',cx);ico.setAttribute('y',cy+M4_SIZE*.06);
+    ico.setAttribute('text-anchor','middle');ico.setAttribute('dominant-baseline','middle');
+    ico.setAttribute('font-size',M4_SIZE*.38);ico.textContent=T.ico;
+    svg.appendChild(ico);
+
+    // Number token
+    if(h.number!==null){
+      const hot=h.number===6||h.number===8;
+      const circ=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      circ.setAttribute('cx',cx);circ.setAttribute('cy',cy+M4_SIZE*.5);circ.setAttribute('r',M4_SIZE*.25);
+      circ.setAttribute('fill',hot?'#700000':'#f2e8c8');
+      circ.setAttribute('stroke',hot?'#ff5050':'#aa9060');circ.setAttribute('stroke-width','1.5');
+      svg.appendChild(circ);
+      const nt=document.createElementNS('http://www.w3.org/2000/svg','text');
+      nt.setAttribute('x',cx);nt.setAttribute('y',cy+M4_SIZE*.49);
+      nt.setAttribute('text-anchor','middle');nt.setAttribute('dominant-baseline','middle');
+      nt.setAttribute('font-family','Barlow Condensed,sans-serif');
+      nt.setAttribute('font-size',M4_SIZE*.28);nt.setAttribute('font-weight','900');
+      nt.setAttribute('fill',hot?'#ffaaaa':'#2a2010');
+      nt.textContent=h.number;svg.appendChild(nt);
+      // Probability dots
+      const prob={2:1,3:2,4:3,5:4,6:5,8:5,9:4,10:3,11:2,12:1};
+      const nd=prob[h.number]||0;
+      for(let di=0;di<nd;di++){
+        const dp=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        dp.setAttribute('cx',cx-(nd-1)*2.8+di*5.6);dp.setAttribute('cy',cy+M4_SIZE*.64);
+        dp.setAttribute('r','1.9');dp.setAttribute('fill',hot?'#ff7070':'#777');
+        svg.appendChild(dp);
+      }
+    }
+
+    // Scout marker overlay
+    if(isScout){
+      const sc=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      sc.setAttribute('cx',cx);sc.setAttribute('cy',cy+M4_SIZE*.5);sc.setAttribute('r',M4_SIZE*.25);
+      sc.setAttribute('fill','rgba(70,0,130,.75)');sc.setAttribute('stroke','#a030e0');sc.setAttribute('stroke-width','2');
+      svg.appendChild(sc);
+      const st=document.createElementNS('http://www.w3.org/2000/svg','text');
+      st.setAttribute('x',cx);st.setAttribute('y',cy+M4_SIZE*.49);
+      st.setAttribute('text-anchor','middle');st.setAttribute('dominant-baseline','middle');
+      st.setAttribute('font-size',M4_SIZE*.24);st.textContent='🔍';svg.appendChild(st);
+    }
+  });
+
+  // Settlements
+  G4.settlements.forEach(s=>{
+    const v=G4.vMap.get(s.vKey); if(!v) return;
+    const vx=v.x+ox, vy=v.y+oy;
+    const col=s.own==='player'?'#00e5ff':'#ff3d57';
+    const bcol=s.own==='player'?'#003366':'#660022';
+    const hs=M4_SIZE*.17;
+    // House body
+    const hb=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    hb.setAttribute('x',vx-hs);hb.setAttribute('y',vy-hs*.65);
+    hb.setAttribute('width',hs*2);hb.setAttribute('height',hs*1.2);
+    hb.setAttribute('fill',col);hb.setAttribute('rx','2');hb.setAttribute('stroke',bcol);hb.setAttribute('stroke-width','1.5');
+    hb.setAttribute('filter','url(#m4drop)');svg.appendChild(hb);
+    // Roof
+    const rf=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    rf.setAttribute('points',`${vx-hs},${vy-hs*.65} ${vx},${vy-hs*1.9} ${vx+hs},${vy-hs*.65}`);
+    rf.setAttribute('fill',col);rf.setAttribute('stroke',bcol);rf.setAttribute('stroke-width','1.5');
+    rf.setAttribute('filter','url(#m4drop)');svg.appendChild(rf);
+  });
+
+  // Clickable vertex dots for setup
+  if(G4.phase==='setup'&&(G4.setupStep===0||G4.setupStep===3)&&G4.turn==='player'){
+    G4.vMap.forEach(v=>{
+      if(!m4CanPlace(v.key)) return;
+      const vx=v.x+ox, vy=v.y+oy;
+      const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      dot.setAttribute('cx',vx);dot.setAttribute('cy',vy);dot.setAttribute('r',M4_SIZE*.14);
+      dot.setAttribute('fill','rgba(0,229,255,.3)');dot.setAttribute('stroke','rgba(0,229,255,.85)');
+      dot.setAttribute('stroke-width','2');dot.setAttribute('cursor','pointer');
+      dot.onclick=(()=>{const k=v.key;return()=>m4PlaceAcademia(k);})();
+      svg.appendChild(dot);
+    });
+  }
+}
+
+/* ── Placement validation ── */
+function m4CanPlace(vKey){
+  const v=G4.vMap.get(vKey); if(!v||v.own) return false;
+  for(const [,e] of G4.eMap){
+    if(e.v.includes(vKey)){
+      const other=e.v.find(k=>k!==vKey);
+      if(other){const ov=G4.vMap.get(other);if(ov&&ov.own)return false;}
+    }
+  }
+  return true;
+}
+
+/* ── Setup: place Academia ── */
+function m4PlaceAcademia(vKey){
+  if(!m4CanPlace(vKey)) return;
+  const v=G4.vMap.get(vKey);
+  v.own='player';v.type='academia';
+  G4.settlements.push({vKey,own:'player',type:'academia'});
+
+  if(G4.setupStep===3){
+    // 2nd placement → give adjacent resources
+    v.hexes.forEach(hi=>{
+      const h=G4.hexes[hi];
+      if(h.type!=='scout'&&M4T[h.type].res) G4.pRes[M4T[h.type].res]++;
+    });
+    m4Log('✅ 2ª Academia colocada! Recursos iniciais coletados. Jogo iniciado!');
+    G4.phase='main';G4.turn='player';G4.rolled=false;
+    m4Log('🎲 Role os dados para começar!');
+  } else {
+    m4Log('✅ 1ª Academia colocada!');
+    G4.setupStep=1;G4.turn='ai';
+    setTimeout(m4AiSetup,700);
+  }
+  m4Render();m4RenderBoard();
+}
+
+function m4AiSetup(){
+  // AI picks best vertex (near 6/8)
+  const valid=[...G4.vMap.values()].filter(v=>m4CanPlace(v.key));
+  if(!valid.length)return;
+  const scored=valid.map(v=>({v,sc:v.hexes.reduce((s,hi)=>{const h=G4.hexes[hi];if(!h.number)return s;const d=Math.abs(7-h.number);return s+(d===1?5:d===2?4:d===3?3:d===4?2:1);},0)}));
+  scored.sort((a,b)=>b.sc-a.sc);
+  const chosen=scored[0].v;
+  chosen.own='ai';chosen.type='academia';
+  G4.settlements.push({vKey:chosen.key,own:'ai',type:'academia'});
+
+  if(G4.setupStep===1){
+    m4Log('🤖 IA colocou 1ª Academia.');G4.setupStep=2;setTimeout(m4AiSetup,600);
+  } else {
+    chosen.hexes.forEach(hi=>{const h=G4.hexes[hi];if(h.type!=='scout'&&M4T[h.type].res)G4.aRes[M4T[h.type].res]++;});
+    m4Log('🤖 IA colocou 2ª Academia. Agora coloque sua 2ª Academia!');
+    G4.setupStep=3;G4.turn='player';
+  }
+  m4Render();m4RenderBoard();
+}
+
+/* ── Dice ── */
+function m4Roll(){
+  if(G4.rolled||G4.phase!=='main'||G4.turn!=='player'||G4.scoutMode)return;
+  const d1=d6(),d2=d6(),sum=d1+d2;
+  G4.lastDice=[d1,d2];G4.rolled=true;
+  m4Log(`🎲 Você rolou ${d1}+${d2} = <b>${sum}</b>`);
+  if(sum===7){
+    G4.scoutMode=true;
+    const sm=document.getElementById('m4scoutmodal');if(sm)sm.style.display='block';
+    m4Log('🔍 Scout ativado — escolha um hexágono!');
+  } else {
+    m4Distribute(sum);
+  }
+  m4Render();m4RenderBoard();
+}
+
+function m4Distribute(num){
+  G4.hexes.forEach(h=>{
+    if(h.number!==num||h.idx===G4.scoutIdx) return;
+    const res=M4T[h.type].res; if(!res) return;
+    G4.settlements.forEach(s=>{
+      if(!h.vKeys.includes(s.vKey)) return;
+      if(s.own==='player'){G4.pRes[res]++;m4Log(`+1 ${M4T[h.type].ico} (dado ${num})`);}
+      else G4.aRes[res]++;
+    });
+  });
+}
+
+/* ── Scout / Robber ── */
+function m4PlaceScout(hexIdx){
+  if(!G4.scoutMode)return;
+  G4.scoutIdx=hexIdx;G4.scoutMode=false;
+  const sm=document.getElementById('m4scoutmodal');if(sm)sm.style.display='none';
+  const h=G4.hexes[hexIdx];
+  const aiAdj=G4.settlements.some(s=>s.own==='ai'&&h.vKeys.includes(s.vKey));
+  if(aiAdj){
+    const keys=M4_RES.filter(k=>G4.aRes[k]>0);
+    if(keys.length){const k=keys[Math.floor(Math.random()*keys.length)];G4.aRes[k]--;G4.pRes[k]++;m4Log(`🔍 Scout em ${M4T[h.type].ico}. Roubou 1 ${M4T[k].ico} da IA!`);}
+    else m4Log(`🔍 Scout em ${M4T[h.type].ico}. IA sem tokens.`);
+  } else m4Log(`🔍 Scout em ${M4T[h.type].ico}. Produção bloqueada.`);
+  m4Render();m4RenderBoard();
+}
+
+function m4CancelScout(){
+  G4.scoutMode=false;
+  const sm=document.getElementById('m4scoutmodal');if(sm)sm.style.display='none';
+  m4Render();m4RenderBoard();
+}
+
+/* ── Buy Monte 1 ── */
+function m4BuyM1(pk){
+  const pos=M4_POS[pk];const cost=M4_COST1[pk];
+  if(G4.pRes[pk]<cost)return;
+  if(!G4.monte1[pos]||!G4.monte1[pos].length){toast('Monte 1 vazio!');return;}
+  const need=(FORM[pos]||0)-G4.pTeam[pos].length;
+  if(need<=0){toast('Posição já completa!');return;}
+  const card=G4.monte1[pos].pop();
+  G4.pTeam[pos].push(card);
+  G4.pRes[pk]-=cost;
+  m4Log(`✅ Monte1: ${card.name} (${RL[card.r]}, ${PL[pos]})`);
+  m4CheckWin4();m4Render();m4RenderBoard();
+}
+
+/* ── Buy Monte 2 ── */
+function m4BuyM2(pk){
+  const pos=M4_POS[pk];
+  if(G4.pRes[pk]<M4_COST2_TOKENS||G4.pRes.pat<M4_COST2_PAT)return;
+  if(!G4.monte2.length){toast('Monte 2 vazio!');return;}
+  const need=(FORM[pos]||0)-G4.pTeam[pos].length;
+  if(need<=0){toast('Posição já completa!');return;}
+  // Find best card of matching position in monte2
+  const matching=G4.monte2.filter(c=>c.pos===pos);
+  let card;
+  if(matching.length){
+    card=matching.sort((a,b)=>b.pts-a.pts)[0];
+    G4.monte2.splice(G4.monte2.indexOf(card),1);
+  } else {
+    // Take top card (any position) - can't use if position doesn't match? 
+    // Rule: Monte 2 is mixed, you can still pick a card of your desired position if available
+    // If none of that position, take any and place in hand... but we have no "hand" in this mode.
+    // Simplification: if no matching card, block the action
+    toast('Sem carta dessa posição no Monte 2!');return;
+  }
+  G4.pTeam[pos].push(card);
+  G4.pRes[pk]-=M4_COST2_TOKENS;G4.pRes.pat-=M4_COST2_PAT;
+  m4Log(`✅ Monte2: ${card.name} (${RL[card.r]}, ${PL[pos]})`);
+  m4CheckWin4();m4Render();m4RenderBoard();
+}
+
+/* ── Upgrade Jogadores ── */
+function m4UpgradeToM1(pk){
+  // Entrega 2x Bronze/Prata → pega carta de Monte1 da mesma posição
+  const pos=M4_POS[pk];
+  const bp=G4.pTeam[pos].filter(c=>c.r==='bronze'||c.r==='prata');
+  if(bp.length<2)return;
+  if(!G4.monte1[pos]||!G4.monte1[pos].length){toast('Monte 1 vazio!');return;}
+  // Remove 2 worst Bronze/Prata
+  bp.sort((a,b)=>a.pts-b.pts);
+  const toRemove=[bp[0],bp[1]];
+  toRemove.forEach(c=>{const i=G4.pTeam[pos].indexOf(c);if(i>=0)G4.pTeam[pos].splice(i,1);});
+  // Return to bottom of monte1
+  G4.monte1[pos].unshift(...toRemove);
+  // Get new card from top
+  const newCard=G4.monte1[pos].pop();
+  G4.pTeam[pos].push(newCard);
+  m4Log(`⬆ Upgrade ${M4T[pk].ico}: ${toRemove.map(c=>c.name).join('+')} → ${newCard.name} (${RL[newCard.r]})`);
+  m4CheckWin4();m4Render();m4RenderBoard();
+}
+
+function m4UpgradeToM2(pk){
+  // Entrega 2x Ouro → pega carta de Monte2
+  const pos=M4_POS[pk];
+  const ouros=G4.pTeam[pos].filter(c=>c.r==='ouro');
+  if(ouros.length<2)return;
+  if(!G4.monte2.length){toast('Monte 2 vazio!');return;}
+  ouros.sort((a,b)=>a.pts-b.pts);
+  const toRemove=[ouros[0],ouros[1]];
+  toRemove.forEach(c=>{const i=G4.pTeam[pos].indexOf(c);if(i>=0)G4.pTeam[pos].splice(i,1);});
+  // Return to monte1
+  G4.monte1[pos].unshift(...toRemove);
+  // Try to get matching position from monte2
+  const matching=G4.monte2.filter(c=>c.pos===pos);
+  if(!matching.length){toast('Sem carta dessa posição no Monte 2!');G4.pTeam[pos].push(...toRemove);return;}
+  const newCard=matching.sort((a,b)=>b.pts-a.pts)[0];
+  G4.monte2.splice(G4.monte2.indexOf(newCard),1);
+  G4.pTeam[pos].push(newCard);
+  m4Log(`⬆ Upgrade ESPECIAL ${M4T[pk].ico}: 2×Ouro → ${newCard.name} (${RL[newCard.r]})`);
+  m4CheckWin4();m4Render();m4RenderBoard();
+}
+
+/* ── Bank 4:1 Trade ── */
+function m4BankTrade(fromKey){
+  if(G4.pRes[fromKey]<4)return;
+  G4.pRes[fromKey]-=4;
+  const toKey=M4_RES.filter(k=>k!==fromKey).sort((a,b)=>G4.pRes[a]-G4.pRes[b])[0];
+  G4.pRes[toKey]++;
+  m4Log(`💱 4× ${M4T[fromKey].ico} → 1× ${M4T[toKey].ico}`);
+  m4Render();
+}
+
+/* ── Win check ── */
+function m4CheckWin4(){
+  const t=G4.pTeam;
+  const pts=Object.values(t).flat().reduce((s,c)=>s+c.pts,0);
+  const full=Object.keys(FORM).every(p=>t[p].length>=(FORM[p]||0));
+  if(full&&pts>=40) setTimeout(()=>gameOver(true,'Time completo com '+pts+' pontos!'),500);
+}
+
+/* ── End turn / AI ── */
+function m4EndTurn(){
+  if(!G4.rolled)return;
+  G4.turn='ai';G4.rolled=false;G4.lastDice=[null,null];G4.turnNum++;
+  m4Render();setTimeout(m4AiTurn,700);
+}
+
+function m4AiTurn(){
+  const d1=d6(),d2=d6(),sum=d1+d2;
+  G4.lastDice=[d1,d2];
+  m4Log(`🤖 IA rolou ${d1}+${d2} = ${sum}`);
+
+  if(sum===7){
+    // AI moves scout to best player hex and steals
+    const pHexes=[...new Set(G4.settlements.filter(s=>s.own==='player').flatMap(s=>{const v=G4.vMap.get(s.vKey);return v?v.hexes:[];}))];
+    if(pHexes.length){
+      const best=pHexes.sort((a,b)=>Math.abs(7-(G4.hexes[a].number||0))-Math.abs(7-(G4.hexes[b].number||0)))[0];
+      G4.scoutIdx=best;
+      const hh=G4.hexes[best];
+      const pKeys=M4_RES.filter(k=>G4.pRes[k]>0);
+      if(pKeys.length){const k=pKeys[Math.floor(Math.random()*pKeys.length)];G4.pRes[k]--;G4.aRes[k]++;m4Log(`🤖 Scout em ${M4T[hh.type].ico}. Roubou 1 ${M4T[k].ico} de você!`);}
+      else m4Log(`🤖 Scout em ${M4T[hh.type].ico}. Produção bloqueada.`);
+    }
+  } else {
+    m4Distribute(sum);
+  }
+
+  // AI actions: buy, upgrade, trade
+  m4AiActions();
+
+  // Win check
+  const at=G4.aTeam;
+  const apts=Object.values(at).flat().reduce((s,c)=>s+c.pts,0);
+  const afull=Object.keys(FORM).every(p=>at[p].length>=(FORM[p]||0));
+  if(afull&&apts>=40){setTimeout(()=>gameOver(false,'IA montou o time com '+apts+' pontos!'),500);return;}
+
+  G4.turn='player';G4.rolled=false;G4.lastDice=[null,null];
+  m4Render();m4RenderBoard();
+  m4Log('Sua vez! Role os dados.');
+}
+
+function m4AiActions(){
+  const r=G4.aRes;
+  // 4:1 trade if surplus
+  M4_RES.forEach(k=>{if(r[k]>=4){r[k]-=4;const t=M4_RES.filter(x=>x!==k).sort((a,b)=>r[a]-r[b])[0];r[t]++;}});
+
+  // Try upgrade: 2 ouro → monte2
+  ['goleiro','defesa','meio','ataque'].forEach(pos=>{
+    const ouros=G4.aTeam[pos].filter(c=>c.r==='ouro');
+    if(ouros.length>=2&&G4.monte2.length){
+      const matching=G4.monte2.filter(c=>c.pos===pos);
+      if(matching.length){
+        ouros.sort((a,b)=>a.pts-b.pts);
+        [ouros[0],ouros[1]].forEach(c=>{const i=G4.aTeam[pos].indexOf(c);if(i>=0)G4.aTeam[pos].splice(i,1);G4.monte1[pos].unshift(c);});
+        const nc=matching.sort((a,b)=>b.pts-a.pts)[0];
+        G4.monte2.splice(G4.monte2.indexOf(nc),1);
+        G4.aTeam[pos].push(nc);
+        m4Log(`🤖 Upgrade IA: 2×Ouro → ${nc.name} (${RL[nc.r]})`);
+      }
+    }
+  });
+
+  // Buy from Monte1
+  ['goleiro','defesa','meio','ataque'].forEach(pos=>{
+    const pk={goleiro:'gl',defesa:'def',meio:'mei',ataque:'atk'}[pos];
+    const cost=M4_COST1[pk];
+    const need=(FORM[pos]||0)-G4.aTeam[pos].length;
+    if(need>0&&r[pk]>=cost&&G4.monte1[pos]&&G4.monte1[pos].length){
+      const card=G4.monte1[pos].pop();
+      G4.aTeam[pos].push(card);r[pk]-=cost;
+      m4Log(`🤖 IA contratou ${card.name} (${RL[card.r]})`);
+    }
+  });
+
+  // Buy from Monte2
+  ['goleiro','defesa','meio','ataque'].forEach(pos=>{
+    const pk={goleiro:'gl',defesa:'def',meio:'mei',ataque:'atk'}[pos];
+    const need=(FORM[pos]||0)-G4.aTeam[pos].length;
+    if(need>0&&r[pk]>=M4_COST2_TOKENS&&r.pat>=M4_COST2_PAT){
+      const matching=G4.monte2.filter(c=>c.pos===pos);
+      if(matching.length){
+        const card=matching.sort((a,b)=>b.pts-a.pts)[0];
+        G4.monte2.splice(G4.monte2.indexOf(card),1);
+        G4.aTeam[pos].push(card);r[pk]-=M4_COST2_TOKENS;r.pat-=M4_COST2_PAT;
+        m4Log(`🤖 IA contratou ${card.name} (${RL[card.r]}) do Monte 2`);
+      }
+    }
+  });
+}
+
+
+
+
 </script>
+<!-- ═══ MODE 4 — SCOUT CATAN ═══ -->
+<div id="mode4" class="screen">
+  <div class="game-header">
+    <button class="back-btn" onclick="goMenu()">← Menu</button>
+    <div class="game-title">⬡ Scout Catan</div>
+    <div class="badge" id="m4badge">Configuração</div>
+  </div>
+  <div class="m4wrap">
+    <div class="m4left">
+      <div class="m4lhdr">
+        <div class="m4lhdr-t">⚽ Scout Catan</div>
+        <div class="m4tbadge you" id="m4tbadge">Seu Turno</div>
+      </div>
+      <div class="m4sec">
+        <div class="m4sec-t">Tokens Coletados</div>
+        <div class="m4res-row" id="m4resrow"></div>
+      </div>
+      <div class="m4sec">
+        <div class="m4sec-t">Contratar do Monte 1 (Bronze/Prata/Ouro)</div>
+        <div class="m4action-list" id="m4m1list"></div>
+      </div>
+      <div class="m4sec">
+        <div class="m4sec-t">Contratar do Monte 2 (Especial/Ícone)</div>
+        <div class="m4action-list" id="m4m2list"></div>
+      </div>
+      <div class="m4sec">
+        <div class="m4sec-t">Upgrade de Jogador</div>
+        <div class="m4upgrade-list" id="m4upglist"></div>
+      </div>
+      <div class="m4sec">
+        <div class="m4sec-t">Troca Banco (4:1)</div>
+        <div class="m4trade-row" id="m4traderow"></div>
+      </div>
+      <div class="m4team-wrap">
+        <div class="m4sec-t" style="display:flex;justify-content:space-between;margin-bottom:.15rem">
+          <span>Seu Time</span><span style="color:var(--gold)" id="m4teampts">0/40</span>
+        </div>
+        <div id="m4teamgrid"></div>
+      </div>
+      <div class="m4pts-bar"><div class="pbar"><div class="pfill" id="m4tprog" style="width:0%"></div></div></div>
+      <div class="m4log" id="m4log"></div>
+    </div>
+    <div class="m4right">
+      <div class="m4board-area">
+        <svg id="m4svg" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="m4hint" id="m4hint" style="display:none"></div>
+      </div>
+      <div class="m4scout-modal" id="m4scoutmodal" style="display:none">
+        <div class="m4sm-title">🔍 Dado 7 — Scout!</div>
+        <div class="m4sm-sub">Clique em qualquer hexágono do tabuleiro.<br>Se a IA tiver Academia adjacente, você rouba 1 token.</div>
+        <button class="btn" style="margin-top:.4rem;font-size:.7rem;padding:.28rem .75rem;background:rgba(90,0,150,.45);border-color:#8825c0" onclick="m4CancelScout()">Passar →</button>
+      </div>
+      <div class="m4actbar">
+        <div class="m4msg" id="m4msg">Coloque sua Academia</div>
+        <div class="m4dice-area" id="m4dicearea"></div>
+        <button class="m4btn-roll" id="m4rollbtn" onclick="m4Roll()" disabled>🎲 Rolar</button>
+        <button class="m4btn-end" id="m4endbtn" onclick="m4EndTurn()" disabled>Encerrar →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
-</html>
+</html>                   
