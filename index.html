@@ -2004,6 +2004,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
         <div class="m3bench-lbl">▪ Banco de Reservas ▪</div>
         <div class="m3bench-cards" id="m3bench-cards"></div>
       </div>
+      <button id="m3venda-banco-btn" onclick="m3doVendaBanco()" style="display:none;width:calc(100% - .6rem);margin:.2rem .3rem;padding:.28rem .4rem;background:rgba(245,197,66,.12);border:1px solid rgba(245,197,66,.35);border-radius:7px;color:#f5c518;font-family:Barlow Condensed,sans-serif;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;cursor:pointer">🏦 Vender ao Banco (pré-ação)</button>
 
       <!-- Sell panel (Europa/Mundo) -->
       <div class="m3sellblk" id="m3sellpanel" style="display:none">
@@ -2015,6 +2016,12 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
       <div class="m3acblk" id="m3acpanel" style="display:none">
         <div class="m3sellhdr"><span>🃏</span><span class="m3selltxt">Cartas de Ação</span></div>
         <div class="m3acitems" id="m3aclist"></div>
+      </div>
+
+      <!-- TÉCNICO panel -->
+      <div id="m3tecpanel" style="display:none;margin:.25rem .3rem;padding:.28rem .42rem;background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.2);border-radius:7px">
+        <div style="font-family:Barlow Condensed,sans-serif;font-size:.55rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:.15rem">🎓 TÉCNICO CONTRATADO</div>
+        <div id="m3tecinfo" style="font-size:.62rem;color:var(--text2);line-height:1.4"></div>
       </div>
 
     </div><!-- /m3left -->
@@ -2884,6 +2891,7 @@ function m3endPlayerTurn(){
       G3.pMustTravel=true;
     }
   }
+  G3.pPreSold=false; // libera venda pré-ação para próximo turno
   G3.turn='ai';m3renderAll();setTimeout(m3aiTurn,800);
 }
 
@@ -3541,9 +3549,9 @@ function m2win(w){
    ═══════════════════════════════════════════════════ */
 
 const REGIONS = {
-  brasil:  {name:'Brasil',        flag:'🇧🇷', actions:['olheiro','compra','troca','torneio','minipatrocinio','acao'], color:'brasil'},
-  america: {name:'América do Sul',flag:'🌎', actions:['olheiro','compra','torneio','amistoso'], color:'america'},
-  europa:  {name:'Europa',        flag:'🇪🇺', actions:['olheiro','compra','jogo','tecnico','venda'], color:'europa'},
+  brasil:  {name:'Brasil',        flag:'🇧🇷', actions:['olheiro','compra','torneio','patrociniopontual','acao'], color:'brasil'},
+  america: {name:'América do Sul',flag:'🌎', actions:['olheiro','compra','torneio','patrociniopontual','amistoso'], color:'america'},
+  europa:  {name:'Europa',        flag:'🇪🇺', actions:['olheiro','compra','jogo','patrociniopontual','tecnico','venda'], color:'europa'},
   mundo:   {name:'Resto do Mundo',flag:'🌏', actions:['olheiro','compra','patrocinio','torneio'], color:'mundo'},
 };
 // Custo de viagem reduzido
@@ -3835,7 +3843,7 @@ function m3torneioDisputa(myCard){
     if(vit>=5){
       m3showDice([myRoll,aiRoll],myTotal+' x '+aiTotal+' VITÓRIA',detalhe+' | CAMPEÃO! Total: '+G3._torneio.moedas+'🪙',()=>m3torneioFim('campeão'));
     } else {
-      m3showDice([myRoll,aiRoll],myTotal+' x '+aiTotal+' VITÓRIA',detalhe+' | +'+TORNEIO_PRIZE_PER_WIN+'🪙 | Continuar?',()=>m3torneioAposVitoria());
+      m3showDice([myRoll,aiRoll],myTotal+' x '+aiTotal+' VITÓRIA',detalhe+' | +'+G3._torneio.prize+'🪙 | Continuar?',()=>m3torneioAposVitoria());
     }
   } else if(aiTotal>myTotal){
     m3log('Torneio: perdeu para '+adversario.nome+'. Fim com '+G3._torneio.moedas+'🪙');
@@ -3906,13 +3914,61 @@ function m3torneioFim(motivo){
   m3endPlayerTurn();
 }
 
+/* ── VENDA AO BANCO (pré-ação, qualquer jogador = estrelas em moedas) ── */
+function m3doVendaBanco(){
+  if(G3.pPreSold){ toast('Você já vendeu um jogador neste turno!'); return; }
+  const all=[...G3.pHand,...Object.values(G3.pTeam).flat()];
+  if(!all.length){ toast('Sem jogadores para vender!'); return; }
+  const cont=document.getElementById('m3mc');
+  const title=document.getElementById('m3mt');
+  const info=document.getElementById('m3mi');
+  const confirm=document.getElementById('m3mconfirm');
+  const teamPn=document.getElementById('m3modal-team');
+  const modal=document.getElementById('m3modal');
+  if(!modal) return;
+  if(teamPn) teamPn.innerHTML='';
+  title.textContent='🏦 Vender ao Banco';
+  info.textContent='Venda um jogador pelo valor de suas estrelas em moedas. Só é possível ANTES de realizar a ação do turno.';
+  cont.innerHTML=''; window._m3sel=null; confirm.disabled=true;
+  confirm.textContent='Vender 💰'; confirm.style.display='';
+  all.forEach(c=>{
+    const base=c.basePts!==undefined?c.basePts:c.pts;
+    const w=document.createElement('div');w.className='m3mcw';
+    w.innerHTML=card(c);
+    const lbl=document.createElement('div');
+    lbl.style.cssText='text-align:center;font-size:.6rem;color:var(--gold);font-weight:700;margin-top:.1rem;font-family:Barlow Condensed,sans-serif';
+    lbl.textContent=base+'⭐ = '+base+'🪙';
+    w.appendChild(lbl);
+    w.onclick=()=>{cont.querySelectorAll('.m3mcw').forEach(x=>x.classList.remove('sel'));w.classList.add('sel');window._m3sel=c;confirm.disabled=false;};
+    cont.appendChild(w);
+  });
+  modal.classList.add('open');
+  window._m3cb=(target)=>{
+    const base=target.basePts!==undefined?target.basePts:target.pts;
+    // Remove do time ou banco
+    let found=false;
+    for(const pos of Object.keys(G3.pTeam)){
+      if(G3.pTeam[pos].find(x=>x.id===target.id)){
+        G3.pTeam[pos]=G3.pTeam[pos].filter(x=>x.id!==target.id);found=true;break;
+      }
+    }
+    if(!found) G3.pHand=G3.pHand.filter(x=>x.id!==target.id);
+    G3.pCoins+=base;
+    G3.pPreSold=true;
+    m3log('🏦 '+target.name+' vendido ao banco: +'+base+'🪙');
+    toast('🏦 '+target.name+' vendido por '+base+'🪙!');
+    m3renderAll();
+    // NÃO chama m3endPlayerTurn — jogador ainda pode fazer sua ação
+  };
+}
+
 /* ── MINI-PATROCÍNIO (Brasil, emergência ≤8 moedas) ── */
 function m3doMiniPatrocinio(){
   const r1=d6(),r2=d6(),sum=r1+r2;
   const base=SPONS[sum];
   G3.pCoins+=base;
   m3log('💵 Mini-Patrocínio: '+r1+'+'+r2+'='+sum+' → +'+base+'🪙');
-  m3showDice([r1,r2],r1+'+'+r2+' = '+sum,'+'+base+'🪙 (mini-patrocínio)',()=>m3endPlayerTurn());
+  m3showDice([r1,r2],r1+'+'+r2+' = '+sum,'+'+base+'🪙 (patrocínio pontual)',()=>m3endPlayerTurn());
 }
 
 /* ── TROCA 2:1 (Brasil) — devolve 2 da mesma posição, recebe 1 de posição escolhida ── */
@@ -4079,6 +4135,7 @@ function startM3(){
     _torneio:null,
     pTemBolaDeOuro:false, // só pode ter 1 Bola de Ouro
     pTemTecnico:false, // só pode ter 1 técnico
+    pPreSold:false,   // venda ao banco já usada neste turno
     pLastAction:null,pConsec:0,
     pRegionRounds:0,pMustTravel:false,
     _discardMode:false,_discardSel:null,_discardCb:null,_discardExcess:0,
@@ -4212,7 +4269,7 @@ function m3actInfo(act,reg){
   if(act==='tecnico')   return {ico:'🎓',nm:'Técnico',  cs:G3.pTemTecnico?'já contratado':TECNICO_COST+'🪙',tp:'tecnico'};
   if(act==='acao')      return {ico:'🃏',nm:'Carta de Ação',cs:'5🪙',tp:'acao'};
   if(act==='compra')        return {ico:'🎯',nm:'Compra Direta',    cs:COMPRA_COST[reg]+'🪙 (cega)',  tp:'compra'};
-  if(act==='minipatrocinio') return {ico:'💵',nm:'Mini-Patrocínio',cs:'1× dado (emergência)', tp:'minipatrocinio'};
+  if(act==='patrociniopontual') return {ico:'💵',nm:'Patrocínio Pontual',cs:'1× dado',tp:'patrociniopontual'};
   if(act==='troca')         return {ico:'🔄',nm:'Troca 2:1',       cs:'devolve 2, recebe 1',  tp:'troca'};
   if(act==='jogo')          return {ico:'🏟️',nm:'Jogo Europa',    cs:'+15🪙 se ganhar',      tp:'jogo'};
   if(act==='torneio'){const cfg=TORNEIO[reg]||{};const en=TORNEIO_ENTRY[reg]||3;const pr=TORNEIO_PRIZE[reg]||5;return {ico:'🏆',nm:cfg.nome||'Torneio',cs:en+'🪙 → '+pr+'/vitória',tp:'torneio'};}
@@ -4240,7 +4297,7 @@ function m3isOff(act,reg){
   if(act==='jogo')return false;
   if(act==='torneio'){const en=TORNEIO_ENTRY[reg]||3;return G3.pCoins<en;} // bloqueia se sem entrada
   if(act==='compra'&&(G3.pCoins<COMPRA_COST[reg]||!G3.piles[reg].length))return true;
-  if(act==='minipatrocinio'&&G3.pCoins>8)return true; // só emergência (≤8 moedas)
+  // patrociniopontual: sempre disponível
   if(act==='troca'){
     const allC=[...G3.pHand,...Object.values(G3.pTeam).flat()];
     const byPos={};allC.forEach(c=>{(byPos[c.pos]=byPos[c.pos]||[]).push(c);});
@@ -4333,6 +4390,12 @@ function m3renderPitch3(){
   el.appendChild(newLbl);
 
   // Update bench
+  // Botão venda ao banco — visível apenas se ainda não vendeu neste turno
+  const vendaBancoBtn=document.getElementById('m3venda-banco-btn');
+  if(vendaBancoBtn){
+    const canSell=G3.turn==='player'&&!G3.pPreSold&&[...G3.pHand,...Object.values(G3.pTeam).flat()].length>0;
+    vendaBancoBtn.style.display=canSell?'':'none';
+  }
   const bench = document.getElementById('m3bench');
   const bc    = document.getElementById('m3bench-cards');
   if(bench && bc){
@@ -4365,6 +4428,22 @@ function m3renderPitch3(){
   if(ptsEl) ptsEl.textContent=pts+(bonus?' ('+rawPts+'+'+bonus+'🎓)':'')+' / '+(G3.victoryGoal||35)+' pts';
   const prog = document.getElementById('m3pprog');
   if(prog) prog.style.width = Math.min(100, pts/40*100) + '%';
+
+  // Técnico panel
+  const tecPanel=document.getElementById('m3tecpanel');
+  const tecInfo=document.getElementById('m3tecinfo');
+  if(tecPanel&&tecInfo){
+    if(G3.pTemTecnico){
+      tecPanel.style.display='block';
+      if(bonus>0){
+        tecInfo.innerHTML='<strong style="color:var(--gold)">+'+bonus+'⭐</strong> bônus fixo ao time<br><span style="font-size:.55rem;opacity:.7">Estrelas base dos jogadores não mudam</span>';
+      } else {
+        tecInfo.innerHTML='Formação personalizada ativa';
+      }
+    } else {
+      tecPanel.style.display='none';
+    }
+  }
 }
 
 let m3selField = null;  // {pos, idx, card, slotEl}
@@ -4599,7 +4678,7 @@ function m3act(act,reg){
   else if(act==='amistoso')  m3doAmistoso();
   else if(act==='tecnico')   m3doTecnico();
   else if(act==='acao')          m3doAcao();
-  else if(act==='minipatrocinio') m3doMiniPatrocinio();
+  else if(act==='patrociniopontual') m3doMiniPatrocinio();
   else if(act==='troca')         m3doTroca();
   else if(act==='jogo')          m3doJogoEuropa();
   else if(act==='torneio')       m3doTorneio(reg);
@@ -4954,7 +5033,7 @@ function m3renderAcoes(){
   const list=document.getElementById('m3aclist');
   if(!panel||!list)return;
   if(!G3.pAcoes||!G3.pAcoes.length){panel.style.display='none';return;}
-  panel.style.display='block';
+  panel.style.display='';
   list.innerHTML='';
   G3.pAcoes.forEach((ac,i)=>{
     const btn=document.createElement('div');
@@ -5407,20 +5486,17 @@ function m3aiTurn(){
       // Patrocínio como emergência
       if(r==='mundo'||r==='america'||r==='brasil'){
         // IA simula torneio: ganha 0-3 rodadas aleatórias
+        const _prize=TORNEIO_PRIZE[r]||5;
         const wins=Math.floor(Math.random()*4);
-        const earned=wins*TORNEIO_PRIZE_PER_WIN;
+        const earned=wins*_prize;
         if(earned>0) aiEarn(earned);
         m3log('🤖 IA '+(idx+1)+' torneio: '+wins+' vitórias +'+earned+'🪙');
-    } else if(r==='mundo'){
+      } else {
+        // Patrocínio fallback
         const r1=d6(),r2=d6(),sum=r1+r2;
         const earned=(SPONS[sum]||3)*2;
         aiEarn(earned);
         m3log('🤖 IA '+(idx+1)+' patrocínio +'+earned+'🪙');
-      } else {
-        // Mini-patrocínio fallback
-        const roll=d6();
-        aiEarn(SPONS[roll+roll]||3);
-        m3log('🤖 IA '+(idx+1)+' aguarda/acumula moedas');
       }
       acted=true;
     }
@@ -5437,6 +5513,8 @@ function m3aiTurn(){
     m3log('🤖 IA '+(idx+1)+' patrocínio/espera');
   }
 
+  // Sanity: garantir que aCoins não vire NaN
+  if(isNaN(G3.aCoins[idx])) G3.aCoins[idx]=5;
   m3checkAllPilesEmpty();
   m3checkWin3('a',idx);
   if(!G3._gameOver){
